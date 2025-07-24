@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor-specific
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Build
+dist/
+build/
+
+# MongoDB dump (if you ever run `mongodump`)
+dump/
+
+# Coverage reports (if using test coverage tools)
+coverage/
+
+# PM2 logs (if using PM2 process manager)
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Nodemon reload tracking file
+.nodemon-restart

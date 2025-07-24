@@ -1,0 +1,151 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  margin-bottom: 1rem;
+  flex-wrap: nowrap; /* ✅ Prevent wrapping completely */
+  width: 100%;
+  padding: 0 10px; /* optional: inner spacing */
+  box-sizing: border-box;
+}
+
+
+.filters .btn {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 6px 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  text-align: center;
+}
+
+
+.btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-teal {
+  background-color: teal;
+  color: white;
+}
+
+.btn-inactive {
+  background-color: #ddd;
+  color: #333;
+}
+
+.fixtures-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.fixture-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.league-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 3px;
+  background-color: #d1cfcfbb;
+  border-radius: 2px;
+
+}
+
+.league-header img {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.league-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.fixture-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.teams {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.team-name {
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vs {
+  font-weight: bold;
+  color: #555;
+}
+
+.match-time {
+  font-size: 0.85rem;
+  text-align: right;
+}
+
+@media screen and (min-width: 600px) {
+  .fixtures-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 900px) {
+  .fixtures-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .btn {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .league-name {
+    font-size: 0.85rem;
+  }
+
+  .teams {
+    font-size: 0.9rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .match-time {
+    text-align: center;
+    width: 100%;
+    margin-top: 8px;
+  }
+
+  .fixture-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
