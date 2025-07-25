@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./Fixtures.css";
-import axios from "../api/axiosInstance";
+import axiosInstance from "../utils/axiosInstance";
 
 const Fixtures = () => {
   const [fixtures, setFixtures] = useState([]);
