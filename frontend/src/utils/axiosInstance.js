@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://react-bookiesmasters.onrender.com", // Change to your deployed URL if needed
+  baseURL: "https://api.bookiesmasters.com/api", // Change to your deployed URL if needed
 });
 
 // Request interceptor: attach token

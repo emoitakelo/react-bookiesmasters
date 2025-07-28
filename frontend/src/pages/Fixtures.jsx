@@ -10,6 +10,7 @@ const Fixtures = () => {
   const fetchFixtures = async () => {
     try {
 const response = await axiosInstance.get(`/fixtures?date=${date}`);
+setFixtures(response.data); 
     } catch (error) {
       console.error("Error fetching fixtures:", error);
     }
