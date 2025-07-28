@@ -1,7 +1,7 @@
 const axios = require('axios');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Fixture = require('./models/Fixture'); // ✅ Make sure this path is correct
+const Fixture = require('./models/Fixture'); // Ensure this path is correct
 
 const API_URL = 'https://v3.football.api-sports.io/fixtures';
 const API_KEY = process.env.API_KEY;
@@ -15,7 +15,9 @@ const headers = {
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI, {
-      serverSelectionTimeoutMS: 10000, // avoid infinite buffering
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      serverSelectionTimeoutMS: 10000,
     });
     console.log('✅ Connected to MongoDB');
   } catch (err) {
@@ -76,7 +78,7 @@ const fetchFixturesForDate = async (dateStr) => {
 
 // 🏁 Main function
 const fetchAllFixtures = async () => {
-  await connectDB(); // connect once before all ops
+  await connectDB();
   await deleteOldFixtures();
 
   const today = new Date();
@@ -92,7 +94,7 @@ const fetchAllFixtures = async () => {
     await fetchFixturesForDate(date);
   }
 
-  mongoose.connection.close(); // ✅ Close DB connection
+  mongoose.connection.close();
   console.log('🚪 MongoDB connection closed');
 };
 
