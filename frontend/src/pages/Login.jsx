@@ -18,7 +18,7 @@ const Login = () => {
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      navigate("/request-tip"); // ✅ protected route
+      navigate("/request-tips"); // ✅ protected route
       window.location.reload(); // ✅ update Navbar (optional)
     } catch (err) {
       setError(
