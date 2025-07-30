@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import PredictionCard from "../components/PredictionCard";
+import axiosInstance from "../utils/axiosInstance";
 
 const Prediction = () => {
   const [predictions, setPredictions] = useState([]);
@@ -20,7 +21,7 @@ const Prediction = () => {
   const fetchPredictions = async (date) => {
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/predictions/by-date/${formatDate(date)}`);
+      const res = await axiosInstance.get(`/predictions/by-date/${formatDate(date)}`);
 
       console.log("✅ Raw prediction response:", res.data);
       setPredictions(res.data);
