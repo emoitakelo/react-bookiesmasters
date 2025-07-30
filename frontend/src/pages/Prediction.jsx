@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import PredictionCard from "../components/PredictionCard";
 import axiosInstance from "../utils/axiosInstance";
 

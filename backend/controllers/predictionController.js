@@ -34,15 +34,18 @@ exports.getPredictionByFixtureId = async (req, res) => {
 // controller/predictionController.js
 // @desc Get predictions for a specific date (YYYY-MM-DD)
 exports.getPredictionsByDate = async (req, res) => {
-  const { date } = req.params; // "YYYY-MM-DD"
+  const { date } = req.params; // expected format: "2025-07-30"
 
-  const start = new Date(date);
-  const end = new Date(date);
-  end.setDate(end.getDate() + 1);
+  const startOfDay = new Date(date);
+  const endOfDay = new Date(date);
+  endOfDay.setDate(endOfDay.getDate() + 1);
 
   try {
     const predictions = await Prediction.find({
-      "fixture.date": { $gte: start, $lt: end }
+      "fixture.date": {
+        $gte: startOfDay,
+        $lt: endOfDay,
+      },
     }).sort({ "fixture.date": 1 });
 
     if (!predictions.length) {

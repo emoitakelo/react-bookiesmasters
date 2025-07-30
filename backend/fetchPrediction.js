@@ -20,7 +20,10 @@ const connectDB = async () => {
 const fetchAndSavePrediction = async (fixtureId) => {
   try {
     // 1. Fetch prediction
-    const predictionRes = await axios.get(`${API_URL}/predictions?fixture=${fixtureId}`, { headers });
+    const predictionRes = await axios.get(
+      `${API_URL}/predictions?fixture=${fixtureId}`,
+      { headers }
+    );
     const predictionData = predictionRes.data.response[0];
 
     if (!predictionData) {
@@ -29,9 +32,11 @@ const fetchAndSavePrediction = async (fixtureId) => {
     }
 
     // 2. Fetch fixture info to get date
-    const fixtureRes = await axios.get(`${API_URL}/fixtures?id=${fixtureId}`, { headers });
+    const fixtureRes = await axios.get(
+      `${API_URL}/fixtures?id=${fixtureId}`,
+      { headers }
+    );
     const fixtureInfo = fixtureRes.data.response[0];
-
     const fixtureDate = fixtureInfo?.fixture?.date || null;
 
     // 3. Save prediction with fixtureId and fixtureDate
@@ -46,9 +51,9 @@ const fetchAndSavePrediction = async (fixtureId) => {
       fixtureId,
       ...predictionData,
       fixture: {
-  ...(predictionData.fixture || {}),
-  date: fixtureDate ? new Date(fixtureDate) : null // ✅ convert string to Date
-}
+        ...(predictionData.fixture || {}),
+        date: fixtureDate ? new Date(fixtureDate) : null,
+      },
     });
 
     await newPrediction.save();
@@ -60,7 +65,7 @@ const fetchAndSavePrediction = async (fixtureId) => {
 
 const start = async () => {
   await connectDB();
-  const fixtureId = '1378968'; // Change this to your target fixture ID
+  const fixtureId = '1342545'; // Change this to your target fixture ID
   await fetchAndSavePrediction(fixtureId);
 };
 
