@@ -12,7 +12,6 @@ import About from './pages/About';
 import ContactUs from './pages/ContactUs';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import SectionContent from './components/SectionContent';
 import RequestTips from "./pages/RequestTips";
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute'; // ✅ Added
@@ -52,7 +51,7 @@ function App() {
           </Route>
         </Routes>
       </main>
-      <SectionContent />
+      
       <Footer />
     </div>
   );

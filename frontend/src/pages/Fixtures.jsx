@@ -58,7 +58,7 @@ const Fixtures = () => {
 
       <div className="fixtures-grid">
         {fixtures.length === 0 ? (
-          <p className="text-center text-muted">No fixtures for {activeDateType}</p>
+          <p className="text-center text-muted">Loading fixtures for {activeDateType} ...</p>
         ) : (
           fixtures.map((fixture) => (
             <div key={fixture.fixture.id} className="fixture-card">
