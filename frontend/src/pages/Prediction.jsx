@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PredictionCard from "../components/PredictionCard";
-import SectionContent from './components/SectionContent';
+import SectionContent from '../components/SectionContent';
 import axiosInstance from "../utils/axiosInstance";
 
 const Prediction = () => {
