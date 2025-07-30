@@ -1,7 +1,6 @@
 const Prediction = require("../models/Prediction");
 
 // @desc Get all predictions (sorted by embedded fixture date)
-// @route GET /api/predictions
 exports.getAllPredictions = async (req, res) => {
   try {
     const predictions = await Prediction.find({}).sort({ "fixture.date": 1 });
@@ -13,10 +12,11 @@ exports.getAllPredictions = async (req, res) => {
 };
 
 // @desc Get single prediction by fixtureId
-// @route GET /api/predictions/:fixtureId
 exports.getPredictionByFixtureId = async (req, res) => {
   try {
-    const prediction = await Prediction.findOne({ fixtureId: parseInt(req.params.fixtureId) });
+    const prediction = await Prediction.findOne({
+      fixtureId: parseInt(req.params.fixtureId),
+    });
 
     if (!prediction) {
       return res.status(404).json({ message: "Prediction not found" });
@@ -29,22 +29,19 @@ exports.getPredictionByFixtureId = async (req, res) => {
   }
 };
 
-// @desc Get predictions by fixture.date (derived from embedded fixture object)
+// ✅ FIXED: @desc Get predictions by fixture.date (date range)
 // @route GET /api/predictions/by-date/:date
-// controller/predictionController.js
-// @desc Get predictions for a specific date (YYYY-MM-DD)
 exports.getPredictionsByDate = async (req, res) => {
-  const { date } = req.params; // expected format: "2025-07-30"
-
-  const startOfDay = new Date(date);
-  const endOfDay = new Date(date);
-  endOfDay.setDate(endOfDay.getDate() + 1);
+  const { date } = req.params; // expected format: "YYYY-MM-DD"
 
   try {
+    const startOfDay = new Date(`${date}T00:00:00.000Z`);
+    const endOfDay = new Date(`${date}T23:59:59.999Z`);
+
     const predictions = await Prediction.find({
       "fixture.date": {
         $gte: startOfDay,
-        $lt: endOfDay,
+        $lte: endOfDay,
       },
     }).sort({ "fixture.date": 1 });
 
@@ -59,8 +56,7 @@ exports.getPredictionsByDate = async (req, res) => {
   }
 };
 
-
-// @desc Delete predictions by date (optional: still uses matchDate for compatibility)
+// @desc Delete predictions by date (optional)
 // @route DELETE /api/predictions/by-date/:date
 exports.deletePredictionsByDate = async (req, res) => {
   const { date } = req.params;
