@@ -9,8 +9,8 @@ const Fixtures = () => {
 
   const fetchFixtures = async () => {
     try {
-const response = await axiosInstance.get(`/fixtures?date=${date}`);
-setFixtures(response.data); 
+      const response = await axiosInstance.get(`/fixtures?date=${date}`);
+      setFixtures(response.data);
     } catch (error) {
       console.error("Error fetching fixtures:", error);
     }
@@ -21,7 +21,7 @@ setFixtures(response.data);
   }, [date]);
 
   const changeDate = (offset, type) => {
-    const newDate = new Date(date);
+    const newDate = new Date();
     newDate.setDate(newDate.getDate() + offset);
     setDate(newDate.toISOString().slice(0, 10));
     setActiveDateType(type);
@@ -34,24 +34,22 @@ setFixtures(response.data);
   };
 
   return (
-    <div className="container py-0" style={{fontSize: 'clamp(12px, 2vw, 20px)'}}>
-      <div className="filters">
+    <div className="container py-0" style={{ fontSize: 'clamp(12px, 2vw, 20px)' }}>
+      <div className="filters my-3 text-center">
         <button
-          className={`btn ${activeDateType === "yesterday" ? "btn-teal" : "btn-inactive"}`}
+          className={`btn mx-1 ${activeDateType === "yesterday" ? "btn-teal" : "btn-inactive"}`}
           onClick={() => changeDate(-1, "yesterday")}
         >
           Yesterday
         </button>
-
         <button
-          className={`btn ${activeDateType === "today" ? "btn-teal" : "btn-inactive"}`}
+          className={`btn mx-1 ${activeDateType === "today" ? "btn-teal" : "btn-inactive"}`}
           onClick={setToday}
         >
           Today
         </button>
-
         <button
-          className={`btn ${activeDateType === "tomorrow" ? "btn-teal" : "btn-inactive"}`}
+          className={`btn mx-1 ${activeDateType === "tomorrow" ? "btn-teal" : "btn-inactive"}`}
           onClick={() => changeDate(1, "tomorrow")}
         >
           Tomorrow
@@ -59,38 +57,42 @@ setFixtures(response.data);
       </div>
 
       <div className="fixtures-grid">
-        {fixtures.map((fixture) => (
-          <div key={fixture.fixture.id} className="fixture-card">
-            <div className="league-header">
-              <img src={fixture.league.logo} alt="league-logo" />
-              <span className="league-name">{fixture.league.name}</span>
-            </div>
-
-            <div className="fixture-row">
-              <div className="teams">
-                <span className="team-name">{fixture.teams.home.name}</span>
-                <span className="vs">vs</span>
-                <span className="team-name">{fixture.teams.away.name}</span>
+        {fixtures.length === 0 ? (
+          <p className="text-center text-muted">No fixtures for {activeDateType}</p>
+        ) : (
+          fixtures.map((fixture) => (
+            <div key={fixture.fixture.id} className="fixture-card">
+              <div className="league-header">
+                <img src={fixture.league.logo} alt="league-logo" />
+                <span className="league-name">{fixture.league.name}</span>
               </div>
 
-              <div className="match-time">
-                {new Date(fixture.fixture.date).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-                <br />
-                <small>
-                  {new Date(fixture.fixture.date).toLocaleDateString([], {
-                    weekday: "short",
-                    year: "numeric",
-                    month: "short",
-                    day: "numeric",
+              <div className="fixture-row">
+                <div className="teams">
+                  <span className="team-name">{fixture.teams.home.name}</span>
+                  <span className="vs">vs</span>
+                  <span className="team-name">{fixture.teams.away.name}</span>
+                </div>
+
+                <div className="match-time">
+                  {new Date(fixture.fixture.date).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
-                </small>
+                  <br />
+                  <small>
+                    {new Date(fixture.fixture.date).toLocaleDateString([], {
+                      weekday: "short",
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
+                    })}
+                  </small>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );
