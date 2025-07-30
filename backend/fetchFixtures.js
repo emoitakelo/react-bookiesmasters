@@ -1,7 +1,7 @@
 const axios = require('axios');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const Fixture = require('./models/Fixture'); // Ensure this path is correct
+const Fixture = require('./models/Fixture'); // Adjust path if needed
 
 const API_URL = 'https://v3.football.api-sports.io/fixtures';
 const API_KEY = process.env.API_KEY;
@@ -11,7 +11,7 @@ const headers = {
   'x-apisports-key': API_KEY,
 };
 
-// ✅ Connect to MongoDB once
+// ✅ Connect to MongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGO_URI, {
@@ -26,18 +26,17 @@ const connectDB = async () => {
   }
 };
 
-// 🧼 Delete fixtures from 2 days ago
+// 🧼 Delete fixtures older than 2 days ago
 const deleteOldFixtures = async () => {
   const twoDaysAgo = new Date();
   twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
   const dateStr = twoDaysAgo.toISOString().slice(0, 10); // YYYY-MM-DD
 
   try {
-    await Fixture.deleteMany({ date: dateStr });
-    console.log(`🗑️  Deleted old fixtures from ${dateStr}`);
+    const result = await Fixture.deleteMany({ date: { $lt: dateStr } });
+    console.log(`🗑️  Deleted ${result.deletedCount} old fixtures before ${dateStr}`);
   } catch (err) {
-    console.error(`❌ Error deleting old fixtures for ${dateStr}:`, err.message);
+    console.error(`❌ Error deleting old fixtures before ${dateStr}:`, err.message);
   }
 };
 
