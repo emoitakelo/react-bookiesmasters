@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../utils/axiosInstance";
 import "./PredictionDetails.css";
 
 const PredictionDetails = () => {
@@ -11,8 +11,8 @@ const PredictionDetails = () => {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/predictions/${fixtureId}`);
-        setPrediction(res.data);
+    const res = await axiosInstance.get(`/predictions/${fixtureId}`);       
+    setPrediction(res.data);
       } catch (err) {
         console.error("Failed to load prediction details", err);
       } finally {
