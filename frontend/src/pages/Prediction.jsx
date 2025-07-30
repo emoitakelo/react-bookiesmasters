@@ -97,6 +97,9 @@ const Prediction = () => {
       </div>
       <SectionContent />
     </div>
+    
+          
+
   );
 };
 
