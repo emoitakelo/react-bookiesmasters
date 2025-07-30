@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import PredictionCard from "../components/PredictionCard";
-import SectionContent from '../components/SectionContent';
 import axiosInstance from "../utils/axiosInstance";
 
 const Prediction = () => {
@@ -95,7 +94,7 @@ const Prediction = () => {
           <div className="text-center text-muted">No predictions found for this date.</div>
         )}
       </div>
-      <SectionContent />
+      
     </div>
     
           
