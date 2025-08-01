@@ -71,7 +71,7 @@ const PredictionDetails = () => {
     <div className="container my-1 prediction-details" style={{ fontSize: 'clamp(12px, 2vw, 20px)'}}>
       {/* Header Section */}
       <div className="card p-3 mb-3 shadow-sm text-center match-header">
-  <h5 className="text-muted league-name">{league.name.toUpperCase()}</h5>
+  <h5 className=" league-name">{league.name.toUpperCase()}</h5>
 
   <div className="tip-box my-2 text-teal fw-bold small-text">
     Tip: {predictions.advice}
