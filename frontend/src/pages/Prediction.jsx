@@ -83,8 +83,9 @@ const Prediction = () => {
       {/* Predictions */}
       <div className="row">
         {loading ? (
-          <div className="text-center text-muted py5">Loading predictions...</div>
-        ) : predictions.length > 0 ? (
+<div className="d-flex justify-content-center mt-5" style={{ fontSize: 'clamp(12px, 2vw, 20px)'}}>
+        <div className="spinner-border text-success" role="status" />
+      </div>        ) : predictions.length > 0 ? (
           predictions.map((pred) => (
             <div className="col-12 mb-3" key={pred.fixtureId}>
               <PredictionCard prediction={pred} />
