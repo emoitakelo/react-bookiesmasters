@@ -85,8 +85,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 0;
   flex-wrap: wrap;
 }
+.teams-vs-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.teams-line {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 1.05rem;
+}
+
 
 .teams {
   display: flex;
@@ -116,8 +130,15 @@
 }
 
 .vs {
-  font-size: 1rem;
-  color: #00b894;
+  color: teal;
+  font-weight: 600;
+}
+
+.time-date-line {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4px;
 }
 
 .match-time {

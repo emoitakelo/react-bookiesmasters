@@ -69,31 +69,31 @@ const Fixtures = () => {
               </div>
 
               <div className="fixture-row">
-  <div className="teams">
-    <span className="team-name">{fixture.teams.home.name}</span>
-    
-    <div className="vs-time">
+  <div className="teams-vs-container">
+    <div className="teams-line">
+      <span className="team-name">{fixture.teams.home.name}</span>
       <span className="vs">vs</span>
+      <span className="team-name">{fixture.teams.away.name}</span>
+    </div>
+    <div className="time-date-line">
       <span className="match-time">
         {new Date(fixture.fixture.date).toLocaleTimeString([], {
           hour: "2-digit",
           minute: "2-digit",
         })}
-        <br />
-        <small>
-          {new Date(fixture.fixture.date).toLocaleDateString([], {
-            weekday: "short",
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-          })}
-        </small>
+      </span>
+      <span className="match-date">
+        {new Date(fixture.fixture.date).toLocaleDateString([], {
+          weekday: "short",
+          year: "numeric",
+          month: "short",
+          day: "numeric",
+        })}
       </span>
     </div>
-
-    <span className="team-name">{fixture.teams.away.name}</span>
   </div>
 </div>
+
 
             </div>
           ))
