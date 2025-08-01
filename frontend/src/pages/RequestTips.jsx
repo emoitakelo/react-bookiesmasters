@@ -24,7 +24,7 @@ const RequestTips = () => {
     e.preventDefault();
     try {
       await axiosInstance.post("/tips/request", formData);
-      setMessage("✅ Your request has been received. We'll send you tips shortly!");
+      setMessage("✅ Your request has been received. We'll contact you shortly!");
       setFormData({ name: "", email: "", whatsapp: "", consent: false });
     } catch (error) {
       setMessage("❌ Failed to send request. Try again later.");
@@ -83,7 +83,7 @@ const RequestTips = () => {
               required
             />
             <label className="form-check-label">
-              I consent to be contacted via WhatsApp regarding betting tips.
+              I consent to be contacted regarding betting tips.
             </label>
           </div>
 
