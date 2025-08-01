@@ -65,7 +65,7 @@ const Fixtures = () => {
             <div key={fixture.fixture.id} className="fixture-card">
               <div className="league-header">
                 <img src={fixture.league.logo} alt="league-logo" />
-                <span className="league-name">{fixture.league.name}</span>
+                <span className="league-name">{fixture.league.name.toUpperCase()}</span>
               </div>
 
               <div className="fixture-row">
