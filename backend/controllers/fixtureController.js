@@ -12,39 +12,46 @@ exports.getRandomFixtures = async (req, res) => {
 };
 
 // GET /api/fixtures — filtered by date, team, league (optional)
+// GET /api/fixtures — filtered by date, team, league (optional)
 exports.getFilteredFixtures = async (req, res) => {
   try {
     const { date, team, league } = req.query;
-    let query = {};
+    let matchStage = {};
 
+    // Filter by date
     if (date) {
-      // Match the date portion of the ISO string (yyyy-mm-dd)
       const isoStart = new Date(date);
       const isoEnd = new Date(date);
       isoEnd.setHours(23, 59, 59, 999);
 
-      query["fixture.date"] = {
+      matchStage["fixture.date"] = {
         $gte: isoStart.toISOString(),
-        $lte: isoEnd.toISOString()
+        $lte: isoEnd.toISOString(),
       };
     }
 
+    // Filter by team (home or away)
     if (team) {
-      query.$or = [
+      matchStage.$or = [
         { "teams.home.name": { $regex: team, $options: "i" } },
-        { "teams.away.name": { $regex: team, $options: "i" } }
+        { "teams.away.name": { $regex: team, $options: "i" } },
       ];
     }
 
+    // Filter by league name
     if (league) {
-      query["league.name"] = { $regex: league, $options: "i" };
+      matchStage["league.name"] = { $regex: league, $options: "i" };
     }
 
-    const fixtures = await Fixture.find(query).limit(50);
+    const fixtures = await Fixture.aggregate([
+      { $match: matchStage },
+      { $sample: { size: 20 } }
+    ]);
+
     res.json(fixtures);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
