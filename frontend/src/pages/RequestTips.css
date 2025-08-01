@@ -11,14 +11,14 @@
 
 /* Responsive heading */
 .request-tips-wrapper h2 {
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
   color: #004d40;
   margin-bottom: 1.5rem;
   text-align: center;
 }
 
 .request-tips-wrapper label {
-  font-size: clamp(0.9rem, 2vw, 1rem);
+  font-size: clamp(0.8rem, 2vw, 1rem);
   font-weight: 500;
   color: #333;
 }
@@ -27,7 +27,7 @@
 .request-tips-wrapper input[type="email"],
 .request-tips-wrapper input[type="checkbox"],
 .request-tips-wrapper .form-control {
-  font-size: 1rem;
+  font-size: 0.9rem;
   padding: 0.5rem;
 }
 

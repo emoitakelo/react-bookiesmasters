@@ -33,7 +33,7 @@ const RequestTips = () => {
 
   return (
     <div className="request-tips-wrapper">
-      <div className="container mt-5">
+      <div className="container mt-3">
         <h2>Request Safe Betting Tips</h2>
         {message && <div className="alert alert-info">{message}</div>}
         <form onSubmit={handleSubmit}>
