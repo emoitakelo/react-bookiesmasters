@@ -73,68 +73,51 @@ if (predictions?.winner?.comment === "Draw") {
         </div>
 
         {/* Match Info */}
-        <div
-          className="px-2 py-2 bg-white d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2"
-        >
-          {/* Time */}
-          <div
-            className="text-center text-muted"
-            style={{ minWidth: "60px", fontSize: "0.75rem" }}
-          >
-            <div>{matchTime}</div>
-            <div>{matchDay}</div>
-          </div>
+        <div className="d-flex justify-content-between align-items-center text-center mb-2">
+    {/* Home Team */}
+    <div style={{ flex: 1 }}>
+      <div className="fw-bold text-truncate">{teams?.home?.name ?? "-"}</div>
+    </div>
 
-          {/* Teams */}
-          <div
-            className="text-center"
-            style={{
-              minWidth: "100px",
-              maxWidth: "160px",
-              fontSize: "0.85rem",
-            }}
-          >
-            <div className="fw-bold text-truncate">{teams?.home?.name ?? "-"}</div>
-            <div className="text-muted" style={{ fontSize: "0.75rem" }}>
-              vs
-            </div>
-            <div className="fw-bold text-truncate">{teams?.away?.name ?? "-"}</div>
-          </div>
+    {/* Match Info */}
+    <div style={{ minWidth: "80px" }}>
+      <div className="text-muted" style={{ fontSize: "0.75rem" }}>{matchTime}</div>
+      <div className="text-muted" style={{ fontSize: "0.75rem" }}>{matchDay}</div>
+      <div
+        className="text-nowrap border rounded px-2 py-1 mx-auto mt-1"
+        style={{
+          fontSize: "0.75rem",
+          color: "#000",
+          borderColor: "#ffcc80",
+          backgroundColor: "#90ee90",
+          display: "inline-block",
+        }}
+      >
+        {tipText}
+      </div>
+    </div>
 
-          {/* Tips */}
-          <div className="text-center" style={{ minWidth: "90px" }}>
-            <div
-              className="text-nowrap border rounded px-2 py-1"
-              style={{
-                fontSize: "0.75rem",
-                color: "#000",
-                borderColor: "#ffcc80",
-                backgroundColor: "#90ee90",
-              }}
-            >
-              {tipText}
-            </div>
-          </div>
+    {/* Away Team */}
+    <div style={{ flex: 1 }}>
+      <div className="fw-bold text-truncate">{teams?.away?.name ?? "-"}</div>
+    </div>
+  </div>
 
-          {/* Probabilities */}
-          <div
-            className="d-flex justify-content-center text-center gap-2"
-            style={{ fontSize: "0.75rem", minWidth: "0" }}
-          >
-            <div>
-              <small className="text-muted">Home</small>
-              <div className="fw-bold text-success">{predictions?.percent?.home ?? "-"}</div>
-            </div>
-            <div>
-              <small className="text-muted">Draw</small>
-              <div className="fw-bold text-warning">{predictions?.percent?.draw ?? "-"}</div>
-            </div>
-            <div>
-              <small className="text-muted">Away</small>
-              <div className="fw-bold text-danger">{predictions?.percent?.away ?? "-"}</div>
-            </div>
-          </div>
-        </div>
+  {/* Probabilities */}
+  <div className="d-flex justify-content-center text-center gap-3" style={{ fontSize: "0.75rem" }}>
+    <div>
+      <small className="text-muted">Home</small>
+      <div className="fw-bold text-success">{predictions?.percent?.home ?? "-"}</div>
+    </div>
+    <div>
+      <small className="text-muted">Draw</small>
+      <div className="fw-bold text-warning">{predictions?.percent?.draw ?? "-"}</div>
+    </div>
+    <div>
+      <small className="text-muted">Away</small>
+      <div className="fw-bold text-danger">{predictions?.percent?.away ?? "-"}</div>
+    </div>
+  </div>
       </div>
     </Link>
   );
