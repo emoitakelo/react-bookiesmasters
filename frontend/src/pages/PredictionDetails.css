@@ -44,7 +44,7 @@
 
 .league-name {
   font-size: 0.85rem;
-  color: #555;
+  color: rgba(0, 77, 64, 0.9);
 }
 
 .venue {
@@ -76,6 +76,10 @@
   align-items: center;
 }
 
+.teal-text {
+  color: rgba(0, 77, 64, 0.9);
+}
+
 .team-logo {
   height: 50px;
   max-width: 100%;
@@ -89,6 +93,7 @@
 
 .league-name {
   font-size: 1rem;
+  color:rgba(0, 77, 64, 0.9) ;
 }
 
 .match-time {
@@ -175,6 +180,7 @@
 
   .league-name {
     font-size: 0.85rem;
+
   }
 
   .match-time {

@@ -71,7 +71,7 @@ const PredictionDetails = () => {
     <div className="container my-1 prediction-details" style={{ fontSize: 'clamp(12px, 2vw, 20px)'}}>
       {/* Header Section */}
       <div className="card p-3 mb-3 shadow-sm text-center match-header">
-  <h5 className="text-muted league-name">{league.name}</h5>
+  <h5 className="text-muted league-name">{league.name.toUppercase()}</h5>
 
   <div className="tip-box my-2 text-teal fw-bold small-text">
     Tip: {predictions.advice}
@@ -123,7 +123,7 @@ const PredictionDetails = () => {
 
       {/* Head to Head */}
       <div className="card p-4 mb-4 shadow-sm">
-        <h5 className="text-teal text-center mb-3">Head to Head</h5>
+        <h5 className="teal-text text-center mb-3">HEAD TO HEAD</h5>
         <div className="h2h-list">
          {h2h.map((match, idx) => (
   <div
@@ -161,7 +161,7 @@ const PredictionDetails = () => {
 
       {/* Comparison */}
       <div className="card p-4 mb-1 shadow-sm">
-        <h5 className="text-teal text-center mb-3">Team Form Comparison</h5>
+        <h5 className="teal-text text-center mb-3">TEAM FORM COMPARISON</h5>
         <div className="d-flex justify-content-between px-3 mb-2 fw-bold text-muted comparison-header small-text">
           <div>{teams.home.name}</div>
           <div>{teams.away.name}</div>
