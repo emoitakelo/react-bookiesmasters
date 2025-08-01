@@ -10,7 +10,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axiosInstance.post("/api/auth/register", { email, password });
+      await axiosInstance.post("/auth/register", { email, password });
       alert("Registration successful. Please log in.");
       navigate("/login");
     } catch (err) {
