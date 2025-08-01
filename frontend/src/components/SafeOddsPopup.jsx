@@ -28,7 +28,7 @@ const SafeOddsPopup = () => {
       <div className="popup-content text-dark">
         <strong>🔥 3 Safe Odds for Highstakers! <br /> Payment after winning!!  </strong>
         <button
-          className="btn btn-success btn-sm mt-2 w-100"
+          className="btn btn-success btn-sm mt-2 mb-2 w-100"
           onClick={handleRequestTips}
         >
           Request Tips
