@@ -58,8 +58,9 @@ const Fixtures = () => {
 
       <div className="fixtures-grid">
         {fixtures.length === 0 ? (
-          <p className="text-center text-muted">Loading fixtures for {activeDateType} ...</p>
-        ) : (
+<div className="d-flex justify-content-center mt-5" style={{ fontSize: 'clamp(12px, 2vw, 20px)'}}>
+        <div className="spinner-border text-success" role="status" />
+      </div>        ) : (
           fixtures.map((fixture) => (
             <div key={fixture.fixture.id} className="fixture-card">
               <div className="league-header">
