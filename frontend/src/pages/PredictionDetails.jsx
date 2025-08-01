@@ -26,7 +26,7 @@ const PredictionDetails = () => {
   if (loading) {
     return (
       <div className="d-flex justify-content-center mt-5" style={{ fontSize: 'clamp(12px, 2vw, 20px)'}}>
-        <div className="spinner-border text-primary" role="status" />
+        <div className="spinner-border text-success" role="status" />
       </div>
     );
   }
