@@ -17,7 +17,7 @@ const Fixtures = () => {
   };
 
   useEffect(() => {
-    fetchFixtures();
+    fetchFixtures();1
   }, [date]);
 
   const changeDate = (offset, type) => {

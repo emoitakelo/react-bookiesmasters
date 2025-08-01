@@ -26,7 +26,7 @@ const SafeOddsPopup = () => {
     <div className="safe-odds-popup shadow-lg rounded">
       <button className="close-btn" onClick={() => setVisible(false)}>&times;</button>
       <div className="popup-content text-dark">
-        <strong>🔥 3 Safe Odds for Highstakers!</strong>
+        <strong>🔥 3 Safe Odds for Highstakers! <br /> Payment after winning!!  </strong>
         <button
           className="btn btn-success btn-sm mt-2 w-100"
           onClick={handleRequestTips}
