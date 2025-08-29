@@ -28,7 +28,7 @@ function App() {
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       <Navbar user={user} setUser={setUser} />
-      <SafeOddsPopup />
+      
       <main className="flex-grow-1 container py-1">
         <Routes>
           <Route path="/" element={<Fixtures />} />
