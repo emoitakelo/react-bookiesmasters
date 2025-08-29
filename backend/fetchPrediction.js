@@ -65,7 +65,7 @@ const fetchAndSavePrediction = async (fixtureId) => {
 
 const start = async () => {
   await connectDB();
-  const fixtureId = '1419201'; // Change this to your target fixture ID
+  const fixtureId = '1378987'; // Change this to your target fixture ID
   await fetchAndSavePrediction(fixtureId);
 };
 

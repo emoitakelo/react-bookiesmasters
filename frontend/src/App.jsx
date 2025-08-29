@@ -33,7 +33,7 @@ function App() {
       <SafeOddsPopup />
       <main className="flex-grow-1 container py-1">
         <Routes>
-          <Route path="/" element={<Prediction />} />
+          <Route path="/" element={<Fixtures />} />
           <Route path="/predictions" element={<Prediction />} />
           <Route path="/predictions/:fixtureId" element={<PredictionDetails />} />
           <Route path="/fixtures" element={<Fixtures />} />
