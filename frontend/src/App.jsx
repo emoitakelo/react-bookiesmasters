@@ -6,13 +6,11 @@ import Prediction from './pages/Prediction';
 import PredictionDetails from "./pages/PredictionDetails";
 import Login from './pages/Login';
 import Register from './pages/Register';
-import SafeOddsPopup from './components/SafeOddsPopup';
 import Fixtures from './pages/Fixtures';
 import About from './pages/About';
 import ContactUs from './pages/ContactUs';
 import TermsOfService from './pages/TermsOfService';
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import RequestTips from "./pages/RequestTips";
 import Profile from './pages/Profile';
 import PrivateRoute from './components/PrivateRoute'; // ✅ Added
 
@@ -46,7 +44,7 @@ function App() {
 
           {/* ✅ Protected Routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/request-tips" element={<RequestTips />} />
+            
             <Route path="/profile" element={<Profile />} />
           </Route>
         </Routes>
