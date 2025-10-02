@@ -1,13 +1,9 @@
-const express = require('express');
+import express from "express";
+import { getFixturesByDate } from "../controllers/fixtureController.js";
+
 const router = express.Router();
-const {
-  getFilteredFixtures,
-  getFixtureById,
-  getRandomFixtures,
-} = require('../controllers/fixtureController');
 
-router.get('/random', getRandomFixtures); // GET /api/fixtures/random
-router.get('/', getFilteredFixtures);     // GET /api/fixtures?date=...
-router.get('/:id', getFixtureById);       // GET /api/fixtures/12345
+// /api/fixtures/date/2025-09-30
+router.get("/date/:date", getFixturesByDate);
 
-module.exports = router;
+export default router;

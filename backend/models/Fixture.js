@@ -1,53 +1,14 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 
-const FixtureSchema = new mongoose.Schema({
-  fixtureId: { type: Number, required: true, unique: true },
-  date: { type: String, required: true }, // Add this
-
-  fixture: {
-    id: Number,
-    date: String,
-    timestamp: Number,
-    venue: {
-      name: String,
-      city: String,
-    },
-    status: {
-      long: String,
-      short: String,
-      elapsed: Number,
-    },
+const FixtureSchema = new mongoose.Schema(
+  {
+    fixture: { type: Object, required: true },
+    league: { type: Object, required: true },
+    teams: { type: Object, required: true },
+    goals: { type: Object },
+    score: { type: Object },
   },
+  { strict: false } // allow extra fields from API without defining them
+);
 
-  league: {
-    id: Number,
-    name: String,
-    country: String,
-    logo: String,
-    flag: String,
-    season: Number,
-    round: String,
-  },
-
-  teams: {
-    home: {
-      id: Number,
-      name: String,
-      logo: String,
-    },
-    away: {
-      id: Number,
-      name: String,
-      logo: String,
-    },
-  },
-
-  goals: {
-    home: Number,
-    away: Number,
-  },
-
-  createdAt: { type: Date, default: Date.now },
-});
-
-module.exports = mongoose.model('Fixture', FixtureSchema);
+export default mongoose.model("Fixture", FixtureSchema);

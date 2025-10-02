@@ -1,68 +1,29 @@
-const Fixture = require('../models/Fixture');
+// controllers/fixtureController.js
+import Fixture from "../models/Fixture.js";
 
-// GET /api/fixtures/random — 20 random fixtures
-exports.getRandomFixtures = async (req, res) => {
+export const getFixturesByDate = async (req, res) => {
+  console.log("✅ getFixturesByDate called"); // Debug log
+
   try {
-    const fixtures = await Fixture.aggregate([{ $sample: { size: 20 } }]);
-    res.json(fixtures);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
+    const { date } = req.params; // e.g. "2025-09-30"
+    console.log("📌 Requested date param:", date);
 
-// GET /api/fixtures — filtered by date, team, league (optional)
-// GET /api/fixtures — filtered by date, team, league (optional)
-exports.getFilteredFixtures = async (req, res) => {
-  try {
-    const { date, team, league } = req.query;
-    let matchStage = {};
+    // Start and end of the day in UTC
+    const startOfDay = Math.floor(new Date(`${date}T00:00:00Z`).getTime() / 1000);
+    const endOfDay = Math.floor(new Date(`${date}T23:59:59Z`).getTime() / 1000);
 
-    // Filter by date
-    if (date) {
-      const isoStart = new Date(date);
-      const isoEnd = new Date(date);
-      isoEnd.setHours(23, 59, 59, 999);
+    console.log("🕒 Start of day (timestamp):", startOfDay);
+    console.log("🕒 End of day (timestamp):", endOfDay);
 
-      matchStage["fixture.date"] = {
-        $gte: isoStart.toISOString(),
-        $lte: isoEnd.toISOString(),
-      };
-    }
+    const fixtures = await Fixture.find({
+      "fixture.timestamp": { $gte: startOfDay, $lte: endOfDay },
+    }).sort({ "league.id": 1, "fixture.timestamp": 1 });
 
-    // Filter by team (home or away)
-    if (team) {
-      matchStage.$or = [
-        { "teams.home.name": { $regex: team, $options: "i" } },
-        { "teams.away.name": { $regex: team, $options: "i" } },
-      ];
-    }
-
-    // Filter by league name
-    if (league) {
-      matchStage["league.name"] = { $regex: league, $options: "i" };
-    }
-
-    const fixtures = await Fixture.aggregate([
-      { $match: matchStage },
-      { $sample: { size: 20 } }
-    ]);
+    console.log("📊 Fixtures found:", fixtures.length);
 
     res.json(fixtures);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// GET /api/fixtures/:id — single fixture details
-exports.getFixtureById = async (req, res) => {
-  try {
-    const fixture = await Fixture.findOne({ 'fixture.id': parseInt(req.params.id) });
-    if (!fixture) return res.status(404).json({ message: 'Fixture not found' });
-    res.json(fixture);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: 'Error fetching fixture' });
+    console.error("❌ Error in getFixturesByDate:", err.message);
+    res.status(500).json({ message: err.message });
   }
 };

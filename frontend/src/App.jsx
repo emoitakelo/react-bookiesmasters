@@ -7,6 +7,7 @@ import PredictionDetails from "./pages/PredictionDetails";
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Fixtures from './pages/Fixtures';
+import FixtureDetail from "./pages/FixtureDetails";
 import About from './pages/About';
 import ContactUs from './pages/ContactUs';
 import TermsOfService from './pages/TermsOfService';
@@ -28,13 +29,13 @@ function App() {
   return (
     <div className="bg-light min-vh-100 d-flex flex-column">
       <Navbar user={user} setUser={setUser} />
-      
       <main className="flex-grow-1 container py-1">
         <Routes>
           <Route path="/" element={<Fixtures />} />
           <Route path="/predictions" element={<Prediction />} />
           <Route path="/predictions/:fixtureId" element={<PredictionDetails />} />
           <Route path="/fixtures" element={<Fixtures />} />
+           <Route path="/fixtures/:id" element={<FixtureDetail />} />
           <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/about" element={<About />} />

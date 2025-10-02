@@ -1,8 +1,14 @@
 // src/utils/axiosInstance.js
 import axios from "axios";
 
+// const axiosInstance = axios.create({
+//   baseURL: "https://api.bookiesmasters.com/api", // Change to your deployed URL if needed
+// });
+
 const axiosInstance = axios.create({
-  baseURL: "https://api.bookiesmasters.com/api", // Change to your deployed URL if needed
+  baseURL: import.meta.env.MODE === "development"
+    ? "http://localhost:1000/api" // local Express
+    : "https://api.bookiesmasters.com/api", // deployed backend
 });
 
 // Request interceptor: attach token

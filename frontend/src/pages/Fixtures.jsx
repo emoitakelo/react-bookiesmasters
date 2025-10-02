@@ -1,104 +1,79 @@
-import React, { useEffect, useState } from "react";
-import "./Fixtures.css";
-import axiosInstance from "../utils/axiosInstance";
+import { useState, useEffect } from "react";
+import axiosInstance from "../utils/axiosInstance"; // adjust path if different
+import LeagueGroup from "../components/LeagueGroup";
 
 const Fixtures = () => {
   const [fixtures, setFixtures] = useState([]);
-  const [date, setDate] = useState(new Date().toISOString().slice(0, 10));
-  const [activeDateType, setActiveDateType] = useState("today");
+  const [currentDate, setCurrentDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
 
-  const fetchFixtures = async () => {
+  useEffect(() => {
+    fetchFixtures(currentDate);
+  }, [currentDate]);
+
+  const fetchFixtures = async (date) => {
     try {
-      const response = await axiosInstance.get(`/fixtures?date=${date}`);
-      setFixtures(response.data);
-    } catch (error) {
-      console.error("Error fetching fixtures:", error);
+      const res = await axiosInstance.get(`/fixtures/date/${date}`);
+      setFixtures(res.data);
+    } catch (err) {
+      console.error("Error fetching fixtures:", err);
     }
   };
 
-  useEffect(() => {
-    fetchFixtures();1
-  }, [date]);
-
-  const changeDate = (offset, type) => {
-    const newDate = new Date();
-    newDate.setDate(newDate.getDate() + offset);
-    setDate(newDate.toISOString().slice(0, 10));
-    setActiveDateType(type);
+  const changeDate = (days) => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(newDate.getDate() + days);
+    setCurrentDate(newDate.toISOString().split("T")[0]);
   };
 
-  const setToday = () => {
-    const today = new Date().toISOString().slice(0, 10);
-    setDate(today);
-    setActiveDateType("today");
-  };
+  const grouped = fixtures.reduce((acc, fx) => {
+    const league = fx.league.name;
+    if (!acc[league]) acc[league] = [];
+    acc[league].push(fx);
+    return acc;
+  }, {});
 
   return (
-    <div className="container py-0" style={{ fontSize: 'clamp(12px, 2vw, 20px)' }}>
-      <div className="filters my-3 text-center">
+    <div className="p-4 text-white bg-black min-h-screen">
+      {/* Controls */}
+      <div className="flex justify-center items-center gap-4 mb-6">
         <button
-          className={`btn mx-1 ${activeDateType === "yesterday" ? "btn-teal" : "btn-inactive"}`}
-          onClick={() => changeDate(-1, "yesterday")}
+          className="px-3 py-1 bg-gray-700 rounded"
+          onClick={() => changeDate(-1)}
         >
-          Yesterday
+          ◀ Previous
         </button>
+
+        <span className="font-bold text-lg">{currentDate}</span>
+
         <button
-          className={`btn mx-1 ${activeDateType === "today" ? "btn-teal" : "btn-inactive"}`}
-          onClick={setToday}
+          className="px-3 py-1 bg-gray-700 rounded"
+          onClick={() => changeDate(1)}
         >
-          Today
+          Next ▶
         </button>
-        <button
-          className={`btn mx-1 ${activeDateType === "tomorrow" ? "btn-teal" : "btn-inactive"}`}
-          onClick={() => changeDate(1, "tomorrow")}
-        >
-          Tomorrow
-        </button>
+
+        <input
+          type="date"
+          value={currentDate}
+          onChange={(e) => setCurrentDate(e.target.value)}
+          className="px-2 py-1 rounded text-black"
+        />
       </div>
 
-      <div className="fixtures-grid">
-        {fixtures.length === 0 ? (
-<div className="d-flex justify-content-center mt-5" style={{ fontSize: 'clamp(12px, 2vw, 20px)'}}>
-        <div className="spinner-border text-success" role="status" />
-      </div>        ) : (
-          fixtures.map((fixture) => (
-            <div key={fixture.fixture.id} className="fixture-card">
-              <div className="league-header">
-                <img src={fixture.league.logo} alt="league-logo" />
-                <span className="league-name">{fixture.league.name.toUpperCase()}</span>
-              </div>
-
-              <div className="fixture-row">
-  <div className="teams-vs-container">
-    <div className="teams-line">
-      <span className="team-name">{fixture.teams.home.name}</span>
-      <span className="vs">vs</span>
-      <span className="team-name">{fixture.teams.away.name}</span>
-    </div>
-    <div className="time-date-line">
-      <span className="match-time">
-        {new Date(fixture.fixture.date).toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        })}
-      </span>
-      <span className="match-date">
-        {new Date(fixture.fixture.date).toLocaleDateString([], {
-          weekday: "short",
-          year: "numeric",
-          month: "short",
-          day: "numeric",
-        })}
-      </span>
-    </div>
-  </div>
-</div>
-
-
-            </div>
-          ))
-        )}
-      </div>
+      {/* Fixtures grouped by league */}
+      {Object.keys(grouped).length === 0 ? (
+        <p className="text-center">No fixtures available</p>
+      ) : (
+        Object.keys(grouped).map((league) => (
+          <LeagueGroup
+            key={league}
+            league={grouped[league][0].league}
+            fixtures={grouped[league]}
+          />
+        ))
+      )}
     </div>
   );
 };
