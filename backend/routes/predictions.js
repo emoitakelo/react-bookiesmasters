@@ -1,24 +1,22 @@
-const express = require("express");
+import express from "express";
+import Prediction from "../models/Prediction.js";
+
 const router = express.Router();
-const {
-  getAllPredictions,
-  getPredictionByFixtureId,
-  getPredictionsByDate,
-  deletePredictionsByDate
-} = require("../controllers/predictionController");
 
-// GET /api/predictions - all predictions
-router.get("/", getAllPredictions);
+// ✅ Get prediction by fixtureId
+router.get("/:fixtureId", async (req, res) => {
+  try {
+    const { fixtureId } = req.params;
+    const prediction = await Prediction.findOne({ fixtureId: Number(fixtureId) });
 
-// ✅ NEW: GET predictions for a specific date (e.g. today, tomorrow)
-router.get("/by-date/:date", getPredictionsByDate);
+    if (!prediction) {
+      return res.status(404).json({ message: "Prediction not found" });
+    }
 
+    res.json(prediction);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+});
 
-// GET /api/predictions/:fixtureId - single prediction
-router.get("/:fixtureId", getPredictionByFixtureId);
-
-
-// ✅ NEW: DELETE predictions for a specific date (for cleanup)
-router.delete("/by-date/:date", deletePredictionsByDate);
-
-module.exports = router;
+export default router;

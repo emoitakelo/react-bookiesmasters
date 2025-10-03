@@ -6,7 +6,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 import fixtureRoutes from "./routes/fixtures.js";
-// import leagueRoutes from "./routes/league.js";
+ import predictionRoutes from "./routes/predictions.js";
 import standingRoutes from "./routes/standings.js";
 import fixtureDetails from "./routes/fixturedetail.js";
 
@@ -34,6 +34,8 @@ app.use("/api/fixtures", fixtureRoutes);
 app.use("/api/standings", standingRoutes);
 
 app.use("/api/fixtures", fixtureDetails);
+
+app.use("/api/predictions", predictionRoutes);
 
 
 // Health check
