@@ -88,7 +88,7 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
-const topLeagueIds = [39, 140, 135, 78, 61, 94, 2, 3, 2154];
+const topLeagueIds = [39, 140, 135, 78, 61, 94, 2, 3, 32,31,29];
 
 const fetchLeagues = async () => {
   try {
