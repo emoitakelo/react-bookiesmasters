@@ -1,34 +1,35 @@
-import Fixture from "../models/Fixture.js"; // your fixture model
+import Fixture from "../models/Fixture.js";
+import Prediction from "../models/Prediction.js";
 
 export const getFixtureDetails = async (req, res) => {
   try {
     const { id } = req.params;
-    const fixtureId = Number(id); // ensure numeric
+    const fixtureId = Number(id);
 
-    // allow both string and number matching just in case DB is mixed
+    // 1. Get the fixture
     const fixture = await Fixture.findOne({
       "fixture.id": { $in: [id, fixtureId] },
     });
-
     if (!fixture) return res.status(404).json({ message: "Fixture not found" });
 
-    // fetch last 5 matches for each team, excluding the current fixture
+    // 2. Get the prediction
+    const prediction = await Prediction.findOne({ fixtureId: fixtureId });
+
+    // 3. Get last 5 matches for home/away (only past matches)
+    const today = new Date().toISOString();
     const homeTeamId = fixture.teams?.home?.id;
     const awayTeamId = fixture.teams?.away?.id;
 
     let recentHome = [];
     let recentAway = [];
 
-    // today's date (ISO) to filter past matches
-    const today = new Date().toISOString();
-
     if (homeTeamId) {
       recentHome = await Fixture.find({
         $or: [{ "teams.home.id": homeTeamId }, { "teams.away.id": homeTeamId }],
         "fixture.id": { $ne: fixtureId },
-        "fixture.date": { $lt: today }, // ✅ only past matches
+        "fixture.date": { $lt: today },
       })
-        .sort({ "fixture.date": -1 }) // most recent first
+        .sort({ "fixture.date": -1 })
         .limit(5);
     }
 
@@ -36,21 +37,24 @@ export const getFixtureDetails = async (req, res) => {
       recentAway = await Fixture.find({
         $or: [{ "teams.home.id": awayTeamId }, { "teams.away.id": awayTeamId }],
         "fixture.id": { $ne: fixtureId },
-        "fixture.date": { $lt: today }, // ✅ only past matches
+        "fixture.date": { $lt: today },
       })
         .sort({ "fixture.date": -1 })
         .limit(5);
     }
 
-    // structure response
+    // 4. Build response for frontend
     const details = {
       fixture: fixture.fixture,
       league: fixture.league,
       teams: fixture.teams,
       score: fixture.score,
       venue: fixture.fixture.venue,
-      prediction: fixture.prediction || null,
-      h2h: fixture.h2h || [],
+      // prediction data
+      prediction: prediction?.predictions || null,
+      comparison: prediction?.comparison || null,
+      h2h: prediction?.h2h || [],
+      // recent matches
       recent: {
         home: recentHome,
         away: recentAway,
@@ -59,7 +63,7 @@ export const getFixtureDetails = async (req, res) => {
 
     res.json(details);
   } catch (err) {
-    console.error(err);
+    console.error("❌ Error in getFixtureDetails:", err);
     res.status(500).json({ message: "Server error" });
   }
 };
