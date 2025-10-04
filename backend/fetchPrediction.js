@@ -1,91 +1,99 @@
 // fetchPredictions.js
 import mongoose from "mongoose";
 import axios from "axios";
+import dotenv from "dotenv";
 import Fixture from "./models/Fixture.js";
 import Prediction from "./models/Prediction.js";
 
-// ⚠️ Hardcode your API key here
-const API_KEY = "5baf95f049ec8c2ebf0a98dcfacee930";
+dotenv.config();
 
-// Small delay helper (to respect rate limits)
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+const MONGO_URI = process.env.MONGO_URI;
+const API_KEY = process.env.API_KEY;
+const API_URL = "https://v3.football.api-sports.io/predictions";
 
-const fetchPredictionsForDate = async (targetDate) => {
+// Helper: delay between requests
+const delay = (ms) => new Promise((res) => setTimeout(res, ms));
+
+async function fetchPredictions() {
   try {
-    if (mongoose.connection.readyState !== 1) {
-      console.log("⏳ Waiting for MongoDB connection...");
-      await mongoose.connection.asPromise();
-    }
+    // 1. Connect to DB
+    await mongoose.connect(MONGO_URI);
+    console.log("✅ MongoDB connected");
 
-    // ✅ Normalize date range for the given day
-    const startOfDay = new Date(targetDate);
-    startOfDay.setUTCHours(0, 0, 0, 0);
+    // 2. Hardcoded date (change this when needed)
+    const today = "2025-10-04"; // YYYY-MM-DD
 
-    const endOfDay = new Date(targetDate);
-    endOfDay.setUTCHours(23, 59, 59, 999);
+    // Convert to UNIX timestamp range
+    const start = Math.floor(new Date(`${today}T00:00:00Z`).getTime() / 1000);
+    const end = Math.floor(new Date(`${today}T23:59:59Z`).getTime() / 1000);
 
-    console.log(`🔍 Fetching fixtures for ${startOfDay.toISOString().split("T")[0]}...`);
-
-    // ✅ Get fixtures from MongoDB for that day
+    // 3. Find fixtures for today using timestamp
     const fixtures = await Fixture.find({
-      "fixture.date": { $gte: startOfDay.toISOString(), $lte: endOfDay.toISOString() },
+      "fixture.timestamp": { $gte: start, $lte: end },
     });
 
     if (!fixtures.length) {
-      console.log("⚠️ No fixtures found for this date.");
+      console.log(`⚠️ No fixtures found for ${today}`);
       return;
     }
 
-    console.log(`✅ Found ${fixtures.length} fixtures. Fetching predictions...`);
+    console.log(`🔍 Found ${fixtures.length} fixtures for ${today}`);
 
-    // ✅ Loop through fixtures and fetch predictions
-    for (const f of fixtures) {
-      const fixtureId = f.fixture.id;
+    // 4. Fetch predictions for each fixture with delay + retry
+    for (const fixture of fixtures) {
+      const fixtureId = Number(fixture.fixture.id);
 
       try {
-        const response = await axios.get("https://v3.football.api-sports.io/predictions", {
+        let response = await axios.get(API_URL, {
           headers: { "x-apisports-key": API_KEY },
           params: { fixture: fixtureId },
         });
 
-        const data = response.data.response[0];
+        let predictions = response.data.response;
 
-        if (!data) {
-          console.log(`⚠️ No prediction found for fixtureId=${fixtureId}`);
+        // Retry if no predictions first time
+        if (!predictions.length) {
+          console.log(`⚠️ No prediction on first attempt for fixtureId=${fixtureId}, retrying...`);
+          await delay(1500); // wait 1.5s before retry
+          response = await axios.get(API_URL, {
+            headers: { "x-apisports-key": API_KEY },
+            params: { fixture: fixtureId },
+          });
+          predictions = response.data.response;
+        }
+
+        if (!predictions.length) {
+          console.log(
+            `⚠️ No prediction returned even after retry for fixtureId=${fixtureId}`,
+            JSON.stringify(response.data, null, 2) // log raw response for debugging
+          );
           continue;
         }
 
-        // ✅ Save / update in Predictions collection
-        await Prediction.updateOne(
-          { fixtureId: fixtureId },
-          { $set: { fixtureId: fixtureId, ...data } },
-          { upsert: true }
+        // 5. Save/Update prediction in DB
+        await Prediction.findOneAndUpdate(
+          { fixtureId },
+          { fixtureId, ...predictions[0] },
+          { upsert: true, new: true }
         );
 
         console.log(`✅ Prediction saved for fixtureId=${fixtureId}`);
       } catch (err) {
-        console.error(`❌ Error fetching prediction for fixtureId=${fixtureId}:`, err.message);
+        console.error(
+          `❌ Error fetching prediction for fixtureId=${fixtureId}:`,
+          err.message
+        );
       }
 
-      // ⏳ Delay between API calls (avoid hitting rate limit)
-      await delay(2000);
+      // Delay before next request (to avoid rate limit/caching issues)
+      await delay(7000);
     }
-
-    console.log("🎉 All predictions processed.");
-  } catch (err) {
-    console.error("❌ Error:", err.message);
+  } catch (error) {
+    console.error("❌ Script error:", error.message);
   } finally {
-    mongoose.connection.close();
+    await mongoose.disconnect();
+    console.log("🔌 MongoDB disconnected");
   }
-};
+}
 
-// ✅ Connect and run
-mongoose
-  .connect("mongodb+srv://emoitakelo:Hdb21200562017!@fixtures.ireanrw.mongodb.net/test?retryWrites=true&w=majority&appName=fixtures"
-, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log("✅ MongoDB connected");
-    // 👇 change this date as needed
-    fetchPredictionsForDate("2025-10-04");
-  })
-  .catch((err) => console.error("❌ MongoDB connection error:", err));
+fetchPredictions();

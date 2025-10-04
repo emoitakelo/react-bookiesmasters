@@ -1,197 +1,133 @@
-// src/pages/FixtureDetail.jsx
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 
-const SkeletonLoader = () => (
-  <div className="max-w-4xl mx-auto px-4 py-6 animate-pulse">
-    <div className="h-6 bg-gray-700 rounded w-1/2 mx-auto mb-2"></div>
-    <div className="h-4 bg-gray-700 rounded w-2/3 mx-auto"></div>
-  </div>
-);
-
-const FixtureDetail = () => {
+const FixtureDetails = () => {
   const { id } = useParams();
-  const [fixtureData, setFixtureData] = useState(null);
-  const [prediction, setPrediction] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [details, setDetails] = useState(null);
 
   useEffect(() => {
-    const fetchFixture = async () => {
+    const fetchDetails = async () => {
       try {
-        // fetch fixture details
-        const res = await axiosInstance.get(`/fixtures/${id}`);
-        setFixtureData(res.data);
-
-        // fetch prediction details
-        const predRes = await axiosInstance.get(`/predictions/${id}`);
-        setPrediction(predRes.data);
+        const res = await axiosInstance.get(`/fixtures/${id}/details`);
+        setDetails(res.data);
       } catch (err) {
-        console.error(err);
-        setError("Failed to fetch fixture details");
-      } finally {
-        setLoading(false);
+        console.error("Error fetching fixture details:", err);
       }
     };
-    fetchFixture();
+    fetchDetails();
   }, [id]);
 
-  if (loading) return <SkeletonLoader />;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
-  if (!fixtureData) return <p className="text-center">No fixture found</p>;
+  if (!details) return <p className="text-white text-center mt-10">Loading...</p>;
 
-  const { fixture: fx, teams, venue, referee, h2h, last5, standings } = fixtureData;
+  const { fixture, league, teams, score, prediction, venue, h2h, form } = details;
+  const matchDate = new Date(fixture.date);
+  const dateStr = matchDate.toLocaleDateString();
+  const timeStr = matchDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-  const renderComparisonBar = (label, homeValue, awayValue) => {
-    const home = parseFloat(homeValue) || 0;
-    const away = parseFloat(awayValue) || 0;
-    const total = home + away || 1;
-    const homePercent = Math.round((home / total) * 100);
-    const awayPercent = 100 - homePercent;
-
-    return (
-      <div key={label} className="mb-2">
-        <div className="text-center mb-1 capitalize text-gray-300">{label}</div>
-        <div className="flex w-full h-5 bg-gray-700 rounded overflow-hidden text-xs font-semibold text-white">
-          <div
-            className="bg-teal-600 flex items-center justify-center"
-            style={{ width: `${homePercent}%` }}
-          >
-            {homePercent > 10 && <span>{homePercent}%</span>}
-          </div>
-          <div
-            className="bg-gray-500 flex items-center justify-center"
-            style={{ width: `${awayPercent}%` }}
-          >
-            {awayPercent > 10 && <span>{awayPercent}%</span>}
-          </div>
-        </div>
-      </div>
-    );
-  };
+  // Determine favorite team
+  const favorite = prediction?.favorite;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-6 space-y-6">
-      {/* Header */}
-      <div className="text-center">
-        <h2 className="text-2xl font-bold text-white">
-          {teams?.home?.name || "Home"} vs {teams?.away?.name || "Away"}
-        </h2>
-        <p className="text-gray-400">
-          {fx?.date ? new Date(fx.date).toLocaleString() : "N/A"} |{" "}
-          {venue?.name || "N/A"} ({venue?.city || "N/A"}) | Ref:{" "}
-          {referee || "N/A"}
-        </p>
+    <div className="p-4 min-h-screen text-white bg-black">
+      <Link to="/fixtures" className="text-gray-400 underline mb-4 inline-block">← Back to fixtures</Link>
+
+      {/* League */}
+      <div className="flex items-center gap-2 mb-4">
+        <img src={league.logo} alt={league.name} className="w-6 h-6" />
+        <h2 className="font-bold text-lg">{league.name}</h2>
       </div>
 
       {/* Prediction Tip */}
-      {prediction?.predictions && (
-        <div className="bg-gray-800 rounded-lg p-4 text-center">
-          <h3 className="text-lg font-semibold text-teal-400 mb-2">Tip</h3>
-          <p className="text-white">{prediction.predictions.advice || "N/A"}</p>
+      {prediction && (
+        <div className="mb-2 text-center p-2 bg-gray-800 rounded font-semibold text-yellow-400">
+          {prediction.tip}
         </div>
       )}
 
-      {/* Standings */}
-      <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-3 text-white">Standings</h3>
-        {standings ? (
-          <div className="grid grid-cols-2 gap-4 text-sm text-gray-300">
-            <div>
-              <h4 className="font-medium">{teams?.home?.name || "Home"}</h4>
-              <p>Rank: {standings.home?.rank ?? "-"}</p>
-              <p>Points: {standings.home?.points ?? "-"}</p>
-              <p>Played: {standings.home?.all?.played ?? "-"}</p>
-            </div>
-            <div>
-              <h4 className="font-medium">{teams?.away?.name || "Away"}</h4>
-              <p>Rank: {standings.away?.rank ?? "-"}</p>
-              <p>Points: {standings.away?.points ?? "-"}</p>
-              <p>Played: {standings.away?.all?.played ?? "-"}</p>
-            </div>
-          </div>
-        ) : (
-          <p className="text-gray-400 text-sm">No data available</p>
-        )}
+      {/* Teams & Score */}
+      <div className="flex justify-between items-center bg-gray-900 p-4 rounded-lg mb-2">
+        <div className={`flex-1 flex flex-col items-center ${favorite === "home" ? "bg-gray-800 rounded-lg p-2" : ""}`}>
+          <img src={teams.home.logo} alt={teams.home.name} className="w-12 h-12 mb-1" />
+          <span className="font-semibold">{teams.home.name}</span>
+        </div>
+
+        <div className="text-center font-bold">
+          {score.fulltime.home ?? "-"} - {score.fulltime.away ?? "-"}
+          <div className="text-gray-400 text-sm">{timeStr} {dateStr}</div>
+        </div>
+
+        <div className={`flex-1 flex flex-col items-center ${favorite === "away" ? "bg-gray-800 rounded-lg p-2" : ""}`}>
+          <img src={teams.away.logo} alt={teams.away.name} className="w-12 h-12 mb-1" />
+          <span className="font-semibold">{teams.away.name}</span>
+        </div>
       </div>
 
-      {/* Last 5 Matches */}
-      <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-3 text-white">Last 5 Matches</h3>
-        {last5 ? (
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <h4 className="font-medium text-white mb-2">{teams?.home?.name}</h4>
-              {last5.home?.length > 0 ? (
-                <ul className="space-y-1 text-gray-300 text-sm">
-                  {last5.home.map((m, i) => (
-                    <li key={i}>
-                      {m.teams?.home?.name} {m.score?.fulltime?.home ?? "-"} -{" "}
-                      {m.score?.fulltime?.away ?? "-"} {m.teams?.away?.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-400 text-sm">No data available</p>
-              )}
-            </div>
-            <div>
-              <h4 className="font-medium text-white mb-2">{teams?.away?.name}</h4>
-              {last5.away?.length > 0 ? (
-                <ul className="space-y-1 text-gray-300 text-sm">
-                  {last5.away.map((m, i) => (
-                    <li key={i}>
-                      {m.teams?.home?.name} {m.score?.fulltime?.home ?? "-"} -{" "}
-                      {m.score?.fulltime?.away ?? "-"} {m.teams?.away?.name}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-400 text-sm">No data available</p>
-              )}
-            </div>
-          </div>
-        ) : (
-          <p className="text-gray-400 text-sm">No data available</p>
-        )}
-      </div>
+      {/* Venue */}
+      <div className="mb-4 text-gray-400 text-center">Venue: {venue.name}</div>
 
-      {/* Head to Head */}
-      <div className="bg-gray-800 rounded-lg p-4">
-        <h3 className="text-lg font-semibold mb-3 text-white">Head to Head</h3>
-        {h2h?.length > 0 ? (
-          <ul className="space-y-2 text-sm text-gray-300">
+      {/* Head-to-Head */}
+      {h2h.length > 0 && (
+        <div className="mb-4 p-4 bg-gray-800 rounded">
+          <h3 className="font-semibold mb-2">Head-to-Head</h3>
+          <div className="flex flex-col gap-2">
             {h2h.map((match, i) => (
-              <li key={i} className="flex justify-between">
-                <span>
-                  {match.teams?.home?.name} {match.score?.fulltime?.home ?? "-"} -{" "}
-                  {match.score?.fulltime?.away ?? "-"} {match.teams?.away?.name}
-                </span>
-                <span className="text-gray-400 text-xs">
-                  {match.fixture?.date
-                    ? new Date(match.fixture.date).toLocaleDateString()
-                    : "N/A"}
-                </span>
-              </li>
+              <div key={i} className="flex justify-between items-center text-sm bg-gray-900 p-2 rounded">
+                <span className="w-20">{new Date(match.fixture.date).toLocaleDateString()}</span>
+                <div className="flex-1 flex justify-between items-center">
+                  <div className="flex items-center gap-1">
+                    <img src={match.teams.home.logo} alt={match.teams.home.name} className="w-5 h-5" />
+                    <span>{match.teams.home.name}</span>
+                  </div>
+                  <span className="font-semibold">
+                    {match.score.fulltime.home ?? "-"} - {match.score.fulltime.away ?? "-"}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    <span>{match.teams.away.name}</span>
+                    <img src={match.teams.away.logo} alt={match.teams.away.name} className="w-5 h-5" />
+                  </div>
+                </div>
+              </div>
             ))}
-          </ul>
-        ) : (
-          <p className="text-gray-400 text-sm">No data available</p>
-        )}
-      </div>
+          </div>
+        </div>
+      )}
 
-      {/* Comparison */}
-      {prediction?.comparison && (
-        <div className="bg-gray-800 rounded-lg p-4">
-          <h3 className="text-lg font-semibold mb-3 text-white">Team Form Comparison</h3>
-          {Object.entries(prediction.comparison).map(([key, val]) =>
-            renderComparisonBar(key, val.home, val.away)
-          )}
+      {/* Team Form */}
+      {form.home && form.away && (
+        <div className="mb-4 p-4 bg-gray-800 rounded">
+          <h3 className="font-semibold mb-2">Team Form</h3>
+          <div className="flex items-center gap-4">
+            {/* Home form */}
+            <div className="flex-1">
+              <h4 className="text-sm mb-1">{teams.home.name}</h4>
+              <div className="flex gap-1">
+                {form.home.map((res, i) => (
+                  <div
+                    key={i}
+                    className={`flex-1 h-3 rounded ${res === "W" ? "bg-green-500" : res === "D" ? "bg-yellow-400" : "bg-red-500"}`}
+                  ></div>
+                ))}
+              </div>
+            </div>
+
+            {/* Away form */}
+            <div className="flex-1">
+              <h4 className="text-sm mb-1">{teams.away.name}</h4>
+              <div className="flex gap-1">
+                {form.away.map((res, i) => (
+                  <div
+                    key={i}
+                    className={`flex-1 h-3 rounded ${res === "W" ? "bg-green-500" : res === "D" ? "bg-yellow-400" : "bg-red-500"}`}
+                  ></div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>
   );
 };
 
-export default FixtureDetail;
+export default FixtureDetails;
