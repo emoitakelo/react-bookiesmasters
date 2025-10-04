@@ -4,11 +4,10 @@ export const getFixtureDetails = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const fixture = await Fixture.findOne({ "fixture.id": id });
+    const fixture = await Fixture.findOne({ "fixture.id": Number(id) });
 
     if (!fixture) return res.status(404).json({ message: "Fixture not found" });
 
-    // structure response
     const details = {
       fixture: fixture.fixture,
       league: fixture.league,
