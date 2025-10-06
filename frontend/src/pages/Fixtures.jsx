@@ -27,8 +27,16 @@ const Fixtures = () => {
     setCurrentDate(newDate.toISOString().split("T")[0]);
   };
 
-  const grouped = fixtures.reduce((acc, fx) => {
-    const league = fx.league.name;
+  // 🧠 Filter fixtures: only include those with valid predictions & winner name
+  const filteredFixtures = fixtures.filter((fx) => {
+    const prediction = fx?.predictions?.predictions;
+    const winnerName = prediction?.winner?.name ?? null;
+    return prediction && winnerName;
+  });
+
+  // 🧩 Group filtered fixtures by league
+  const grouped = filteredFixtures.reduce((acc, fx) => {
+    const league = fx.league?.name ?? "Unknown League";
     if (!acc[league]) acc[league] = [];
     acc[league].push(fx);
     return acc;
@@ -62,9 +70,11 @@ const Fixtures = () => {
         />
       </div>
 
-      {/* Fixtures grouped by league */}
+      {/* 🧾 Conditional rendering */}
       {Object.keys(grouped).length === 0 ? (
-        <p className="text-center">No fixtures available</p>
+        <p className="text-center text-gray-400 italic">
+          No valid predictions found for this date
+        </p>
       ) : (
         Object.keys(grouped).map((league) => (
           <LeagueGroup
