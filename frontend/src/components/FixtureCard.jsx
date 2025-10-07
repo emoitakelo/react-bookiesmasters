@@ -164,7 +164,7 @@ const FixtureCard = ({ fixture }) => {
   // --- UI ---
   return (
     <Link to={`/fixtures/${id}`} className="block">
-      <div className="bg-gray-900 rounded-xl p-4 mb-3 hover:bg-gray-800 transition-all duration-300 shadow-md border border-gray-800 hover:shadow-lg hover:scale-[1.01]">
+      <div className="bg-gray-900 rounded-xl p-2 mb-1 hover:bg-gray-800 transition-all duration-300 shadow-md border border-gray-800 hover:shadow-lg hover:scale-[1.01]">
         {/* Teams Row */}
         <div className="flex justify-between items-center text-gray-100">
           {/* Home */}
@@ -202,15 +202,15 @@ const FixtureCard = ({ fixture }) => {
               <img
                 src={away.logo}
                 alt={away.name}
-                className="w-6 h-6 object-contain"
+                className="w-5 h-5 object-contain"
               />
             )}
           </div>
         </div>
 
         {/* Tip Badge */}
-        <div className="flex justify-center mt-3">
-          <span className="bg-teal-500 text-black font-bold w-5 h-5 flex items-center justify-center rounded-full text-sm shadow-md border border-teal-400">
+        <div className="flex justify-center mt-2">
+          <span className="bg-teal-500 text-black font-bold w-7 h-7 flex items-center justify-center rounded-full text-sm shadow-md border border-teal-400">
             {tip}
           </span>
         </div>
