@@ -64,7 +64,7 @@ const FixtureCard = ({ fixture }) => {
               <img
                 src={home.logo}
                 alt={home.name}
-                className="w-8 h-8 object-contain mb-1"
+                className="w-5 h-5 object-contain mb-1"
               />
             )}
 
