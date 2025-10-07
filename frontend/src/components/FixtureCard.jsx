@@ -92,7 +92,7 @@ const FixtureCard = ({ fixture }) => {
               <img
                 src={away.logo}
                 alt={away.name}
-                className="w-8 h-8 object-contain mb-1"
+                className="w-5 h-5 object-contain mb-1"
               />
             )}
           </div>
