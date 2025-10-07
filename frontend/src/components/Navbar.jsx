@@ -1,110 +1,145 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X } from "lucide-react"; // modern icons
 
-function Navbar() {
+function Navbar({ user, setUser }) {
+  const [menuOpen, setMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user'));
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    navigate('/login');
-    window.location.reload();
+    localStorage.removeItem("user");
+    setUser(null);
+    navigate("/login");
   };
 
-  // Collapse navbar after clicking a nav item
-  const handleNavLinkClick = () => {
-    const navbar = document.getElementById('navbarNav');
-    if (navbar && navbar.classList.contains('show')) {
-      const bsCollapse = new window.bootstrap.Collapse(navbar, {
-        toggle: false,
-      });
-      bsCollapse.hide();
-    }
-  };
+  const links = [
+    { name: "Home", path: "/" },
+    { name: "Predictions", path: "/predictions" },
+    { name: "About", path: "/about" },
+    { name: "Contact", path: "/contact-us" },
+  ];
 
   return (
-    <nav
-      className="navbar navbar-expand-lg sticky-top"
-      style={{
-        backgroundColor: 'rgba(0, 77, 64, 0.9)',
-        backdropFilter: 'blur(5px)',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)',
-        zIndex: 1030,
-        fontSize: 'clamp(14px, 2vw, 20px)'
-      }}
-    >
-      <div className="container py-1 px-1">
-        <Link className="navbar-brand" to="/" onClick={handleNavLinkClick}>
-          <img
-            src={logo}
-            alt="Bookies Masters"
-            width="75"
-            height="75"
-            className="d-inline-block align-top rounded"
-          />
-        </Link>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+    <nav className="fixed top-0 left-0 w-full bg-gray-900 text-white shadow-md z-50">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
+        {/* Logo / Brand */}
+        <Link
+          to="/"
+          className="text-2xl font-bold tracking-wide text-teal-400 hover:text-teal-300 transition"
         >
-          <span className="navbar-toggler-icon custom-toggler">
-            <div></div>
-          </span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link navbar-custom-link" to="/" onClick={handleNavLinkClick}>Home</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link navbar-custom-link" to="/predictions" onClick={handleNavLinkClick}>Predictions</Link>
-            </li>
-            <li className="nav-item">
-              <Link className="nav-link navbar-custom-link" to="/fixtures" onClick={handleNavLinkClick}>Fixtures</Link>
-            </li>
+          BookiesMasters
+        </Link>
 
-            {!token ? (
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-8">
+          {links.map((link) => (
+            <Link
+              key={link.name}
+              to={link.path}
+              className="text-gray-300 hover:text-white transition"
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          {/* Auth Links */}
+          {user ? (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/profile"
+                className="text-gray-300 hover:text-white transition"
+              >
+                {user.name || user.email || "Profile"}
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-lg text-sm"
+              >
+                Logout
+              </button>
+            </div>
+          ) : (
+            <div className="flex items-center space-x-4">
+              <Link
+                to="/login"
+                className="text-gray-300 hover:text-white transition"
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-lg text-sm"
+              >
+                Register
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          className="md:hidden text-gray-200 hover:text-white"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
+      </div>
+
+      {/* Mobile Dropdown Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-gray-800 border-t border-gray-700">
+          <div className="flex flex-col px-4 py-3 space-y-3">
+            {links.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                onClick={() => setMenuOpen(false)}
+                className="text-gray-300 hover:text-white transition"
+              >
+                {link.name}
+              </Link>
+            ))}
+
+            {user ? (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link navbar-custom-link" to="/login" onClick={handleNavLinkClick}>Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link navbar-custom-link" to="/register" onClick={handleNavLinkClick}>Register</Link>
-                </li>
+                <Link
+                  to="/profile"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-gray-300 hover:text-white transition"
+                >
+                  {user.name || user.email || "Profile"}
+                </Link>
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setMenuOpen(false);
+                  }}
+                  className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 rounded-lg text-sm"
+                >
+                  Logout
+                </button>
               </>
             ) : (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link navbar-custom-link" to="/profile" onClick={handleNavLinkClick}>
-                    {user?.email}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <button
-                    className="btn btn-sm btn-light ms-2"
-                    onClick={() => {
-                      handleLogout();
-                      handleNavLinkClick();
-                    }}
-                  >
-                    Logout
-                  </button>
-                </li>
+                <Link
+                  to="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="text-gray-300 hover:text-white transition"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={() => setMenuOpen(false)}
+                  className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 rounded-lg text-sm text-center"
+                >
+                  Register
+                </Link>
               </>
             )}
-          </ul>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   );
 }
