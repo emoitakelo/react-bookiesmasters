@@ -101,7 +101,7 @@ const FixtureCard = ({ fixture }) => {
 
         </div>
 
-<div className="text-center mb-3">
+<div className="text-center mb-1">
           <span className="bg-teal-500 text-black font-bold px-3 py-1 rounded-full text-sm">
             {tip}
           </span>
