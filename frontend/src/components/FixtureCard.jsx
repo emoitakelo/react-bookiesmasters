@@ -315,7 +315,7 @@ const FixtureCard = ({ fixture }) => {
           {/* Score / Status */}
           <div className="flex flex-col items-center w-1/3">
             <span className="text-gray-200 text-xs">{displayStatus}</span>
-            <span className="text-sm text-white">
+            <span className="text-sm font-semibold text-white">
               {status?.short === "FT" ||
               status?.short === "1H" ||
               status?.short === "2H"
