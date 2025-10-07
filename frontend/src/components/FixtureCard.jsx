@@ -49,26 +49,25 @@ const FixtureCard = ({ fixture }) => {
     <Link to={`/fixtures/${id}`} className="block">
       <div className="bg-gray-900 rounded-lg p-3 mb-2 hover:bg-gray-800 transition shadow-sm border border-gray-800">
         {/* Tip */}
-        <div className="text-center mb-3">
-          <span className="bg-teal-500 text-black font-bold px-3 py-1 rounded-md text-sm">
-            {tip}
-          </span>
-        </div>
+        
 
         {/* Teams Row */}
         <div className="flex justify-between items-center text-gray-100">
           {/* Home */}
           <div className="flex flex-col items-center w-1/3">
-            {home.logo && (
+            
+            <span className="text-center text-sm font-medium">
+              {home.name ?? "Home"}
+            </span>
+
+{home.logo && (
               <img
                 src={home.logo}
                 alt={home.name}
                 className="w-8 h-8 object-contain mb-1"
               />
             )}
-            <span className="text-center text-sm font-medium">
-              {home.name ?? "Home"}
-            </span>
+
           </div>
 
           {/* Score / Status */}
@@ -85,6 +84,10 @@ const FixtureCard = ({ fixture }) => {
 
           {/* Away */}
           <div className="flex flex-col items-center w-1/3">
+            
+            <span className="text-center text-sm font-medium">
+              {away.name ?? "Away"}
+            </span>
             {away.logo && (
               <img
                 src={away.logo}
@@ -92,11 +95,18 @@ const FixtureCard = ({ fixture }) => {
                 className="w-8 h-8 object-contain mb-1"
               />
             )}
-            <span className="text-center text-sm font-medium">
-              {away.name ?? "Away"}
-            </span>
           </div>
+
+
+
         </div>
+
+<div className="text-center mb-3">
+          <span className="bg-teal-500 text-black font-bold px-3 py-1 rounded-md text-sm">
+            {tip}
+          </span>
+        </div>
+
       </div>
     </Link>
   );
