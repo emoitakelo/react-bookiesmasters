@@ -299,7 +299,7 @@ const FixtureCard = ({ fixture }) => {
         <div className="flex justify-between items-center text-gray-100">
           {/* Home */}
           <div className="flex flex-col items-center w-1/3">
-            <span className="text-center text-sm font-medium">
+            <span className="text-center text-sm font-medium truncate w-full block">
               {home.name ?? "Home"}
             </span>
 
