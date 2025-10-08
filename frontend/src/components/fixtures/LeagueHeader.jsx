@@ -28,7 +28,7 @@ const LeagueHeader = ({ league }) => {
       <div className="flex flex-col leading-tight">
         <h2 className="font-bold text-medium text-white">
           {league.name || "Unknown League"}
-        </h2>
+        </h2> </br>
         {league.country && (
           <span className="text-sm text-gray-400">{league.country}</span>
         )}
