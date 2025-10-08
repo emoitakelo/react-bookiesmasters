@@ -291,6 +291,26 @@ const FixtureCard = ({ fixture }) => {
     }
   }
 
+  // --- Form data (from merged predictions) ---
+  const homeForm = fixture?.predictions?.teams?.home?.league?.form || "";
+  const awayForm = fixture?.predictions?.teams?.away?.league?.form || "";
+
+  // --- Color-coded form display ---
+  const renderForm = (formStr) =>
+    formStr.split("").map((ch, i) => {
+      let color =
+        ch === "W"
+          ? "text-green-400"
+          : ch === "L"
+          ? "text-red-400"
+          : "text-gray-400";
+      return (
+        <span key={i} className={`${color} text-[10px] font-bold mx-[1px]`}>
+          {ch}
+        </span>
+      );
+    });
+
   // --- UI ---
   return (
     <Link to={`/fixtures/${id}`} className="block">
@@ -310,6 +330,9 @@ const FixtureCard = ({ fixture }) => {
                 className="w-5 h-5 object-contain mb-1"
               />
             )}
+
+            {/* ✅ Home form below logo */}
+            <div className="flex justify-center mt-0.5">{renderForm(homeForm)}</div>
           </div>
 
           {/* Score / Status */}
@@ -329,6 +352,7 @@ const FixtureCard = ({ fixture }) => {
             <span className="text-center text-sm font-medium truncate w-full block">
               {away.name ?? "Away"}
             </span>
+
             {away.logo && (
               <img
                 src={away.logo}
@@ -336,15 +360,17 @@ const FixtureCard = ({ fixture }) => {
                 className="w-5 h-5 object-contain mb-1"
               />
             )}
+
+            {/* ✅ Away form below logo */}
+            <div className="flex justify-center mt-0.5">{renderForm(awayForm)}</div>
           </div>
         </div>
 
         {/* Tip Badge */}
-<div className="flex justify-center ">          
-                    <span className={`${tipBg} text-black w-5 h-5 flex items-center justify-center rounded-full text-sm shadow-md border border-teal-400`}>
-
-             {/* className={`${tipBg} text-black font-bold w-7 h-7 flex items-center justify-center rounded-full text-sm`}
-          > */}
+        <div className="flex justify-center mt-1">
+          <span
+            className={`${tipBg} text-black w-6 h-6 flex items-center justify-center rounded-full text-sm font-semibold shadow-md border border-teal-400`}
+          >
             {tip}
           </span>
         </div>
