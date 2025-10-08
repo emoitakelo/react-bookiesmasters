@@ -1,20 +1,8 @@
-// const LeagueHeader = ({ league }) => {
-//   if (!league) return null;
-//   return (
-//     <div className="flex items-center gap-2 mb-4">
-//       {league.logo && <img src={league.logo} alt={league.name} className="w-6 h-6" />}
-//       <h2 className="font-bold text-lg">{league.name || "Unknown League"}</h2>
-//     </div>
-//   );
-// };
-// export default LeagueHeader;
-
-
 const LeagueHeader = ({ league }) => {
   if (!league) return null;
 
   return (
-    <div className="flex items-center gap-2 mb-4">
+    <div className="flex items-center gap-3 mb-4">
       {/* League logo */}
       {league.logo && (
         <img
@@ -24,13 +12,16 @@ const LeagueHeader = ({ league }) => {
         />
       )}
 
-      {/* League info */}
-      <div className="flex flex-col leading-tight">
-        <h2 className="font-bold text-medium text-white">
+      {/* League name and country */}
+      <div className="flex flex-col justify-center leading-tight">
+        <h2 className="font-bold text-white text-base tracking-tight">
           {league.name || "Unknown League"}
-        </h2> </br>
+        </h2>
+
         {league.country && (
-          <span className="text-sm text-gray-400">{league.country}</span>
+          <span className="text-[12px] text-gray-500 italic mt-[2px] ml-[1px]">
+            {league.country}
+          </span>
         )}
       </div>
     </div>
