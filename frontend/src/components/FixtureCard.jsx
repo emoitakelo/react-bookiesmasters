@@ -149,7 +149,7 @@ const FixtureCard = ({ fixture }) => {
         {/* Tip Badge */}
         <div className="flex justify-center ">
           <span
-            className={`${tipBg} text-black w-6 h-6 flex items-center justify-center rounded-full text-sm font-semibold shadow-md border border-teal-400`}
+            className={`${tipBg} text-black w-6 h-6 flex items-center justify-center rounded-full text-sm font-semibold shadow-md `}
           >
             {tip}
           </span>
