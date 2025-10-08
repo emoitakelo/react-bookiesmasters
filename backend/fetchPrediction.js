@@ -21,7 +21,7 @@ async function fetchPredictions() {
     console.log("✅ MongoDB connected");
 
     // 2. Hardcoded date (change this when needed)
-    const today = "2025-10-09"; // YYYY-MM-DD
+    const today = "2025-10-10"; // YYYY-MM-DD
 
     // Convert to UNIX timestamp range
     const start = Math.floor(new Date(`${today}T00:00:00Z`).getTime() / 1000);
