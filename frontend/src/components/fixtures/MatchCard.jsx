@@ -27,6 +27,7 @@ const MatchCard = ({ match }) => {
     ? new Date(match.fixture.date).toLocaleDateString()
     : "TBA";
 
+  // ✅ Correctly targeting the form path
   const homeForm = match.teams?.home?.league?.form ?? "";
   const awayForm = match.teams?.away?.league?.form ?? "";
 
@@ -51,7 +52,7 @@ const MatchCard = ({ match }) => {
             />
           )}
 
-          {/* Home Form below logo */}
+          {/* ✅ Home Form below logo */}
           {homeForm && (
             <div className="flex gap-0.5 mt-0.5">
               {homeForm.split("").map((res, idx) => (
@@ -94,7 +95,7 @@ const MatchCard = ({ match }) => {
             />
           )}
 
-          {/* Away Form below logo */}
+          {/* ✅ Away Form below logo */}
           {awayForm && (
             <div className="flex gap-0.5 mt-0.5">
               {awayForm.split("").map((res, idx) => (
