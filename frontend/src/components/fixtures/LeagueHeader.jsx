@@ -18,11 +18,11 @@ const LeagueHeader = ({ league }) => {
           {league.name || "Unknown League"}
         </h2>
 
-        {league.country && (
+        {league.country && 
           <span className="text-sm text-gray-400 mt-[2px] block">
             {league.country}
           </span>
-        )}
+        }
       </div>
     </div>
   );
