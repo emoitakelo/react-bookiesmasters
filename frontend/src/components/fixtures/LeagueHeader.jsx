@@ -13,17 +13,17 @@ const LeagueHeader = ({ league }) => {
       )}
 
       {/* League info */}
-      <div className="flex flex-col items-start justify-center leading-snug">
+      {/* <div className="flex flex-col items-start justify-center leading-snug">
         <h2 className="font-bold text-base text-white m-0 p-0">
           {league.name || "Unknown League"}
-        </h2>
+        </h2> */}
 
         {/* {league.country && 
           <span className="text-sm text-gray-400 mt-[2px] block">
             {league.country}
           </span>
         } */}
-      </div>
+      {/* </div> */}
     </div>
   );
 };
