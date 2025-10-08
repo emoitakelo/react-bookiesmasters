@@ -292,8 +292,12 @@ const FixtureCard = ({ fixture }) => {
   }
 
   // --- Form data (from merged predictions) ---
-  const homeForm = fixture?.predictions?.teams?.home?.league?.form || "";
-  const awayForm = fixture?.predictions?.teams?.away?.league?.form || "";
+  const homeFormFull = fixture?.predictions?.teams?.home?.league?.form || "";
+  const awayFormFull = fixture?.predictions?.teams?.away?.league?.form || "";
+
+  // ✅ Only keep last 5 results (rightmost characters)
+  const homeForm = homeFormFull.slice(-5);
+  const awayForm = awayFormFull.slice(-5);
 
   // --- Color-coded form display ---
   const renderForm = (formStr) =>
@@ -305,7 +309,7 @@ const FixtureCard = ({ fixture }) => {
           ? "text-red-400"
           : "text-gray-400";
       return (
-        <span key={i} className={`${color} text-[10px] font-bold mx-[1px]`}>
+        <span key={i} className={`${color} text-[13px] font-bold mx-[1px]`}>
           {ch}
         </span>
       );
@@ -332,7 +336,7 @@ const FixtureCard = ({ fixture }) => {
             )}
 
             {/* ✅ Home form below logo */}
-            <div className="flex justify-center mt-0.5">{renderForm(homeForm)}</div>
+            <div className="flex justify-center mt-1">{renderForm(homeForm)}</div>
           </div>
 
           {/* Score / Status */}
@@ -362,12 +366,12 @@ const FixtureCard = ({ fixture }) => {
             )}
 
             {/* ✅ Away form below logo */}
-            <div className="flex justify-center mt-0.5">{renderForm(awayForm)}</div>
+            <div className="flex justify-center mt-1">{renderForm(awayForm)}</div>
           </div>
         </div>
 
         {/* Tip Badge */}
-        <div className="flex justify-center mt-1">
+        <div className="flex justify-center ">
           <span
             className={`${tipBg} text-black w-6 h-6 flex items-center justify-center rounded-full text-sm font-semibold shadow-md border border-teal-400`}
           >
