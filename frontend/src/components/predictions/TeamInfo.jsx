@@ -1,4 +1,4 @@
-import FormBadge from "./FormBadge";
+import FormBadge from "./PredictionList";
 
 export default function TeamInfo({ team, form }) {
   return (

@@ -1,69 +1,35 @@
-const Prediction = require("../models/Prediction");
+import { getTodayPredictionsService } from "../services/predictionService.js";
 
-// @desc Get all predictions (sorted by embedded fixture date)
-exports.getAllPredictions = async (req, res) => {
+/**
+ * @desc   Get today's fixtures with predictions (grouped by league)
+ * @route  GET /api/predictions/today
+ * @access Public
+ */
+export const getTodayPredictions = async (req, res) => {
   try {
-    const predictions = await Prediction.find({}).sort({ "fixture.date": 1 });
-    res.json(predictions);
-  } catch (err) {
-    console.error("Error fetching predictions:", err);
-    res.status(500).json({ error: "Failed to fetch predictions" });
-  }
-};
+    // 1️⃣ Call the service to fetch + merge + group today's data
+    const groupedPredictions = await getTodayPredictionsService();
 
-// @desc Get single prediction by fixtureId
-exports.getPredictionByFixtureId = async (req, res) => {
-  try {
-    const prediction = await Prediction.findOne({
-      fixtureId: parseInt(req.params.fixtureId),
+    // 2️⃣ If no data found, return a user-friendly message
+    if (!groupedPredictions || groupedPredictions.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No predictions available for today.",
+      });
+    }
+
+    // 3️⃣ Success → send data to frontend
+    res.status(200).json({
+      success: true,
+      count: groupedPredictions.length,
+      data: groupedPredictions,
     });
+  } catch (error) {
+    console.error("❌ Error in getTodayPredictions controller:", error.message);
 
-    if (!prediction) {
-      return res.status(404).json({ message: "Prediction not found" });
-    }
-
-    res.json(prediction);
-  } catch (err) {
-    console.error("Error fetching prediction:", err);
-    res.status(500).json({ error: "Error fetching prediction" });
-  }
-};
-
-// ✅ FIXED: @desc Get predictions by fixture.date (date range)
-// @route GET /api/predictions/by-date/:date
-exports.getPredictionsByDate = async (req, res) => {
-  const { date } = req.params; // expected format: "YYYY-MM-DD"
-
-  try {
-    const startOfDay = new Date(`${date}T00:00:00.000Z`);
-    const endOfDay = new Date(`${date}T23:59:59.999Z`);
-
-    const predictions = await Prediction.find({
-      "fixture.date": {
-        $gte: startOfDay,
-        $lte: endOfDay,
-      },
-    }).sort({ "fixture.date": 1 });
-
-    if (!predictions.length) {
-      return res.status(404).json({ message: "No predictions found for this date" });
-    }
-
-    res.json(predictions);
-  } catch (err) {
-    console.error("Error fetching predictions by date:", err);
-    res.status(500).json({ message: "Server error" });
-  }
-};
-
-// @desc Delete predictions by date (optional)
-// @route DELETE /api/predictions/by-date/:date
-exports.deletePredictionsByDate = async (req, res) => {
-  const { date } = req.params;
-  try {
-    const result = await Prediction.deleteMany({ matchDate: date });
-    res.json({ message: `Deleted ${result.deletedCount} predictions for ${date}` });
-  } catch (err) {
-    res.status(500).json({ error: "Error deleting predictions" });
+    res.status(500).json({
+      success: false,
+      message: "Server error fetching today's predictions",
+    });
   }
 };

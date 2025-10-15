@@ -1,53 +1,32 @@
-// server.js (cleaned up)
 import express from "express";
-import mongoose from "mongoose";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import cors from "cors";
-import morgan from "morgan";
 
-import fixtureRoutes from "./routes/fixtures.js";
- import predictionRoutes from "./routes/predictions.js";
-import standingRoutes from "./routes/standings.js";
-import fixtureDetails from "./routes/fixturedetail.js";
-
+// Import routes
+import predictionRoutes from "./routes/predictionRoutes.js";
 
 dotenv.config();
-
 const app = express();
-const PORT = process.env.PORT || 1000;
 
 // Middleware
-app.use(cors());
 app.use(express.json());
-app.use(morgan("dev"));
+app.use(cors());
 
-// Debug log middleware
-app.use((req, res, next) => {
-  console.log(`➡️ Request URL: ${req.method} ${req.url}`);
-  next();
-});
-
-// Routes
-app.use("/api/fixtures", fixtureRoutes);
-// app.use("/api/leagues", leagueRoutes);
-
-app.use("/api/standings", standingRoutes);
-
-app.use("/api/fixtures", fixtureDetails);
-
-app.use("/api/predictions", predictionRoutes);
-
-
-// Health check
-app.get("/ping", (req, res) => {
-  res.send("pong");
-});
-
-// DB + Server
+// Connect MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("✅ MongoDB connected");
-    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
-  })
-  .catch((err) => console.error("❌ DB connection error:", err));
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB connection failed:", err));
+
+// Routes
+app.use("/api/predictions", predictionRoutes);
+
+// Default route (optional)
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
+
+// Start server
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
