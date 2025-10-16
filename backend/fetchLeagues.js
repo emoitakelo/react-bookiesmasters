@@ -1,82 +1,3 @@
-// import mongoose from "mongoose";
-// import axios from "axios";
-// import dotenv from "dotenv";
-// import League from "./models/League.js";   // League model
-
-// dotenv.config();
-
-// // ✅ Connect to MongoDB Atlas
-// mongoose.connect(process.env.MONGO_URI, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// })
-// .then(() => console.log("✅ MongoDB connected"))
-// .catch(err => console.error("❌ MongoDB connection error:", err));
-
-// const fetchLeagues = async () => {
-//   try {
-//     // ✅ Call API-Football leagues endpoint
-//     const response = await axios.get("https://v3.football.api-sports.io/leagues", {
-//       headers: {
-//         "x-apisports-key": process.env.API_KEY,
-//       },
-//     });
-
-//     const leagues = response.data.response;
-
-//     // ✅ Top Domestic + European Competitions (league IDs)
-//     const topLeagueIds = [
-//       39, 140, 135, 78, 61, 94,   // domestic leagues
-//       2, 3 ,2154                // European competitions
-//     ];
-
-//     // ✅ Current year (for filtering active season)
-//     const currentYear = new Date().getFullYear();
-
-//     // ✅ Filter only those leagues
-//     const filtered = leagues.filter(
-//       (l) =>
-//         topLeagueIds.includes(l.league.id) &&
-//         l.seasons.some((s) => s.year === currentYear && s.current === true)
-//     );
-
-//     // ✅ Save or update in MongoDB
-//     for (const league of filtered) {
-//       // Get current active season year
-//       const currentSeason = league.seasons.find((s) => s.current)?.year || currentYear;
-
-//       await League.updateOne(
-//         { "league.id": league.league.id }, // match schema
-//         {
-//           $set: {
-//             league: {
-//               id: league.league.id,
-//               name: league.league.name,
-//               type: league.league.type,
-//               logo: league.league.logo,
-//             },
-//             country: {
-//               name: league.country.name,
-//               code: league.country.code,
-//               flag: league.country.flag,
-//             },
-//             season: currentSeason,  // 👈 save current season
-//           },
-//         },
-//         { upsert: true } // insert if not exists
-//       );
-//     }
-
-//     console.log("✅ Leagues saved/updated:", filtered.map(l => `${l.league.name} (${l.seasons.find(s => s.current)?.year})`));
-//   } catch (err) {
-//     console.error("❌ Error fetching leagues:", err.message);
-//   } finally {
-//     mongoose.connection.close();
-//   }
-// };
-
-// fetchLeagues();
-
 import mongoose from "mongoose";
 import axios from "axios";
 import dotenv from "dotenv";
@@ -88,26 +9,51 @@ mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch(err => console.error("❌ MongoDB connection error:", err));
 
-const topLeagueIds = [39, 140, 135, 78, 61, 94, 2, 3, 32,31,29];
+const topLeagueIds = [
+  39, 140, 135, 78, 61, 94, 2, 3, 32, 31, 29, 525, 71, 848,
+];
+
+const delay = (ms) => new Promise(res => setTimeout(res, ms));
+
+/**
+ * Fetch with retry logic (handles API rate limit)
+ */
+const fetchLeagueWithRetry = async (leagueId, retries = 3) => {
+  try {
+    const response = await axios.get("https://v3.football.api-sports.io/leagues", {
+      headers: { "x-apisports-key": process.env.API_KEY },
+      params: { id: leagueId },
+    });
+
+    if (!response.data.response?.length) {
+      console.log(`⚠️ League ${leagueId} not found`);
+      return null;
+    }
+
+    return response.data.response[0];
+  } catch (err) {
+    if (err.response?.status === 429 && retries > 0) {
+      console.warn(`⏳ Rate limit hit! Retrying League ${leagueId} in 10s...`);
+      await delay(10000); // wait 10 seconds
+      return fetchLeagueWithRetry(leagueId, retries - 1);
+    }
+    console.error(`❌ Error fetching League ${leagueId}:`, err.message);
+    return null;
+  }
+};
 
 const fetchLeagues = async () => {
   try {
     for (const leagueId of topLeagueIds) {
-      const response = await axios.get("https://v3.football.api-sports.io/leagues", {
-        headers: { "x-apisports-key": process.env.API_KEY },
-        params: { id: leagueId },
-      });
+      const leagueData = await fetchLeagueWithRetry(leagueId);
+      if (!leagueData) continue;
 
-      if (!response.data.response || response.data.response.length === 0) {
-        console.log(`⚠️ League ${leagueId} not found`);
-        continue;
-      }
-
-      const leagueData = response.data.response[0];
-      const currentSeason = leagueData.seasons.find(s => s.current === true);
+      const currentSeason =
+        leagueData.seasons.find(s => s.current) ||
+        leagueData.seasons[leagueData.seasons.length - 1];
 
       if (!currentSeason) {
-        console.log(`⚠️ League ${leagueId} has no current season`);
+        console.log(`⚠️ League ${leagueId} has no season info`);
         continue;
       }
 
@@ -134,10 +80,12 @@ const fetchLeagues = async () => {
       );
 
       console.log(`✅ Saved: ${leagueData.league.name} (${currentSeason.year})`);
-      await new Promise(res => setTimeout(res, 500)); // small delay to avoid API rate limit
+
+      // 🔸 safer delay between requests (3s)
+      await delay(7000);
     }
 
-    console.log("✅ All leagues processed");
+    console.log("✅ All leagues processed successfully");
   } catch (err) {
     console.error("❌ Error fetching leagues:", err.message);
   } finally {

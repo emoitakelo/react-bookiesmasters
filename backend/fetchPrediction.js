@@ -120,15 +120,9 @@ async function fetchPredictions() {
     await mongoose.connect(MONGO_URI);
     console.log("✅ MongoDB connected");
 
-    // 2. Delete predictions older than 7 days
-    const sevenDaysAgo = Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60; // UNIX timestamp
-    const deleteResult = await Prediction.deleteMany({
-      "fixture.timestamp": { $lt: sevenDaysAgo },
-    });
-    console.log(`🗑️ Deleted ${deleteResult.deletedCount} predictions older than 7 days`);
-
+    
     // 3. Hardcoded date (change this when needed)
-    const today = "2025-10-22"; // YYYY-MM-DD
+    const today = "2025-10-16"; // YYYY-MM-DD
 
     // Convert to UNIX timestamp range
     const start = Math.floor(new Date(`${today}T00:00:00Z`).getTime() / 1000);

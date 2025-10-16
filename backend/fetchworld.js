@@ -17,7 +17,7 @@ const fetchFixturesForSpecificLeagues = async () => {
     }
 
     // ✅ The leagues you want to fetch
-    const targetLeagueIds = [32, 31, 29]; // World Cup, Euros, Copa America etc.
+    const targetLeagueIds = [525, 71, 848]; // World Cup, Euros, Copa America etc.
 
     // ✅ Current year
     const currentYear = new Date().getFullYear();
