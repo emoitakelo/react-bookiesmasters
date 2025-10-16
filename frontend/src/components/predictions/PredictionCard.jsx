@@ -31,11 +31,11 @@ const PredictionCard = ({ fixture }) => {
       </div>
 
       {/* 📊 Forms & Tip */}
-      {/* <div className="text-center sm:text-center">
-        <p className="text-xs sm:text-sm text-gray-500">{form.home}</p>
+      <div className="text-center sm:text-center">
+        {/* <p className="text-xs sm:text-sm text-gray-500">{form.home}</p> */}
         <p className="text-sm sm:text-base font-bold text-teal-600 my-1">{tip}</p>
-        <p className="text-xs sm:text-sm text-gray-500">{form.away}</p>
-      </div> */}
+        {/* <p className="text-xs sm:text-sm text-gray-500">{form.away}</p> */}
+      </div>
 
       {/* ⚽ Score */}
       <div className="text-center font-semibold text-gray-800 text-sm sm:text-base">
