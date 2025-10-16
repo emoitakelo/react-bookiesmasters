@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // modern icons
+import logo from "../assets/logo.png"; 
+
+
+
 
 function Navbar({ user, setUser }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -24,10 +28,12 @@ function Navbar({ user, setUser }) {
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
         {/* Logo / Brand */}
         <Link
-          to="/"
-          className="text-2xl font-bold tracking-wide text-teal-400 hover:text-teal-300 transition"
-        >
-          BookiesMasters
+          to="/">
+           <img
+    src={logo}
+    alt="BookiesMasters Logo"
+    className="h-10 w-auto object-contain"
+  />
         </Link>
 
         {/* Desktop Menu */}
