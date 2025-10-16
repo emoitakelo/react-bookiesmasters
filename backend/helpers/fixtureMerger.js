@@ -36,8 +36,7 @@ export const mergeFixturesPredictions = (fixtures, predictions) => {
 
 
     // Skip if invalid or missing winner
-    if (!prediction.predictions?.winner?.name) {
-      
+   if (!prediction?.predictions?.winner?.name) {
   return;
 }
 

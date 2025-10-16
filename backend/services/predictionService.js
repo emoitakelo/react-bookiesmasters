@@ -2,51 +2,47 @@ import Fixture from "../models/Fixture.js";
 import Prediction from "../models/Prediction.js";
 import { mergeFixturesPredictions } from "../helpers/fixtureMerger.js";
 
-/**
- * Fetches today's fixtures and their predictions,
- * merges + groups them by league for frontend display.
- */
-export const getTodayPredictionsService = async () => {
+export const getPredictionsByDateService = async (date) => {
   try {
-    // 1️⃣ Determine today's date in YYYY-MM-DD (UTC)
-    const today = new Date().toISOString().split("T")[0];
+    const start = `${date}T00:00:00+00:00`;
+    const end = `${date}T23:59:59+00:00`;
 
-    // 2️⃣ Fetch all fixtures scheduled for today
+    console.log(`🕐 Query range: ${start} → ${end}`);
+
+    // Try both Date objects and string ISO matching
     const fixtures = await Fixture.find({
-      "fixture.date": { $regex: today, $options: "i" },
-    });
+      $or: [
+        {
+          "fixture.date": {
+            $gte: new Date(start),
+            $lte: new Date(end),
+          },
+        },
+        {
+          // fallback for string-stored ISO dates
+          "fixture.date": { $gte: start, $lte: end },
+        },
+      ],
+    }).lean();
 
-    // 3️⃣ Get all fixture IDs from today’s fixtures
+    console.log(`✅ Found ${fixtures.length} fixtures for ${date}`);
+
+    if (fixtures.length === 0) return [];
+
     const fixtureIds = fixtures.map((f) => f.fixture.id);
+    console.log("🎯 Fixture IDs:", fixtureIds);
 
-    // 4️⃣ Fetch all predictions that match those fixture IDs
     const predictions = await Prediction.find({
       fixtureId: { $in: fixtureIds },
-    });
+    }).lean();
 
+    console.log(`✅ Found ${predictions.length} predictions for ${date}`);
 
-    // if (predictions.length > 0) {
-    //   console.log(
-    //     "🧩 SAMPLE prediction structure:",
-    //     JSON.stringify(predictions[0], null, 2)
-    //   );
-    // } else {
-    //   console.log("⚠️ No predictions found for today to inspect structure.");
-    // }
+    const merged = mergeFixturesPredictions(fixtures, predictions);
 
-    // 5️⃣ Merge and group fixtures + predictions (via helper)
-    // NOTE: The helper already groups them by league.
-    const groupedPredictions = mergeFixturesPredictions(fixtures, predictions);
-
-// console.log("✅ Grouped Predictions after merge:", JSON.stringify(groupedPredictions, null, 2));
-
-
-
-    // 6️⃣ Return the grouped data
-    return groupedPredictions;
-
+    return merged;
   } catch (error) {
-    console.error("❌ Error in getTodayPredictionsService:", error.message);
-    throw new Error("Failed to fetch today's predictions");
+    console.error("❌ Error in getPredictionsByDateService:", error);
+    throw error;
   }
 };

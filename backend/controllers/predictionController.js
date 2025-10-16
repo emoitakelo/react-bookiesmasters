@@ -1,35 +1,37 @@
-import { getTodayPredictionsService } from "../services/predictionService.js";
+// controllers/predictionController.js
+import { getPredictionsByDateService } from "../services/predictionService.js";
 
 /**
- * @desc   Get today's fixtures with predictions (grouped by league)
- * @route  GET /api/predictions/today
- * @access Public
+ * @desc    Get fixtures + predictions merged by date
+ * @route   GET /api/predictions?date=YYYY-MM-DD
+ * @access  Public
  */
-export const getTodayPredictions = async (req, res) => {
+export const getPredictionsByDate = async (req, res) => {
   try {
-    // 1️⃣ Call the service to fetch + merge + group today's data
-    const groupedPredictions = await getTodayPredictionsService();
+    const { date } = req.query;
 
-    // 2️⃣ If no data found, return a user-friendly message
-    if (!groupedPredictions || groupedPredictions.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No predictions available for today.",
-      });
+    if (!date) {
+      return res.status(400).json({ success: false, message: "Date query required (YYYY-MM-DD)" });
     }
 
-    // 3️⃣ Success → send data to frontend
-    res.status(200).json({
-      success: true,
-      count: groupedPredictions.length,
-      data: groupedPredictions,
-    });
-  } catch (error) {
-    console.error("❌ Error in getTodayPredictions controller:", error.message);
+    console.log("🔍 Fetching predictions for:", date);
 
+    const merged = await getPredictionsByDateService(date);
+
+    if (!merged || merged.length === 0) {
+      return res.status(404).json({ success: false, message: "No fixtures found for this date" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      count: merged.length,
+      data: merged,
+    });
+  } catch (err) {
+    console.error("❌ Error in getPredictionsByDate controller:", err);
     res.status(500).json({
       success: false,
-      message: "Server error fetching today's predictions",
+      message: "Failed to fetch predictions by date",
     });
   }
 };
