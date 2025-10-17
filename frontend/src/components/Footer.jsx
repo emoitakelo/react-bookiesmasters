@@ -56,17 +56,7 @@ function Footer() {
             Quick links
           </h6>
           <ul className=" text-sm">
-            <li>
-              <Link to="/about" className="text-gray-400 hover:text-teal-400 transition ">
-                About Us
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact-us" className="text-gray-400 hover:text-teal-400 transition">
-                Contact Us
-              </Link>
-            </li>
-            <li>
+<li>
               <Link
                 to="/terms-of-service"
                 className="text-gray-400 hover:text-teal-400 transition"
@@ -82,6 +72,19 @@ function Footer() {
                 Privacy Policy
               </Link>
             </li>
+
+
+            <li>
+              <Link to="/about" className="text-gray-400 hover:text-teal-400 transition ">
+                About Us
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact-us" className="text-gray-400 hover:text-teal-400 transition">
+                Contact Us
+              </Link>
+            </li>
+            
           </ul>
         </div>
 
