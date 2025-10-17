@@ -19,7 +19,39 @@ function Footer() {
           </p>
         </div>
 
-        {/* Quick Links */}
+        
+
+        {/* Contact / Socials */}
+        <div>
+          <h3 className="text-medium text-gray-300 mb-3">
+            Stay Connected
+          </h3>
+          <p className="text-xs mb-3">
+            Have questions? Reach us anytime.
+          </p>
+          <a
+            href="mailto:support@bookiesmasters.com"
+            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-xs mb-4"
+          >
+            <Mail size={18} className="mr-2" /> support@bookiesmasters.com
+          </a>
+
+          {/* Socials (optional) */}
+          <div className="flex space-x-4 mt-2">
+            <a href="#" className="text-gray-400 hover:text-teal-400 transition">
+              <Facebook size={20} />
+            </a>
+            <a href="#" className="text-gray-400 hover:text-teal-400 transition">
+              <Twitter size={20} />
+            </a>
+            <a href="#" className="text-gray-400 hover:text-teal-400 transition">
+              <Instagram size={20} />
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Links */}
         <div>
           <h3 className="text-medium  text-gray-300 mb-3">
             Quick Links
@@ -53,36 +85,6 @@ function Footer() {
             </li>
           </ul>
         </div>
-
-        {/* Contact / Socials */}
-        <div>
-          <h3 className="text-medium text-gray-300 mb-3">
-            Stay Connected
-          </h3>
-          <p className="text-xs mb-3">
-            Have questions? Reach us anytime.
-          </p>
-          <a
-            href="mailto:support@bookiesmasters.com"
-            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-xs mb-4"
-          >
-            <Mail size={18} className="mr-2" /> support@bookiesmasters.com
-          </a>
-
-          {/* Socials (optional) */}
-          <div className="flex space-x-4 mt-2">
-            <a href="#" className="text-gray-400 hover:text-teal-400 transition">
-              <Facebook size={20} />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-teal-400 transition">
-              <Twitter size={20} />
-            </a>
-            <a href="#" className="text-gray-400 hover:text-teal-400 transition">
-              <Instagram size={20} />
-            </a>
-          </div>
-        </div>
-      </div>
 
       {/* Bottom bar */}
       <div className="text-center text-gray-500 text-xs py-2">
