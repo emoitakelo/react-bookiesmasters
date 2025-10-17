@@ -72,16 +72,16 @@ function Footer() {
                 Privacy Policy
               </Link>
             </li>
-
+<li>
+              <Link to="/contact-us" className="text-gray-400 hover:text-teal-400 transition">
+                Contact Us
+              </Link>
+            </li>
+            
 
             <li>
               <Link to="/about" className="text-gray-400 hover:text-teal-400 transition ">
                 About Us
-              </Link>
-            </li>
-            <li>
-              <Link to="/contact-us" className="text-gray-400 hover:text-teal-400 transition">
-                Contact Us
               </Link>
             </li>
             
