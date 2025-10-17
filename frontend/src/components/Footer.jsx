@@ -10,7 +10,7 @@ function Footer() {
         
         {/* Brand / About */}
         <div>
-          <h3 className="text-medium text-gray-300 mb-3">
+          <h3 className="text-medium font-semibold text-gray-300 mb-3">
             Bookiesmasters
           </h3>
           <p className="text-xs leading-relaxed">
@@ -23,15 +23,15 @@ function Footer() {
 
         {/* Contact / Socials */}
         <div>
-          <h3 className="text-medium text-gray-300 mb-3">
+          <h3 className="text-medium font-semibold text-gray-300 mb-3">
             Stay Connected
           </h3>
-          <p className="text-xs mb-3">
+          <p className="text-sm mb-3">
             Have questions? Reach us anytime.
           </p>
           <a
             href="mailto:support@bookiesmasters.com"
-            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-xs mb-4"
+            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-sm mb-4"
           >
             <Mail size={18} className="mr-2" /> support@bookiesmasters.com
           </a>
@@ -49,14 +49,13 @@ function Footer() {
             </a>
           </div>
         </div>
-      </div>
 
-      {/* Quick Links */}
+ {/* Quick Links */}
         <div>
-          <h3 className="text-medium  text-gray-300 mb-3">
+          <h3 className="text-medium font-semibold text-gray-300 mb-2">
             Quick Links
           </h3>
-          <ul className="space-y-2 text-xs">
+          <ul className="space-y-2 text-sm">
             <li>
               <Link to="/about" className="text-gray-300 hover:text-teal-400 transition ">
                 About Us
@@ -86,6 +85,10 @@ function Footer() {
           </ul>
         </div>
 
+
+      </div>
+
+     
       {/* Bottom bar */}
       <div className="text-center text-gray-500 text-xs py-2">
         © {new Date().getFullYear()} Bookiesmasters. All rights reserved.
