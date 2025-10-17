@@ -6,7 +6,7 @@ function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 mt-5">
       {/* Main footer section */}
-      <div className="max-w-7xl mx-auto px-2 md:px-4 py-2 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
+      <div className="max-w-7xl mx-auto px-2 md:px-4 py-1 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
         
         {/* Brand / About */}
         <div>
