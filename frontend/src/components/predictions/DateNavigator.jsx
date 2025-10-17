@@ -67,7 +67,7 @@ const DateNavigator = ({ currentDate, onChangeDate }) => {
   });
 
   return (
-    <div className="max-w-md mx-auto flex items-center justify-between gap-2 my-6 px-3 sm:px-5 whitespace-nowrap">
+    <div className="max-w-md mx-auto flex items-center justify-between gap-2 my-6 px-2 sm:px-4 whitespace-nowrap">
       <button
         onClick={handlePrevious}
         className="bg-teal-500 text-white w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
