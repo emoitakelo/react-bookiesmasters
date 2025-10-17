@@ -68,53 +68,94 @@ const PredictionCard = ({ fixture }) => {
     year: "2-digit",
   });
 
+  // 🎨 Tip color logic
+  const getTipColor = (tip, homeScore, awayScore, status) => {
+    // No score yet
+    if (
+      status !== "FT" &&
+      (homeScore === null ||
+        homeScore === undefined ||
+        awayScore === null ||
+        awayScore === undefined)
+    ) {
+      return "text-orange-400"; // pale orange for pending matches
+    }
+
+    // Convert to numbers just in case
+    const home = Number(homeScore);
+    const away = Number(awayScore);
+
+    switch (tip) {
+      case "1":
+        return home > away ? "text-green-500" : "text-red-500";
+      case "X":
+        return home === away ? "text-green-500" : "text-red-500";
+      case "2":
+        return away > home ? "text-green-500" : "text-red-500";
+      case "1X":
+        return home >= away ? "text-green-500" : "text-red-500";
+      case "X2":
+        return away >= home ? "text-green-500" : "text-red-500";
+      default:
+        return "text-teal-600"; // fallback for unknown tips
+    }
+  };
+
   return (
-  <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-3 sm:p-4 overflow-hidden">
-    {/* 🕒 Date & Time */}
-    <div className="flex-shrink-0 text-center sm:text-left text-[11px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
-      <p className="font-medium text-gray-700">
-        {status === "FT" ? "FT" : localTime}
-      </p>
-      <p className="text-gray-400">{localDate}</p>
-    </div>
-
-    {/* 🏟️ Teams */}
-    <div className="flex flex-col justify-center flex-grow px-2 sm:px-4">
-      <div className="flex items-center gap-2">
-        <img
-          src={homeTeam.logo}
-          alt={homeTeam.name}
-          className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
-        />
-        <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[150px]">
-          {homeTeam.name}
-        </span>
+    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-3 sm:p-4 overflow-hidden">
+      {/* 🕒 Date & Time */}
+      <div className="flex-shrink-0 text-center sm:text-left text-[11px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
+        <p className="font-medium text-gray-700">
+          {status === "FT" ? "FT" : localTime}
+        </p>
+        <p className="text-gray-400">{localDate}</p>
       </div>
-      <div className="flex items-center gap-2">
-        <img
-          src={awayTeam.logo}
-          alt={awayTeam.name}
-          className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
-        />
-        <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[150px]">
-          {awayTeam.name}
-        </span>
+
+      {/* 🏟️ Teams */}
+      <div className="flex flex-col justify-center flex-grow px-2 sm:px-4">
+        <div className="flex items-center gap-2">
+          <img
+            src={homeTeam.logo}
+            alt={homeTeam.name}
+            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+          />
+          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[150px]">
+            {homeTeam.name}
+          </span>
+        </div>
+        <div className="flex items-center gap-2">
+          <img
+            src={awayTeam.logo}
+            alt={awayTeam.name}
+            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+          />
+          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[150px]">
+            {awayTeam.name}
+          </span>
+        </div>
+      </div>
+
+      {/* 📊 Tip */}
+      <div className="flex-shrink-0 text-center px-2 sm:px-4">
+        <p
+          className={`text-sm sm:text-base font-bold ${getTipColor(
+            tip,
+            homeTeam.score,
+            awayTeam.score,
+            status
+          )}`}
+        >
+          {tip}
+        </p>
+      </div>
+
+      {/* ⚽ Score (stacked vertically) */}
+      <div className="flex-shrink-0 text-center font-semibold text-gray-800 text-sm sm:text-base flex flex-col justify-center items-center w-[40px] sm:w-[50px]">
+        <span>{homeTeam.score}</span>
+        <span>{awayTeam.score}</span>
       </div>
     </div>
-
-    {/* 📊 Tip */}
-    <div className="flex-shrink-0 text-center px-2 sm:px-4">
-      <p className="text-sm sm:text-base font-bold text-teal-600">{tip}</p>
-    </div>
-
-    {/* ⚽ Score (stacked vertically) */}
-    <div className="flex-shrink-0 text-center font-semibold text-gray-800 text-sm sm:text-base flex flex-col justify-center items-center w-[40px] sm:w-[50px]">
-      <span>{homeTeam.score}</span>
-      <span>{awayTeam.score}</span>
-    </div>
-  </div>
-);
-
+  );
 };
 
 export default PredictionCard;
