@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-300 mt-5">
+    <footer className="bg-gray-900 text-gray-400 mt-5">
       {/* Main footer section */}
       <div className="max-w-7xl mx-auto px-2 md:px-4 py-1 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
         
@@ -26,7 +26,7 @@ function Footer() {
           <h8 className="text-sm text-white mb-1">
             STAY CONNECTED
           </h8>
-          <p className="text-sm mb-1">
+          <p className="text-sm text-gray-400 mb-1">
             Have questions? Reach us anytime.
           </p>
           <a
@@ -57,19 +57,19 @@ function Footer() {
           </h8>
           <ul className=" text-sm">
             <li>
-              <Link to="/about" className="text-gray-300 hover:text-teal-400 transition ">
+              <Link to="/about" className="text-gray-400 hover:text-teal-400 transition ">
                 About Us
               </Link>
             </li>
             <li>
-              <Link to="/contact-us" className="text-gray-300 hover:text-teal-400 transition">
+              <Link to="/contact-us" className="text-gray-500 hover:text-teal-400 transition">
                 Contact Us
               </Link>
             </li>
             <li>
               <Link
                 to="/terms-of-service"
-                className="text-gray-300 hover:text-teal-400 transition"
+                className="text-gray-400 hover:text-teal-400 transition"
               >
                 Terms of Service
               </Link>
@@ -77,7 +77,7 @@ function Footer() {
             <li>
               <Link
                 to="/privacy-policy"
-                className="text-gray-300 hover:text-teal-400 transition"
+                className="text-gray-400 hover:text-teal-400 transition"
               >
                 Privacy Policy
               </Link>
