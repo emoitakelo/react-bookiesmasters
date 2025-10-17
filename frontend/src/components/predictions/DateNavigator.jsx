@@ -70,7 +70,7 @@ const DateNavigator = ({ currentDate, onChangeDate }) => {
     <div className="max-w-md mx-auto flex items-center justify-between gap-4 my-6 px-6 sm:px-10 whitespace-nowrap">
       <button
         onClick={handlePrevious}
-        className="bg-teal-500 text-white px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
+        className="bg-teal-500 text-white w-24 sm:w-28 px-3 sm:px-4 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
       >
         ◀ Prev
       </button>
@@ -81,7 +81,7 @@ const DateNavigator = ({ currentDate, onChangeDate }) => {
 
       <button
         onClick={handleNext}
-        className="bg-teal-500 text-white px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
+        className="bg-teal-500 text-white w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
       >
         Next ▶
       </button>
