@@ -84,7 +84,7 @@ function Navbar({ user, setUser }) {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-gray-200 hover:text-white"
+          className="md:hidden text-teal-300"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={26} /> : <Menu size={26} />}
