@@ -84,7 +84,7 @@ function Navbar({ user, setUser }) {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-teal-300"
+          className="md:hidden text-teal-300 focus:outline-none focus:ring-0"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={26} /> : <Menu size={26} />}
