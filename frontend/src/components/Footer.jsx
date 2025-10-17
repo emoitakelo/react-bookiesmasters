@@ -10,10 +10,10 @@ function Footer() {
         
         {/* Brand / About */}
         <div>
-          <h3 className="text-medium  text-gray-300 mb-1">
+          <h8 className="text-sm text-white mb-1">
             BOOKIESMASTERS
-          </h3>
-          <p className="text-sm leading-relaxed">
+          </h8>
+          <p className="text-sm  leading-relaxed">
             Get accurate football predictions, fixtures, and insights powered by
             data.Payment after win tips for highstakers .All in one place.
           </p>
@@ -23,9 +23,9 @@ function Footer() {
 
         {/* Contact / Socials */}
         <div>
-          <h3 className="text-medium text-gray-300 mb-1">
+          <h8 className="text-sm text-white mb-1">
             STAY CONNECTED
-          </h3>
+          </h8>
           <p className="text-sm mb-1">
             Have questions? Reach us anytime.
           </p>
@@ -52,9 +52,9 @@ function Footer() {
 
  {/* Quick Links */}
         <div>
-          <h3 className="text-MEDIUM text-gray-300 mb-1">
+          <h8 className="text-sm text-white mb-1">
             QUICK LINKS
-          </h3>
+          </h8>
           <ul className=" text-sm">
             <li>
               <Link to="/about" className="text-gray-300 hover:text-teal-400 transition ">
