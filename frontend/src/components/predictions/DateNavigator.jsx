@@ -92,7 +92,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         onClick={handlePrevious}
         disabled={loading || reachedPrevLimit}
-        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
+        className={`w-20 sm:w-24 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
           reachedPrevLimit
         )}`}
       >
@@ -106,7 +106,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         onClick={handleNext}
         disabled={loading || reachedNextLimit}
-        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
+        className={`w-20 sm:w-24 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
           reachedNextLimit
         )}`}
       >
