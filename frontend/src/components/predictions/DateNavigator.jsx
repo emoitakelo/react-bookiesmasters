@@ -51,18 +51,18 @@ const DateNavigator = ({
   currentDate,
   onChangeDate,
   loading,
-  disablePrev,
-  disableNext,
+  canGoPrev,
+  canGoNext,
 }) => {
   const handlePrevious = () => {
-    if (loading || disablePrev) return; // prevent clicks while loading
+    if (loading || !canGoPrev) return;
     const prev = new Date(currentDate);
     prev.setDate(prev.getDate() - 1);
     onChangeDate(prev.toISOString().split("T")[0]);
   };
 
   const handleNext = () => {
-    if (loading || disableNext) return; // prevent clicks while loading
+    if (loading || !canGoNext) return;
     const next = new Date(currentDate);
     next.setDate(next.getDate() + 1);
     onChangeDate(next.toISOString().split("T")[0]);
@@ -78,10 +78,10 @@ const DateNavigator = ({
     <div className="max-w-md mx-auto flex items-center justify-between gap-2 my-6 px-2 sm:px-4 whitespace-nowrap">
       <button
         onClick={handlePrevious}
-        disabled={loading || disablePrev}
-        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0
+        disabled={loading || !canGoPrev}
+        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 transition
           ${
-            loading || disablePrev
+            loading || !canGoPrev
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-teal-500 text-white hover:bg-teal-600"
           }`}
@@ -95,10 +95,10 @@ const DateNavigator = ({
 
       <button
         onClick={handleNext}
-        disabled={loading || disableNext}
-        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0
+        disabled={loading || !canGoNext}
+        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 transition
           ${
-            loading || disableNext
+            loading || !canGoNext
               ? "bg-gray-300 text-gray-500 cursor-not-allowed"
               : "bg-teal-500 text-white hover:bg-teal-600"
           }`}
