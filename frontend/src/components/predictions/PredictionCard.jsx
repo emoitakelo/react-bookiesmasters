@@ -110,7 +110,6 @@ const PredictionCard = ({ fixture }) => {
     {/* ⚽ Score (stacked vertically) */}
     <div className="flex-shrink-0 text-center font-semibold text-gray-800 text-sm sm:text-base flex flex-col justify-center items-center w-[40px] sm:w-[50px]">
       <span>{homeTeam.score}</span>
-      <span>-</span>
       <span>{awayTeam.score}</span>
     </div>
   </div>
