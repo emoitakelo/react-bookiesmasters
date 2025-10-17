@@ -81,7 +81,7 @@ const DateNavigator = ({ currentDate, onChangeDate }) => {
 
       <button
         onClick={handleNext}
-        className="bg-teal-500 text-white px-2 sm:px-3 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
+        className="bg-teal-500 text-white px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0"
       >
         Next ▶
       </button>
