@@ -6,11 +6,11 @@ function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 mt-5">
       {/* Main footer section */}
-      <div className="max-w-7xl mx-auto px-2 md:px-4 py-5 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
+      <div className="max-w-7xl mx-auto px-2 md:px-4 py-2 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
         
         {/* Brand / About */}
         <div>
-          <h3 className="text-medium font-semibold text-gray-300 mb-3">
+          <h3 className="text-lg font-semibold text-gray-300 mb-1">
             Bookiesmasters
           </h3>
           <p className="text-sm leading-relaxed">
@@ -23,21 +23,21 @@ function Footer() {
 
         {/* Contact / Socials */}
         <div>
-          <h3 className="text-medium font-semibold text-gray-300 mb-3">
+          <h3 className="text-lg font-semibold text-gray-300 mb-1">
             Stay Connected
           </h3>
-          <p className="text-sm mb-3">
+          <p className="text-sm mb-1">
             Have questions? Reach us anytime.
           </p>
           <a
             href="mailto:support@bookiesmasters.com"
-            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-sm mb-4"
+            className="inline-flex items-center text-teal-400 hover:text-teal-300 text-sm mb-1"
           >
             <Mail size={18} className="mr-2" /> support@bookiesmasters.com
           </a>
 
           {/* Socials (optional) */}
-          <div className="flex space-x-4 mt-2">
+          <div className="flex space-x-4 mt-1">
             <a href="#" className="text-gray-400 hover:text-teal-400 transition">
               <Facebook size={20} />
             </a>
@@ -52,10 +52,10 @@ function Footer() {
 
  {/* Quick Links */}
         <div>
-          <h3 className="text-medium font-semibold text-gray-300 mb-1">
+          <h3 className="text-lg font-semibold text-gray-300 mb-1">
             Quick Links
           </h3>
-          <ul className="space-y-1 text-sm">
+          <ul className=" text-sm">
             <li>
               <Link to="/about" className="text-gray-300 hover:text-teal-400 transition ">
                 About Us
