@@ -10,8 +10,8 @@ function Footer() {
         
         {/* Brand / About */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-300 mb-1">
-            Bookiesmasters
+          <h3 className="text-medium  text-gray-300 mb-1">
+            BOOKIESMASTERS
           </h3>
           <p className="text-sm leading-relaxed">
             Get accurate football predictions, fixtures, and insights powered by
@@ -23,8 +23,8 @@ function Footer() {
 
         {/* Contact / Socials */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-300 mb-1">
-            Stay Connected
+          <h3 className="text-medium text-gray-300 mb-1">
+            STAY CONNECTED
           </h3>
           <p className="text-sm mb-1">
             Have questions? Reach us anytime.
@@ -52,8 +52,8 @@ function Footer() {
 
  {/* Quick Links */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-300 mb-1">
-            Quick Links
+          <h3 className="text-MEDIUM text-gray-300 mb-1">
+            QUICK LINKS
           </h3>
           <ul className=" text-sm">
             <li>
