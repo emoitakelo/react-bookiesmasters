@@ -53,7 +53,7 @@ function Footer() {
  {/* Quick Links */}
         <div>
           <h8 className="text-sm text-white mb-1">
-            QUICK LINKS
+            Quick links
           </h8>
           <ul className=" text-sm">
             <li>
