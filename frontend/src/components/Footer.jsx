@@ -11,7 +11,7 @@ function Footer() {
         {/* Brand / About */}
         <div>
           <h8 className="text-sm text-white mb-1">
-            BOOKIESMASTERS
+            Bookiesmasters
           </h8>
           <p className="text-sm  leading-relaxed">
             Get accurate football predictions, fixtures, and insights powered by
@@ -24,7 +24,7 @@ function Footer() {
         {/* Contact / Socials */}
         <div>
           <h8 className="text-sm text-white mb-1">
-            STAY CONNECTED
+            Stay connected
           </h8>
           <p className="text-sm text-gray-400 mb-1">
             Have questions? Reach us anytime.
