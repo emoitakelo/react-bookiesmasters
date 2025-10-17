@@ -47,22 +47,29 @@
 // src/components/predictions/DateNavigator.jsx
 import React from "react";
 
-const DateNavigator = ({
-  currentDate,
-  onChangeDate,
-  loading,
-  canGoPrev,
-  canGoNext,
-}) => {
+const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
+  const today = new Date();
+  const selected = new Date(currentDate);
+
+  // Calculate difference in days from today
+  const diffDays = Math.floor(
+    (selected.setHours(0, 0, 0, 0) - today.setHours(0, 0, 0, 0)) /
+      (1000 * 60 * 60 * 24)
+  );
+
+  // Disable conditions
+  const reachedPrevLimit = diffDays <= -7;
+  const reachedNextLimit = diffDays >= 7;
+
   const handlePrevious = () => {
-    if (loading || !canGoPrev) return;
+    if (loading || reachedPrevLimit) return;
     const prev = new Date(currentDate);
     prev.setDate(prev.getDate() - 1);
     onChangeDate(prev.toISOString().split("T")[0]);
   };
 
   const handleNext = () => {
-    if (loading || !canGoNext) return;
+    if (loading || reachedNextLimit) return;
     const next = new Date(currentDate);
     next.setDate(next.getDate() + 1);
     onChangeDate(next.toISOString().split("T")[0]);
@@ -74,17 +81,20 @@ const DateNavigator = ({
     month: "short",
   });
 
+  // Helper for button style
+  const getButtonClass = (isLimitReached) => {
+    if (isLimitReached) return "bg-gray-400 cursor-not-allowed text-white";
+    return "bg-teal-500 text-white";
+  };
+
   return (
     <div className="max-w-md mx-auto flex items-center justify-between gap-2 my-6 px-2 sm:px-4 whitespace-nowrap">
       <button
         onClick={handlePrevious}
-        disabled={loading || !canGoPrev}
-        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 transition
-          ${
-            loading || !canGoPrev
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-teal-500 text-white hover:bg-teal-600"
-          }`}
+        disabled={loading || reachedPrevLimit}
+        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
+          reachedPrevLimit
+        )}`}
       >
         ◀ Prev
       </button>
@@ -95,13 +105,10 @@ const DateNavigator = ({
 
       <button
         onClick={handleNext}
-        disabled={loading || !canGoNext}
-        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 transition
-          ${
-            loading || !canGoNext
-              ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-              : "bg-teal-500 text-white hover:bg-teal-600"
-          }`}
+        disabled={loading || reachedNextLimit}
+        className={`w-24 sm:w-28 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
+          reachedNextLimit
+        )}`}
       >
         Next ▶
       </button>
