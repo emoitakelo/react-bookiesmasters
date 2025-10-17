@@ -6,14 +6,14 @@ function Footer() {
   return (
     <footer className="bg-gray-900 text-gray-300 mt-5">
       {/* Main footer section */}
-      <div className="max-w-7xl mx-auto px-2 md:px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
+      <div className="max-w-7xl mx-auto px-2 md:px-4 py-5 grid grid-cols-1 md:grid-cols-3 gap-8 border-b border-gray-700">
         
         {/* Brand / About */}
         <div>
           <h3 className="text-medium font-semibold text-gray-300 mb-3">
             Bookiesmasters
           </h3>
-          <p className="text-xs leading-relaxed">
+          <p className="text-sm leading-relaxed">
             Get accurate football predictions, fixtures, and insights powered by
             data.Payment after win tips for highstakers .All in one place.
           </p>
@@ -52,10 +52,10 @@ function Footer() {
 
  {/* Quick Links */}
         <div>
-          <h3 className="text-medium font-semibold text-gray-300 mb-2">
+          <h3 className="text-medium font-semibold text-gray-300 mb-1">
             Quick Links
           </h3>
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-1 text-sm">
             <li>
               <Link to="/about" className="text-gray-300 hover:text-teal-400 transition ">
                 About Us
