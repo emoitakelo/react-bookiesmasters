@@ -1,6 +1,6 @@
 import React from "react";
 
-const LastFiveMatches = ({ teamLogo, matches }) => {
+const LastFiveMatches = ({ teamLogo, teamName,matches }) => {
   if (!matches || matches.length === 0) return null;
 
   const getScoreBadgeColor = (ourScore, opponentScore) => {
