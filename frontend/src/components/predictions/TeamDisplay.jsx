@@ -1,7 +1,9 @@
 import React from "react";
 
-const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) => {
+const TeamDisplay = ({ home, away, date, displayDate, status, venue, homeScore, awayScore }) => {
   const renderFormBars = (forms) => {
+    if (!forms || forms.length === 0) return null;
+
     return (
       <div className="flex justify-center gap-1 mt-1">
         {forms.map((m, idx) => (
@@ -17,8 +19,8 @@ const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) 
     );
   };
 
-  // Format date/time
-  const matchDate = new Date(date).toLocaleString("en-GB", {
+  // Determine what to display for date/status
+  const display = displayDate || new Date(date).toLocaleString("en-GB", {
     weekday: "short",
     day: "numeric",
     month: "short",
@@ -53,7 +55,7 @@ const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) 
 
         {/* Date / Status / Score */}
         <div className="text-center text-gray-600 text-sm">
-          <div>{matchDate}</div>
+          <div>{display}</div>
           <div className="text-lg font-bold mt-1">{scoreDisplay}</div>
         </div>
 
