@@ -1,6 +1,16 @@
 const LastFiveMatches = ({ teamName, matches }) => {
   if (!matches || matches.length === 0) return null;
 
+  // Function to determine badge color based on score
+  const getScoreBadgeColor = (homeScore, awayScore) => {
+    const home = Number(homeScore);
+    const away = Number(awayScore);
+
+    if (home === away) return "bg-orange-200 text-orange-800"; // draw
+    if (home > away) return "bg-green-200 text-green-800";      // win
+    return "bg-red-200 text-red-800";                           // loss
+  };
+
   return (
     <div className="mb-8 max-w-md mx-auto">
       <h4 className="text-md font-semibold text-gray-800 mb-2">{teamName} — Last 5 Matches</h4>
@@ -16,8 +26,13 @@ const LastFiveMatches = ({ teamName, matches }) => {
               <span className="truncate">{m.homeTeam.name}</span>
             </span>
 
-            {/* Score */}
-            <span className="text-gray-700 font-medium text-center">
+            {/* Score with badge */}
+            <span
+              className={`px-2 py-1 rounded text-sm font-medium text-center ${getScoreBadgeColor(
+                m.score.home,
+                m.score.away
+              )}`}
+            >
               {m.score.home} - {m.score.away}
             </span>
 
