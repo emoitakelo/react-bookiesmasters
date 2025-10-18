@@ -12,7 +12,7 @@ const TeamDisplay = ({ fixture }) => {
     venue,
   } = fixture;
 
-  // 🕒 Display either FT or actual date/time
+  // 🕒 Show "FT" or local time/date
   const matchDateTime =
     status === "FT"
       ? displayDate
@@ -22,18 +22,24 @@ const TeamDisplay = ({ fixture }) => {
           minute: "2-digit",
         });
 
-  // ⚽ Simple, reliable score display logic
-  const hasScores =
-    homeTeam?.score !== null &&
-    homeTeam?.score !== undefined &&
-    awayTeam?.score !== null &&
-    awayTeam?.score !== undefined;
+  // ✅ Fix: normalize scores (convert to numbers if needed)
+  const homeScore =
+    homeTeam?.score !== null && homeTeam?.score !== undefined
+      ? Number(homeTeam.score)
+      : null;
 
-  const scoreDisplay = hasScores
-    ? `${homeTeam.score} - ${awayTeam.score}`
-    : "-";
+  const awayScore =
+    awayTeam?.score !== null && awayTeam?.score !== undefined
+      ? Number(awayTeam.score)
+      : null;
 
-  // 🟩 Helper for form badges (W/D/L)
+  // ✅ Display score if both are numbers, otherwise "-"
+  const scoreDisplay =
+    !isNaN(homeScore) && !isNaN(awayScore)
+      ? `${homeScore} - ${awayScore}`
+      : "-";
+
+  // 🟩 Render form badges
   const renderFormBars = (forms) => {
     if (!forms || !Array.isArray(forms) || forms.length === 0) return null;
 
@@ -54,12 +60,12 @@ const TeamDisplay = ({ fixture }) => {
 
   return (
     <div className="flex flex-col items-center mb-8 text-gray-800">
-      {/* 🏟️ Row 1: Team names */}
+      {/* 🏟️ Team names */}
       <h2 className="text-lg sm:text-xl font-semibold mb-3 text-center">
         {homeTeam?.name} vs {awayTeam?.name}
       </h2>
 
-      {/* 🖼️ Row 2: Logos and center details */}
+      {/* 🖼️ Logos + score/time */}
       <div className="grid grid-cols-3 items-center gap-6 max-w-2xl w-full">
         {/* Home */}
         <div className="flex flex-col items-center">
@@ -71,7 +77,7 @@ const TeamDisplay = ({ fixture }) => {
           {renderFormBars(homeTeam?.last5Matches)}
         </div>
 
-        {/* Center (time + score) */}
+        {/* Center */}
         <div className="flex flex-col items-center justify-center text-center">
           <div className="text-sm sm:text-base text-gray-600">
             {matchDateTime}
