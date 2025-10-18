@@ -6,9 +6,9 @@ const LastFiveMatches = ({ teamName, matches }) => {
     const our = Number(ourScore);
     const opp = Number(opponentScore);
 
-    if (our === opp) return "bg-orange-200 text-orange-800"; // draw
-    if (our > opp) return "bg-green-200 text-green-800";      // win
-    return "bg-red-200 text-red-800";                         // loss
+    if (our === opp) return "bg-orange-200 text-black"; // draw
+    if (our > opp) return "bg-green-800 text-black";      // win
+    return "bg-red-800 text-black";                         // loss
   };
 
   return (
