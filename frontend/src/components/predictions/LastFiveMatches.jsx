@@ -26,7 +26,10 @@ const LastFiveMatches = ({ teamName, matches }) => {
           });
 
           return (
-            <div key={i} className="grid grid-rows-4 bg-gray-50 border p-2 rounded text-sm">
+            <div
+              key={i}
+              className="grid grid-rows-4 bg-gray-50 border p-2 rounded text-sm"
+            >
               {/* 1️⃣ Date */}
               <div className="text-center text-gray-500">{matchDate}</div>
 
@@ -34,13 +37,15 @@ const LastFiveMatches = ({ teamName, matches }) => {
               <div className="text-left font-medium truncate">{m.homeTeam.name}</div>
 
               {/* 3️⃣ Score */}
-              <div
-                className={`text-center px-2 py-1 rounded font-semibold ${getScoreBadgeColor(
-                  ourScore,
-                  opponentScore
-                )}`}
-              >
-                {m.score.home} - {m.score.away}
+              <div className="flex justify-center">
+                <span
+                  className={`w-16 text-center px-2 py-1 rounded font-semibold ${getScoreBadgeColor(
+                    ourScore,
+                    opponentScore
+                  )}`}
+                >
+                  {m.score.home} - {m.score.away}
+                </span>
               </div>
 
               {/* 4️⃣ Away Team */}
