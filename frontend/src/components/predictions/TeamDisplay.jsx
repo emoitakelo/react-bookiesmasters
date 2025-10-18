@@ -12,29 +12,34 @@ const TeamDisplay = ({ fixture }) => {
     venue,
   } = fixture;
 
-  // 🕒 Format time/date display
+  // 🕒 Show "FT" or local time/date
   const matchDateTime =
-    status === "FT" || status === "FT_PEN" || status === "AET"
-      ? displayDate || "FT"
+    status === "FT"
+      ? displayDate
       : new Date(date).toLocaleString("en-GB", {
           weekday: "short",
           hour: "2-digit",
           minute: "2-digit",
         });
 
-  // ✅ Get numeric scores correctly
+  // ✅ Fix: normalize scores (convert to numbers if needed)
   const homeScore =
-    typeof homeTeam?.score === "number" ? homeTeam.score : null;
+    homeTeam?.score !== null && homeTeam?.score !== undefined
+      ? Number(homeTeam.score)
+      : null;
+
   const awayScore =
-    typeof awayTeam?.score === "number" ? awayTeam.score : null;
+    awayTeam?.score !== null && awayTeam?.score !== undefined
+      ? Number(awayTeam.score)
+      : null;
 
-  // ✅ Display "X - Y" if scores exist, otherwise show "vs"
+  // ✅ Display score if both are numbers, otherwise "-"
   const scoreDisplay =
-    homeScore !== null && awayScore !== null
+    !isNaN(homeScore) && !isNaN(awayScore)
       ? `${homeScore} - ${awayScore}`
-      : "vs";
+      : "-";
 
-  // 🟩 Render team form (if available)
+  // 🟩 Render form badges
   const renderFormBars = (forms) => {
     if (!forms || !Array.isArray(forms) || forms.length === 0) return null;
 
@@ -60,9 +65,9 @@ const TeamDisplay = ({ fixture }) => {
         {homeTeam?.name} vs {awayTeam?.name}
       </h2>
 
-      {/* 🖼️ Logos + Score or Time */}
+      {/* 🖼️ Logos + score/time */}
       <div className="grid grid-cols-3 items-center gap-6 max-w-2xl w-full">
-        {/* Home team */}
+        {/* Home */}
         <div className="flex flex-col items-center">
           <img
             src={homeTeam?.logo}
@@ -72,19 +77,17 @@ const TeamDisplay = ({ fixture }) => {
           {renderFormBars(homeTeam?.last5Matches)}
         </div>
 
-        {/* Center section (time + score) */}
+        {/* Center */}
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="text-sm sm:text-base text-gray-600">{matchDateTime}</div>
-          <div
-            className={`text-lg sm:text-xl font-bold mt-1 ${
-              status === "FT" ? "text-gray-900" : "text-gray-700"
-            }`}
-          >
+          <div className="text-sm sm:text-base text-gray-600">
+            {matchDateTime}
+          </div>
+          <div className="text-lg sm:text-xl font-bold mt-1">
             {scoreDisplay}
           </div>
         </div>
 
-        {/* Away team */}
+        {/* Away */}
         <div className="flex flex-col items-center">
           <img
             src={awayTeam?.logo}
@@ -94,13 +97,6 @@ const TeamDisplay = ({ fixture }) => {
           {renderFormBars(awayTeam?.last5Matches)}
         </div>
       </div>
-
-      {/* 🏟️ Venue (optional) */}
-      {venue && (
-        <p className="text-xs sm:text-sm text-gray-500 mt-2">
-          Venue: {venue}
-        </p>
-      )}
     </div>
   );
 };
