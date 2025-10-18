@@ -16,7 +16,7 @@ const TeamDisplay = ({ home, away, date, venue }) => {
         {forms.map((m, idx) => (
           <span
             key={idx}
-            className="px-2 py-1 rounded text-white text-xs"
+            className="px-1 py-1 rounded text-white text-xs"
             style={{ backgroundColor: m.color }}
           >
             {m.result}
@@ -40,7 +40,7 @@ const TeamDisplay = ({ home, away, date, venue }) => {
           <img
             src={home.logo}
             alt={home.name}
-            className="w-20 h-20 object-contain"
+            className="w-17 h-17 object-contain"
           />
           {home.last5Matches && renderFormBars(home.last5Matches)}
         </div>
@@ -55,7 +55,7 @@ const TeamDisplay = ({ home, away, date, venue }) => {
           <img
             src={away.logo}
             alt={away.name}
-            className="w-20 h-20 object-contain"
+            className="w-17 h-17 object-contain"
           />
           {away.last5Matches && renderFormBars(away.last5Matches)}
         </div>
