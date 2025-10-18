@@ -17,14 +17,16 @@ const LastFiveMatches = ({ teamLogo, matches }) => {
       {/* 🏆 Title + Team Logo centered */}
       <div className="flex flex-col items-center mb-4">
         <div className="flex items-center justify-center gap-2">
-          <h4 className="text-md sm:text-lg font-semibold text-gray-800 text-center">
-            Last 5 Matches
-          </h4>
-          <img
+
+            <img
             src={teamLogo}
             alt="Team Logo"
             className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
           />
+          <h4 className="text-md sm:text-lg font-semibold text-gray-800 text-center">
+            Last 5 Matches
+          </h4>
+          
         </div>
       </div>
 
