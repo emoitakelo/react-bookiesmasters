@@ -22,20 +22,13 @@ const TeamDisplay = ({ fixture }) => {
           minute: "2-digit",
         });
 
-  // ✅ Fix: normalize scores (convert to numbers if needed)
-  const homeScore =
-    homeTeam?.score !== null && homeTeam?.score !== undefined
-      ? Number(homeTeam.score)
-      : null;
+  // ✅ Directly use the same score logic as PredictionCard
+  const homeScore = homeTeam?.score;
+  const awayScore = awayTeam?.score;
 
-  const awayScore =
-    awayTeam?.score !== null && awayTeam?.score !== undefined
-      ? Number(awayTeam.score)
-      : null;
-
-  // ✅ Display score if both are numbers, otherwise "-"
+  // ✅ Display “-” if any score is missing
   const scoreDisplay =
-    !isNaN(homeScore) && !isNaN(awayScore)
+    homeScore != null && awayScore != null
       ? `${homeScore} - ${awayScore}`
       : "-";
 
@@ -97,6 +90,11 @@ const TeamDisplay = ({ fixture }) => {
           {renderFormBars(awayTeam?.last5Matches)}
         </div>
       </div>
+
+      {/* 🏟️ Venue */}
+      {venue && (
+        <p className="text-sm text-gray-500 mt-3 text-center">{venue}</p>
+      )}
     </div>
   );
 };
