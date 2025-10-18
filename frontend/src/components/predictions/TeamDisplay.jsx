@@ -12,7 +12,7 @@ const TeamDisplay = ({ fixture }) => {
     venue,
   } = fixture;
 
-  // 🕒 Determine what to show for date/time
+  // 🕒 Display either FT or actual date/time
   const matchDateTime =
     status === "FT"
       ? displayDate
@@ -22,13 +22,18 @@ const TeamDisplay = ({ fixture }) => {
           minute: "2-digit",
         });
 
-  // ⚽ Determine what to show for score
-  const scoreDisplay =
-    homeTeam?.score != null && awayTeam?.score != null
-      ? `${homeTeam.score} - ${awayTeam.score}`
-      : "-";
+  // ⚽ Simple, reliable score display logic
+  const hasScores =
+    homeTeam?.score !== null &&
+    homeTeam?.score !== undefined &&
+    awayTeam?.score !== null &&
+    awayTeam?.score !== undefined;
 
-  // 🟩 Helper for form bars (W/D/L)
+  const scoreDisplay = hasScores
+    ? `${homeTeam.score} - ${awayTeam.score}`
+    : "-";
+
+  // 🟩 Helper for form badges (W/D/L)
   const renderFormBars = (forms) => {
     if (!forms || !Array.isArray(forms) || forms.length === 0) return null;
 
@@ -68,8 +73,12 @@ const TeamDisplay = ({ fixture }) => {
 
         {/* Center (time + score) */}
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="text-sm sm:text-base text-gray-600">{matchDateTime}</div>
-          <div className="text-lg sm:text-xl font-bold mt-1">{scoreDisplay}</div>
+          <div className="text-sm sm:text-base text-gray-600">
+            {matchDateTime}
+          </div>
+          <div className="text-lg sm:text-xl font-bold mt-1">
+            {scoreDisplay}
+          </div>
         </div>
 
         {/* Away */}
@@ -82,13 +91,6 @@ const TeamDisplay = ({ fixture }) => {
           {renderFormBars(awayTeam?.last5Matches)}
         </div>
       </div>
-
-      {/* 🏟️ Row 4: Venue
-      {venue && (
-        <div className="text-center text-gray-600 text-sm mt-3">
-          Venue: {venue}
-        </div>
-      )} */}
     </div>
   );
 };
