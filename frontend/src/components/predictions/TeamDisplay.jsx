@@ -2,7 +2,6 @@ import React from "react";
 
 const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) => {
   const renderFormBars = (forms) => {
-    // forms should be an array of objects: { result: "W", color: "#0f0" }
     return (
       <div className="flex justify-center gap-1 mt-1">
         {forms.map((m, idx) => (
@@ -18,7 +17,7 @@ const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) 
     );
   };
 
-  // Format date/time for display
+  // Format date/time
   const matchDate = new Date(date).toLocaleString("en-GB", {
     weekday: "short",
     day: "numeric",
@@ -26,6 +25,12 @@ const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) 
     hour: "2-digit",
     minute: "2-digit",
   });
+
+  // Determine score display
+  const scoreDisplay =
+    status?.toLowerCase() === "ft" || status?.toLowerCase() === "finished"
+      ? `${homeScore} - ${awayScore} (FT)`
+      : "-";
 
   return (
     <div className="flex flex-col items-center mb-6">
@@ -49,11 +54,7 @@ const TeamDisplay = ({ home, away, date, status, venue, homeScore, awayScore }) 
         {/* Date / Status / Score */}
         <div className="text-center text-gray-600 text-sm">
           <div>{matchDate}</div>
-          <div className="text-lg font-bold mt-1">
-            {status === "FT"
-              ? `${homeScore} - ${awayScore}`
-              : "-"} {/* Show '-' if match not finished */}
-          </div>
+          <div className="text-lg font-bold mt-1">{scoreDisplay}</div>
         </div>
 
         {/* Away */}
