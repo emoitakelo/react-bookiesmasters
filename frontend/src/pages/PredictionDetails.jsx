@@ -41,8 +41,17 @@ const PredictionDetails = () => {
       {/* <MatchInfo venue={data.venue} /> */}
       <PredictionAdvice tip={data.tip} />
       <H2HSection h2h={data.h2h} />
-      <LastFiveMatches teamName={data.homeTeam.name} matches={data.homeTeam.last5Matches} />
-      <LastFiveMatches teamName={data.awayTeam.name} matches={data.awayTeam.last5Matches} />
+      <LastFiveMatches 
+  teamName={data.homeTeam.name} 
+  teamLogo={data.homeTeam.logo} 
+  matches={data.homeTeam.last5Matches} 
+/>
+
+<LastFiveMatches 
+  teamName={data.awayTeam.name} 
+  teamLogo={data.awayTeam.logo} 
+  matches={data.awayTeam.last5Matches} 
+/>
     </div>
   );
 };
