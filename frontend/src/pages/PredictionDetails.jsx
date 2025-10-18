@@ -37,7 +37,7 @@ const PredictionDetails = () => {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 text-gray-900">
       <LeagueHeader league={data.league} />
-      <TeamDisplay home={data.homeTeam} away={data.awayTeam} date={data.date} />
+<TeamDisplay fixture={data} />
       <MatchInfo venue={data.venue} />
       <PredictionAdvice tip={data.tip} />
       <H2HSection h2h={data.h2h} />

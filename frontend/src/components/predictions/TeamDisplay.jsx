@@ -3,74 +3,66 @@ import React from "react";
 const TeamDisplay = ({ fixture }) => {
   if (!fixture) return null;
 
-  const { homeTeam, awayTeam, displayDate, venue } = fixture;
+  const { date, displayDate, status, homeTeam, awayTeam } = fixture;
 
-  // ✅ Determine score display correctly
+  // 🕒 Format time
+  const localTime = new Date(date).toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  // 📅 Format date
+  const localDate = new Date(date).toLocaleDateString("en-US", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  });
+
+  // ⚽ Score display logic
   const scoreDisplay =
-    homeTeam?.score !== null && awayTeam?.score !== null
+    homeTeam?.score != null && awayTeam?.score != null
       ? `${homeTeam.score} - ${awayTeam.score}`
       : "-";
 
-  // ✅ Render form bars safely
-  const renderFormBars = (forms) => {
-    if (!forms || forms.length === 0) return null;
-    return (
-      <div className="flex justify-center gap-1 mt-1">
-        {forms.map((m, idx) => (
-          <span
-            key={idx}
-            className="px-1 py-1 rounded text-white text-xs"
-            style={{ backgroundColor: m.color }}
-          >
-            {m.result}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
   return (
-    <div className="flex flex-col items-center mb-6">
-      {/* Match Title */}
-      <div className="text-center text-lg font-semibold mb-3">
-        {homeTeam?.name} vs {awayTeam?.name}
+    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-3 sm:p-4 overflow-hidden">
+      {/* 🕒 Date & Time */}
+      <div className="flex-shrink-0 text-center sm:text-left text-[11px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
+        <p className="font-medium text-gray-700">
+          {status === "FT" ? displayDate : localTime}
+        </p>
+        <p className="text-gray-400">{localDate}</p>
       </div>
 
-      {/* 3-column layout */}
-      <div className="grid grid-cols-3 items-center gap-4 max-w-2xl w-full">
-        {/* Home */}
-        <div className="flex flex-col items-center">
+      {/* 🏟️ Teams (home + away stacked) */}
+      <div className="flex flex-col justify-center flex-grow px-2 sm:px-4">
+        <div className="flex items-center gap-2">
           <img
             src={homeTeam?.logo}
             alt={homeTeam?.name}
-            className="w-16 h-16 object-contain"
+            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
           />
-          {homeTeam?.last5Matches && renderFormBars(homeTeam.last5Matches)}
+          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[90px] sm:max-w-[160px]">
+            {homeTeam?.name || "Home"}
+          </span>
         </div>
-
-        {/* DisplayDate / Score */}
-        <div className="text-center text-gray-600 text-sm">
-          <div>{displayDate || "-"}</div>
-          <div className="text-lg font-bold mt-1">{scoreDisplay}</div>
-        </div>
-
-        {/* Away */}
-        <div className="flex flex-col items-center">
+        <div className="flex items-center gap-2">
           <img
             src={awayTeam?.logo}
             alt={awayTeam?.name}
-            className="w-16 h-16 object-contain"
+            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
           />
-          {awayTeam?.last5Matches && renderFormBars(awayTeam.last5Matches)}
+          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[90px] sm:max-w-[160px]">
+            {awayTeam?.name || "Away"}
+          </span>
         </div>
       </div>
 
-      {/* Venue */}
-      {venue && (
-        <div className="text-center text-gray-600 text-sm mt-3">
-          Venue: {venue}
-        </div>
-      )}
+      {/* ⚽ Score */}
+      <div className="flex-shrink-0 text-center font-semibold text-gray-800 text-sm sm:text-base flex flex-col justify-center items-center w-[50px] sm:w-[60px]">
+        <span>{scoreDisplay}</span>
+      </div>
     </div>
   );
 };
