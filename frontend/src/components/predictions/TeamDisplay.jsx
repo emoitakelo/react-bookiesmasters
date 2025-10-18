@@ -3,16 +3,9 @@ import React from "react";
 const TeamDisplay = ({ fixture }) => {
   if (!fixture) return null;
 
-  const {
-    homeTeam,
-    awayTeam,
-    date,
-    displayDate,
-    status,
-    venue,
-  } = fixture;
+  const { homeTeam, awayTeam, date, displayDate, status, venue } = fixture;
 
-  // 🕒 Determine what to show for date/time
+  // 🕒 Show FT or date/time
   const matchDateTime =
     status === "FT"
       ? displayDate
@@ -22,16 +15,15 @@ const TeamDisplay = ({ fixture }) => {
           minute: "2-digit",
         });
 
-  // ⚽ Determine what to show for score
+  // ⚽ Show score if available
   const scoreDisplay =
     homeTeam?.score != null && awayTeam?.score != null
       ? `${homeTeam.score} - ${awayTeam.score}`
       : "-";
 
-  // 🟩 Helper for form bars (W/D/L)
+  // 🟩 Form bars
   const renderFormBars = (forms) => {
     if (!forms || !Array.isArray(forms) || forms.length === 0) return null;
-
     return (
       <div className="flex justify-center gap-1 mt-1">
         {forms.map((m, idx) => (
@@ -50,7 +42,7 @@ const TeamDisplay = ({ fixture }) => {
   return (
     <div className="flex flex-col items-center mb-8 text-gray-800">
       {/* 🏟️ Row 1: Team names */}
-      <h2 className="text-lg sm:text-xl font-semibold mb-3 text-center">
+      <h2 className="text-lg sm:text-xl font-semibold mb-3 text-center truncate w-full">
         {homeTeam?.name} vs {awayTeam?.name}
       </h2>
 
@@ -66,10 +58,22 @@ const TeamDisplay = ({ fixture }) => {
           {renderFormBars(homeTeam?.last5Matches)}
         </div>
 
-        {/* Center (time + score) */}
+        {/* Center (FT/time + score) */}
         <div className="flex flex-col items-center justify-center text-center">
-          <div className="text-sm sm:text-base text-gray-600">{matchDateTime}</div>
-          <div className="text-lg sm:text-xl font-bold mt-1">{scoreDisplay}</div>
+          <div className="text-sm sm:text-base text-gray-600">
+            {status === "FT" ? (
+              <span className="font-semibold">
+                {displayDate} · {scoreDisplay}
+              </span>
+            ) : (
+              <>
+                <span>{matchDateTime}</span>
+                <div className="text-lg sm:text-xl font-bold mt-1">
+                  {scoreDisplay}
+                </div>
+              </>
+            )}
+          </div>
         </div>
 
         {/* Away */}
@@ -83,12 +87,12 @@ const TeamDisplay = ({ fixture }) => {
         </div>
       </div>
 
-      {/* 🏟️ Row 4: Venue
+      {/* 🏟️ Row 4: Venue */}
       {venue && (
         <div className="text-center text-gray-600 text-sm mt-3">
           Venue: {venue}
         </div>
-      )} */}
+      )}
     </div>
   );
 };
