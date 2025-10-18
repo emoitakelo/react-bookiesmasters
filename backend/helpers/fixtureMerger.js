@@ -5,7 +5,6 @@
  * Includes team scores, formatted displayDate, and betting tip.
  */
 
-import { extractTeamForm } from "./formHelper.js";
 import { calculateTip } from "./tipCalculator.js";
 import { groupByLeague } from "./grouping.js";
 
@@ -57,8 +56,6 @@ export const mergeFixturesPredictions = (fixtures, predictions) => {
 // Merge all data
 // console.log("DEBUG prediction being passed to form helper:", JSON.stringify(prediction, null, 2));
 
-const formData = extractTeamForm(prediction);
-console.log("✅ AFTER extractTeamForm:", fixture.id, formData);
 
 
     mergedData.push({
@@ -81,7 +78,6 @@ console.log("✅ AFTER extractTeamForm:", fixture.id, formData);
 
 
       
-      form: formData,
       tip: calculateTip(prediction, teams),
     });
     // console.log("📦 Merged fixture + prediction:", JSON.stringify(mergedData[mergedData.length - 1], null, 2));

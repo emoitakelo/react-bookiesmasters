@@ -1,5 +1,7 @@
 import express from "express";
 import { getPredictionsByDate } from "../controllers/predictionController.js";
+import { getPredictionDetails } from "../controllers/predictionDetailsController.js";
+
 
 const router = express.Router();
 
@@ -7,5 +9,8 @@ const router = express.Router();
 // @route  GET /api/predictions/today
 // @access Public
 router.get("/", getPredictionsByDate);
+
+router.get("/details/:fixtureId", getPredictionDetails);
+
 
 export default router;

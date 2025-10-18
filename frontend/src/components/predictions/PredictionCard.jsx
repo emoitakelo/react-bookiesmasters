@@ -50,9 +50,11 @@
 
 // src/components/predictions/PredictionCard.jsx
 import React from "react";
+import { Link } from "react-router-dom";
+
 
 const PredictionCard = ({ fixture }) => {
-  const { date, status, homeTeam, awayTeam, tip } = fixture;
+  const { fixtureId,date, status, homeTeam, awayTeam, tip } = fixture;
 
   // 🕒 Format time (24-hour, no AM/PM)
   const localTime = new Date(date).toLocaleTimeString([], {
@@ -102,6 +104,7 @@ const PredictionCard = ({ fixture }) => {
   };
 
   return (
+     <Link to={`/predictions/${fixtureId}`} className="block">
     <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-3 sm:p-4 overflow-hidden">
       {/* 🕒 Date & Time */}
       <div className="flex-shrink-0 text-center sm:text-left text-[11px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
@@ -155,6 +158,7 @@ const PredictionCard = ({ fixture }) => {
         <span>{awayTeam.score}</span>
       </div>
     </div>
+    </Link>
   );
 };
 
