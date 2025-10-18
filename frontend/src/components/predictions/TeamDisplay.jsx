@@ -1,8 +1,36 @@
 import React from "react";
 
-const TeamDisplay = ({ home, away, displayDate, venue, homeScore, awayScore }) => {
+const TeamDisplay = ({ fixture }) => {
+  if (!fixture) return null;
+
+  const {
+    homeTeam,
+    awayTeam,
+    date,
+    displayDate,
+    status,
+    venue,
+  } = fixture;
+
+  // 🕒 Determine what to show for date/time
+  const matchDateTime =
+    status === "FT"
+      ? displayDate
+      : new Date(date).toLocaleString("en-GB", {
+          weekday: "short",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+
+  // ⚽ Determine what to show for score
+  const scoreDisplay =
+    homeTeam?.score != null && awayTeam?.score != null
+      ? `${homeTeam.score} - ${awayTeam.score}`
+      : "-";
+
+  // 🟩 Helper for form bars (W/D/L)
   const renderFormBars = (forms) => {
-    if (!forms || forms.length === 0) return null;
+    if (!forms || !Array.isArray(forms) || forms.length === 0) return null;
 
     return (
       <div className="flex justify-center gap-1 mt-1">
@@ -19,47 +47,43 @@ const TeamDisplay = ({ home, away, displayDate, venue, homeScore, awayScore }) =
     );
   };
 
-  // Score display: if either score is null, show "-"
-  const scoreDisplay =
-    homeScore !== null && awayScore !== null ? `${homeScore} - ${awayScore}` : "-";
-
   return (
-    <div className="flex flex-col items-center mb-6">
-      {/* Team names */}
-      <div className="text-center text-lg font-semibold mb-3">
-        {home.name} vs {away.name}
-      </div>
+    <div className="flex flex-col items-center mb-8 text-gray-800">
+      {/* 🏟️ Row 1: Team names */}
+      <h2 className="text-lg sm:text-xl font-semibold mb-3 text-center">
+        {homeTeam?.name} vs {awayTeam?.name}
+      </h2>
 
-      {/* 3-column layout: Home | Date/Score | Away */}
-      <div className="grid grid-cols-3 items-center gap-4 max-w-2xl w-full">
+      {/* 🖼️ Row 2: Logos and center details */}
+      <div className="grid grid-cols-3 items-center gap-6 max-w-2xl w-full">
         {/* Home */}
         <div className="flex flex-col items-center">
           <img
-            src={home.logo}
-            alt={home.name}
-            className="w-16 h-16 object-contain"
+            src={homeTeam?.logo}
+            alt={homeTeam?.name}
+            className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
           />
-          {home.last5Matches && renderFormBars(home.last5Matches)}
+          {renderFormBars(homeTeam?.last5Matches)}
         </div>
 
-        {/* Date / Score */}
-        <div className="text-center text-gray-600 text-sm">
-          <div>{displayDate}</div>
-          <div className="text-lg font-bold mt-1">{scoreDisplay}</div>
+        {/* Center (time + score) */}
+        <div className="flex flex-col items-center justify-center text-center">
+          <div className="text-sm sm:text-base text-gray-600">{matchDateTime}</div>
+          <div className="text-lg sm:text-xl font-bold mt-1">{scoreDisplay}</div>
         </div>
 
         {/* Away */}
         <div className="flex flex-col items-center">
           <img
-            src={away.logo}
-            alt={away.name}
-            className="w-16 h-16 object-contain"
+            src={awayTeam?.logo}
+            alt={awayTeam?.name}
+            className="w-16 h-16 sm:w-20 sm:h-20 object-contain"
           />
-          {away.last5Matches && renderFormBars(away.last5Matches)}
+          {renderFormBars(awayTeam?.last5Matches)}
         </div>
       </div>
 
-      {/* Venue */}
+      {/* 🏟️ Row 4: Venue */}
       {venue && (
         <div className="text-center text-gray-600 text-sm mt-3">
           Venue: {venue}
