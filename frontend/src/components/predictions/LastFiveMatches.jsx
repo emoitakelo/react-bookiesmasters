@@ -6,14 +6,14 @@ const LastFiveMatches = ({ teamName, matches }) => {
     const opp = Number(opponentScore);
 
     if (our === opp) return "bg-orange-200 text-orange-800"; // draw
-    if (our > opp) return "bg-green-200 text-green-800";      // win
-    return "bg-red-200 text-red-800";                         // loss
+    if (our > opp) return "bg-green-200 text-green-800";    // win
+    return "bg-red-200 text-red-800";                       // loss
   };
 
   return (
-    <div className="mb-8 max-w-md mx-auto">
+    <div className="mb-8 max-w-3xl mx-auto">
       <h4 className="text-md font-semibold text-gray-800 mb-2">{teamName} — Last 5 Matches</h4>
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-2">
         {matches.map((m, i) => {
           const isHome = m.homeTeam.name === teamName;
           const ourScore = isHome ? m.score.home : m.score.away;
@@ -28,13 +28,13 @@ const LastFiveMatches = ({ teamName, matches }) => {
           return (
             <div
               key={i}
-              className="grid grid-rows-4 bg-gray-50 border p-2 rounded text-sm"
+              className="grid grid-cols-4 items-center bg-gray-50 border p-2 rounded text-sm"
             >
               {/* 1️⃣ Date */}
-              <div className="text-center text-gray-500">{matchDate}</div>
+              <div className="truncate text-gray-500">{matchDate}</div>
 
               {/* 2️⃣ Home Team */}
-              <div className="text-left font-medium truncate">{m.homeTeam.name}</div>
+              <div className="truncate font-medium">{m.homeTeam.name}</div>
 
               {/* 3️⃣ Score */}
               <div className="flex justify-center">
@@ -49,7 +49,7 @@ const LastFiveMatches = ({ teamName, matches }) => {
               </div>
 
               {/* 4️⃣ Away Team */}
-              <div className="text-right font-medium truncate">{m.awayTeam.name}</div>
+              <div className="truncate font-medium text-right">{m.awayTeam.name}</div>
             </div>
           );
         })}
