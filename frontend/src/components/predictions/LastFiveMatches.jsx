@@ -1,4 +1,6 @@
-const LastFiveMatches = ({ teamName, matches }) => {
+import React from "react";
+
+const LastFiveMatches = ({ teamLogo, matches }) => {
   if (!matches || matches.length === 0) return null;
 
   const getScoreBadgeColor = (ourScore, opponentScore) => {
@@ -12,13 +14,23 @@ const LastFiveMatches = ({ teamName, matches }) => {
 
   return (
     <div className="mb-8 max-w-3xl mx-auto">
-      <h4 className="text-md font-semibold text-gray-800 mb-2">{teamName} — Last 5 Matches</h4>
+      {/* 🏆 Title + Team Logo centered */}
+      <div className="flex flex-col items-center mb-4">
+        <div className="flex items-center justify-center gap-2">
+          <h4 className="text-md sm:text-lg font-semibold text-gray-800 text-center">
+            Last 5 Matches
+          </h4>
+          <img
+            src={teamLogo}
+            alt="Team Logo"
+            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+          />
+        </div>
+      </div>
+
+      {/* 🏟️ Matches List */}
       <div className="flex flex-col gap-2">
         {matches.map((m, i) => {
-          const isHome = m.homeTeam.name === teamName;
-          const ourScore = isHome ? m.score.home : m.score.away;
-          const opponentScore = isHome ? m.score.away : m.score.home;
-
           const matchDate = new Date(m.date).toLocaleDateString("en-US", {
             month: "2-digit",
             day: "2-digit",
@@ -40,8 +52,8 @@ const LastFiveMatches = ({ teamName, matches }) => {
               <div className="flex justify-center">
                 <span
                   className={`w-16 text-center px-2 py-1 rounded font-semibold ${getScoreBadgeColor(
-                    ourScore,
-                    opponentScore
+                    m.score.home,
+                    m.score.away
                   )}`}
                 >
                   {m.score.home} - {m.score.away}
