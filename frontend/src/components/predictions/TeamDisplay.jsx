@@ -1,14 +1,6 @@
 import React from "react";
 
-const TeamDisplay = ({ home, away, date, venue }) => {
-  const matchDate = new Date(date).toLocaleString("en-GB", {
-    weekday: "short",
-    day: "numeric",
-    month: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-
+const TeamDisplay = ({ home, away, displayDate, status, venue, homeScore, awayScore }) => {
   const renderFormBars = (forms) => {
     // forms should be an array of objects: { result: "W", color: "#0f0" }
     return (
@@ -33,7 +25,7 @@ const TeamDisplay = ({ home, away, date, venue }) => {
         {home.name} vs {away.name}
       </div>
 
-      {/* 3-column layout: Home | Date | Away */}
+      {/* 3-column layout: Home | Date/Status | Away */}
       <div className="grid grid-cols-3 items-center gap-4 max-w-2xl w-full">
         {/* Home */}
         <div className="flex flex-col items-center">
@@ -45,9 +37,14 @@ const TeamDisplay = ({ home, away, date, venue }) => {
           {home.last5Matches && renderFormBars(home.last5Matches)}
         </div>
 
-        {/* Date */}
+        {/* Date / Status / Score */}
         <div className="text-center text-gray-600 text-sm">
-          {matchDate}
+          <div>{displayDate}</div>
+          {status === "FT" && (
+            <div className="text-lg font-bold mt-1">
+              {homeScore} - {awayScore}
+            </div>
+          )}
         </div>
 
         {/* Away */}

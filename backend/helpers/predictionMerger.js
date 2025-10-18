@@ -1,12 +1,28 @@
 // helpers/predictionMerger.js
 export const mergePredictionDetails = ({ fixture, prediction, homeData, awayData }) => {
+  const fixtureData = fixture.fixture;
+
+  // Determine if match is finished
+  const isFinished = fixtureData.status?.short === "FT";
+
+  // Format displayDate
+  const displayDate = isFinished
+    ? "FT"
+    : new Date(fixtureData.date).toLocaleString("en-GB", {
+        weekday: "short",
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+
   return {
-    fixtureId: fixture.fixture.id,
+    fixtureId: fixtureData.id,
     league: prediction.league?.name || fixture.league?.name,
     leagueLogo: prediction.league?.logo || fixture.league?.logo,
-    date: fixture.fixture.date,
+    date: fixtureData.date,
+    displayDate,          // ← new formatted property
+    status: fixtureData.status?.short || "NS", // ← new status property
     tip: prediction.predictions?.advice || "N/A",
-    venue: fixture.fixture?.venue?.name || "Unknown venue",
+    venue: fixtureData?.venue?.name || "Unknown venue",
 
     homeTeam: {
       id: fixture.teams.home.id,
