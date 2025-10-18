@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance"; // adjust path if needed
 import LeagueHeader from "../components/predictions/LeagueHeader";
 import TeamDisplay from "../components/predictions/TeamDisplay";
-import MatchInfo from "../components/predictions/MatchInfo";
+// import MatchInfo from "../components/predictions/MatchInfo";
 import PredictionAdvice from "../components/predictions/PredictionAdvice";
 import H2HSection from "../components/predictions/H2HSection";
 import LastFiveMatches from "../components/predictions/LastFiveMatches";
@@ -38,7 +38,7 @@ const PredictionDetails = () => {
     <div className="max-w-5xl mx-auto px-4 py-8 text-gray-900">
       <LeagueHeader league={data.league} />
 <TeamDisplay fixture={data} />
-      <MatchInfo venue={data.venue} />
+      {/* <MatchInfo venue={data.venue} /> */}
       <PredictionAdvice tip={data.tip} />
       <H2HSection h2h={data.h2h} />
       <LastFiveMatches teamName={data.homeTeam.name} matches={data.homeTeam.last5Matches} />

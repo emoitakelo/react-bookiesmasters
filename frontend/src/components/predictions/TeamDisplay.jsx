@@ -3,14 +3,9 @@ import React from "react";
 const TeamDisplay = ({ fixture }) => {
   if (!fixture) return null;
 
-  const {
-    homeTeam,
-    awayTeam,
-    date,
-    displayDate,
-    status,
-    venue,
-  } = fixture;
+  console.log("Fixture data in TeamDisplay:", fixture);
+
+  const { homeTeam, awayTeam, date, displayDate, status, venue } = fixture;
 
   // 🕒 Show "FT" or local time/date
   const matchDateTime =
@@ -21,16 +16,6 @@ const TeamDisplay = ({ fixture }) => {
           hour: "2-digit",
           minute: "2-digit",
         });
-
-  // ✅ Directly use the same score logic as PredictionCard
-  const homeScore = homeTeam?.score;
-  const awayScore = awayTeam?.score;
-
-  // ✅ Display “-” if any score is missing
-  const scoreDisplay =
-    homeScore != null && awayScore != null
-      ? `${homeScore} - ${awayScore}`
-      : "-";
 
   // 🟩 Render form badges
   const renderFormBars = (forms) => {
@@ -50,6 +35,12 @@ const TeamDisplay = ({ fixture }) => {
       </div>
     );
   };
+
+  // ✅ Safely access actual match scores (only if FT)
+  const homeScore =
+    status === "FT" ? homeTeam?.last5Matches?.[0]?.score?.home ?? "-" : null;
+  const awayScore =
+    status === "FT" ? awayTeam?.last5Matches?.[0]?.score?.away ?? "-" : null;
 
   return (
     <div className="flex flex-col items-center mb-8 text-gray-800">
@@ -73,11 +64,15 @@ const TeamDisplay = ({ fixture }) => {
         {/* Center */}
         <div className="flex flex-col items-center justify-center text-center">
           <div className="text-sm sm:text-base text-gray-600">
-            {matchDateTime}
+            {status === "FT" ? "FT" : matchDateTime}
           </div>
-          <div className="text-lg sm:text-xl font-bold mt-1">
-            {scoreDisplay}
-          </div>
+
+          {/* ✅ Show scores only if match is finished */}
+          {status === "FT" && (
+            <div className="text-lg text-black sm:text-xl font-bold mt-1">
+              <span>{homeScore}</span> - <span>{awayScore}</span>
+            </div>
+          )}
         </div>
 
         {/* Away */}
@@ -91,9 +86,11 @@ const TeamDisplay = ({ fixture }) => {
         </div>
       </div>
 
-      {/* 🏟️ Venue */}
+      {/* Venue */}
       {venue && (
-        <p className="text-sm text-gray-500 mt-3 text-center">{venue}</p>
+        <p className="mt-4 text-gray-500 text-sm text-center italic">
+          {venue}
+        </p>
       )}
     </div>
   );
