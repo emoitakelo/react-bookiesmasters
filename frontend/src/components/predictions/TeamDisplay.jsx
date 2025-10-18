@@ -83,12 +83,12 @@ const TeamDisplay = ({ fixture }) => {
         </div>
       </div>
 
-      {/* 🏟️ Row 4: Venue */}
+      {/* 🏟️ Row 4: Venue
       {venue && (
         <div className="text-center text-gray-600 text-sm mt-3">
           Venue: {venue}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
