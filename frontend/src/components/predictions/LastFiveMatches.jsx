@@ -1,52 +1,50 @@
 const LastFiveMatches = ({ teamName, matches }) => {
   if (!matches || matches.length === 0) return null;
 
-  // Determine badge color based on "our team" score vs opponent
   const getScoreBadgeColor = (ourScore, opponentScore) => {
     const our = Number(ourScore);
     const opp = Number(opponentScore);
 
-    if (our === opp) return "bg-orange-200 text-black"; // draw
-    if (our > opp) return "bg-green-800 text-black";      // win
-    return "bg-red-800 text-black";                         // loss
+    if (our === opp) return "bg-orange-200 text-orange-800"; // draw
+    if (our > opp) return "bg-green-200 text-green-800";      // win
+    return "bg-red-200 text-red-800";                         // loss
   };
 
   return (
     <div className="mb-8 max-w-md mx-auto">
       <h4 className="text-md font-semibold text-gray-800 mb-2">{teamName} — Last 5 Matches</h4>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-3">
         {matches.map((m, i) => {
-          // Decide which side is "our team" in this match
           const isHome = m.homeTeam.name === teamName;
           const ourScore = isHome ? m.score.home : m.score.away;
           const opponentScore = isHome ? m.score.away : m.score.home;
 
-          return (
-            <div
-              key={i}
-              className="grid grid-cols-3 items-center bg-gray-50 border p-2 rounded text-sm"
-            >
-              {/* Home Team */}
-              <span className="flex items-center gap-1 truncate text-left">
-                <img src={m.homeTeam.logo} alt={m.homeTeam.name} className="w-5 h-5 flex-shrink-0" />
-                <span className="truncate">{m.homeTeam.name}</span>
-              </span>
+          const matchDate = new Date(m.date).toLocaleDateString("en-US", {
+            month: "2-digit",
+            day: "2-digit",
+            year: "2-digit",
+          });
 
-              {/* Score with badge */}
-              <span
-                className={`px-2 py-1 rounded text-sm font-medium text-center ${getScoreBadgeColor(
+          return (
+            <div key={i} className="grid grid-rows-4 bg-gray-50 border p-2 rounded text-sm">
+              {/* 1️⃣ Date */}
+              <div className="text-center text-gray-500">{matchDate}</div>
+
+              {/* 2️⃣ Home Team */}
+              <div className="text-left font-medium truncate">{m.homeTeam.name}</div>
+
+              {/* 3️⃣ Score */}
+              <div
+                className={`text-center px-2 py-1 rounded font-semibold ${getScoreBadgeColor(
                   ourScore,
                   opponentScore
                 )}`}
               >
                 {m.score.home} - {m.score.away}
-              </span>
+              </div>
 
-              {/* Away Team */}
-              <span className="flex items-center gap-1 justify-end truncate text-right">
-                <span className="truncate">{m.awayTeam.name}</span>
-                <img src={m.awayTeam.logo} alt={m.awayTeam.name} className="w-5 h-5 flex-shrink-0" />
-              </span>
+              {/* 4️⃣ Away Team */}
+              <div className="text-right font-medium truncate">{m.awayTeam.name}</div>
             </div>
           );
         })}
