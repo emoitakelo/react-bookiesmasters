@@ -18,15 +18,16 @@ const LastFiveMatches = ({ teamName, matches }) => {
               {m.score.home} - {m.score.away}
             </span>
             <span className="flex items-center gap-2">
+                              <img src={m.awayTeam.logo} alt={m.awayTeam.name} className="w-5 h-5" />
+
               {m.awayTeam.name}
-              <img src={m.awayTeam.logo} alt={m.awayTeam.name} className="w-5 h-5" />
             </span>
-            <span
+            {/* <span
               className="ml-2 px-2 py-1 rounded text-white text-xs"
               style={{ backgroundColor: m.color }}
             >
               {m.result}
-            </span>
+            </span> */}
           </div>
         ))}
       </div>
