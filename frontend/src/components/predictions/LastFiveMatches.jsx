@@ -1,15 +1,15 @@
 import React from "react";
 
-const LastFiveMatches = ({ teamLogo, teamName,matches }) => {
+const LastFiveMatches = ({ teamLogo, teamName, matches }) => {
   if (!matches || matches.length === 0) return null;
 
-  const getScoreBadgeColor = (ourScore, opponentScore) => {
-    const our = Number(ourScore);
-    const opp = Number(opponentScore);
+  const getScoreBadgeColor = (isHome, homeScore, awayScore) => {
+    const our = isHome ? homeScore : awayScore;
+    const opp = isHome ? awayScore : homeScore;
 
-    if (our === opp) return "bg-orange-200 text-orange-800"; // draw
-    if (our > opp) return "bg-green-200 text-green-800";    // win
-    return "bg-red-200 text-red-800";                       // loss
+    if (our === opp) return "bg-orange-200 text-orange-800"; // Draw
+    if (our > opp) return "bg-green-200 text-green-800";     // Win
+    return "bg-red-200 text-red-800";                        // Loss
   };
 
   return (
@@ -17,22 +17,26 @@ const LastFiveMatches = ({ teamLogo, teamName,matches }) => {
       {/* 🏆 Title + Team Logo centered */}
       <div className="flex flex-col items-center mb-4">
         <div className="flex items-center justify-center gap-2">
-
+          {teamLogo && (
             <img
-            src={teamLogo}
-            alt="Team Logo"
-            className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
-          />
+              src={teamLogo}
+              alt={`${teamName} Logo`}
+              className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
+            />
+          )}
           <h4 className="text-md sm:text-lg font-semibold text-gray-800 text-center">
             Last 5 Matches
           </h4>
-          
         </div>
       </div>
 
       {/* 🏟️ Matches List */}
       <div className="flex flex-col gap-2">
         {matches.map((m, i) => {
+          const isHome = m.homeTeam.name === teamName;
+          const homeScore = Number(m.score.home);
+          const awayScore = Number(m.score.away);
+
           const matchDate = new Date(m.date).toLocaleDateString("en-US", {
             month: "2-digit",
             day: "2-digit",
@@ -50,15 +54,16 @@ const LastFiveMatches = ({ teamLogo, teamName,matches }) => {
               {/* 2️⃣ Home Team */}
               <div className="truncate font-medium">{m.homeTeam.name}</div>
 
-              {/* 3️⃣ Score */}
+              {/* 3️⃣ Score with perspective-based badge */}
               <div className="flex justify-center">
                 <span
                   className={`w-16 text-center px-2 py-1 rounded font-semibold ${getScoreBadgeColor(
-                    m.score.home,
-                    m.score.away
+                    isHome,
+                    homeScore,
+                    awayScore
                   )}`}
                 >
-                  {m.score.home} - {m.score.away}
+                  {homeScore} - {awayScore}
                 </span>
               </div>
 
