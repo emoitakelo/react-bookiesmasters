@@ -1,6 +1,6 @@
 import React from "react";
 
-const TeamDisplay = ({ home, away, displayDate, venue, homeScore, awayScore }) => {
+const TeamDisplay = ({ home, away, displayDate, venue }) => {
   const renderFormBars = (forms) => {
     if (!forms || forms.length === 0) return null;
 
@@ -19,18 +19,20 @@ const TeamDisplay = ({ home, away, displayDate, venue, homeScore, awayScore }) =
     );
   };
 
-  // Score display: if either score is null, show "-"
+  // ✅ Show score or "-"
   const scoreDisplay =
-    homeScore !== null && awayScore !== null ? `${homeScore} - ${awayScore}` : "-";
+    home.score !== null && away.score !== null
+      ? `${home.score} - ${away.score}`
+      : "-";
 
   return (
     <div className="flex flex-col items-center mb-6">
-      {/* Team names */}
+      {/* Teams */}
       <div className="text-center text-lg font-semibold mb-3">
         {home.name} vs {away.name}
       </div>
 
-      {/* 3-column layout: Home | Date/Score | Away */}
+      {/* Layout: Home | Date/Score | Away */}
       <div className="grid grid-cols-3 items-center gap-4 max-w-2xl w-full">
         {/* Home */}
         <div className="flex flex-col items-center">
@@ -42,7 +44,7 @@ const TeamDisplay = ({ home, away, displayDate, venue, homeScore, awayScore }) =
           {home.last5Matches && renderFormBars(home.last5Matches)}
         </div>
 
-        {/* Date / Score */}
+        {/* DisplayDate / Score */}
         <div className="text-center text-gray-600 text-sm">
           <div>{displayDate}</div>
           <div className="text-lg font-bold mt-1">{scoreDisplay}</div>
