@@ -15,7 +15,7 @@ function Footer() {
           </h6>
           <p className="text-sm  leading-relaxed">
             Get accurate football predictions, fixtures, and insights powered by
-            data.Payment after win tips for highstakers .All in one place.
+            data.All in one place.
           </p>
         </div>
 

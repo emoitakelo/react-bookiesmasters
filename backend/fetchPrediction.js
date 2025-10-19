@@ -122,7 +122,7 @@ async function fetchPredictions() {
 
     
     // 3. Hardcoded date (change this when needed)
-    const today = "2025-10-18"; // YYYY-MM-DD
+    const today = "2025-10-26"; // YYYY-MM-DD
 
     // Convert to UNIX timestamp range
     const start = Math.floor(new Date(`${today}T00:00:00Z`).getTime() / 1000);
