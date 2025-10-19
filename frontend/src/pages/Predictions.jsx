@@ -6,7 +6,7 @@ import axiosInstance from "../utils/axiosInstance";
 
 const Predictions = () => {
   const [predictions, setPredictions] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
