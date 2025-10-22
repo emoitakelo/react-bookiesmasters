@@ -5,6 +5,7 @@ import cors from "cors";
 
 // Import routes
 import predictionRoutes from "./routes/predictionRoutes.js";
+import healthRoute from "./routes/health.js";
 
 dotenv.config();
 const app = express();
@@ -21,6 +22,7 @@ mongoose
 
 // Routes
 app.use("/api/predictions", predictionRoutes);
+app.use("/api", healthRoute);
 
 // Default route (optional)
 app.get("/", (req, res) => {

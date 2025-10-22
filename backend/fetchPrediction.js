@@ -122,7 +122,7 @@ async function fetchPredictions() {
 
     
     // 3. Hardcoded date (change this when needed)
-    const today = "2025-10-26"; // YYYY-MM-DD
+    const today = "2025-10-23"; // YYYY-MM-DD
 
     // Convert to UNIX timestamp range
     const start = Math.floor(new Date(`${today}T00:00:00Z`).getTime() / 1000);
@@ -187,7 +187,7 @@ async function fetchPredictions() {
       }
 
       // Delay before next request (to avoid rate limit/caching issues)
-      await delay(2000);
+      await delay(7000);
     }
   } catch (error) {
     console.error("❌ Script error:", error.message);
