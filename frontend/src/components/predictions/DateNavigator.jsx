@@ -73,12 +73,13 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         &gt;
       </button>
 
-      {/* 📅 Calendar button */}
+      {/* 📅 Calendar button (now teal background + white icon) */}
       <button
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-teal-600 text-teal-600 flex items-center justify-center hover:bg-teal-50 transition-colors 
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 flex items-center justify-center 
+        text-white hover:bg-teal-700 transition-colors 
         outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0"
       >
-        <CalendarDays size={22} className="sm:w-6 sm:h-6" />
+        <CalendarDays size={22} className="sm:w-6 sm:h-6 text-white" />
       </button>
     </div>
   );
