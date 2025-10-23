@@ -1,20 +1,16 @@
-
-
-
 // src/components/predictions/DateNavigator.jsx
 import React from "react";
+import { CalendarDays } from "lucide-react"; // calendar icon
 
 const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   const today = new Date();
   const selected = new Date(currentDate);
 
-  // Calculate difference in days from today
   const diffDays = Math.floor(
     (selected.setHours(0, 0, 0, 0) - today.setHours(0, 0, 0, 0)) /
       (1000 * 60 * 60 * 24)
   );
 
-  // Disable conditions
   const reachedPrevLimit = diffDays <= -7;
   const reachedNextLimit = diffDays >= 7;
 
@@ -38,43 +34,50 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     month: "short",
   });
 
-  // Helper for button style
-  const getButtonClass = (isLimitReached) => {
-    if (isLimitReached) return "bg-gray-400 cursor-not-allowed text-white";
-    return "bg-teal-500 text-white";
-  };
-
   return (
-  <div className="max-w-3xl mx-auto flex items-center justify-between gap-1 my-2 px-4 sm:px-6">
-    {/* ◀ Left arrow */}
-    <button
-      onClick={handlePrevious}
-      disabled={loading || reachedPrevLimit}
-      className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
-        hover:scale-110 active:scale-95 
-        ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
-    >
-      &lt;
-    </button>
+    <div className="max-w-3xl mx-auto flex items-center justify-between gap-3 my-3 px-4 sm:px-6">
+      {/* 🔴 Live Button */}
+      <button
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 text-white font-semibold flex items-center justify-center text-sm sm:text-base hover:bg-teal-700 transition-colors"
+      >
+        Live
+      </button>
 
-    {/* Date display */}
-    <span className="text-medium sm:text-lg font-semibold text-gray-800 text-center flex-grow">
-      {formattedDate}
-    </span>
+      {/* ◀ Left arrow */}
+      <button
+        onClick={handlePrevious}
+        disabled={loading || reachedPrevLimit}
+        className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
+          hover:scale-110 active:scale-95 
+          ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
+      >
+        &lt;
+      </button>
 
-    {/* ▶ Right arrow */}
-    <button
-      onClick={handleNext}
-      disabled={loading || reachedNextLimit}
-      className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
-        hover:scale-110 active:scale-95 
-        ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
-    >
-      &gt;
-    </button>
-  </div>
-);
+      {/* Date display */}
+      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow">
+        {formattedDate}
+      </span>
 
+      {/* ▶ Right arrow */}
+      <button
+        onClick={handleNext}
+        disabled={loading || reachedNextLimit}
+        className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
+          hover:scale-110 active:scale-95 
+          ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
+      >
+        &gt;
+      </button>
+
+      {/* 📅 Calendar button */}
+      <button
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-teal-600 text-teal-600 flex items-center justify-center hover:bg-teal-50 transition-colors"
+      >
+        <CalendarDays size={22} className="sm:w-6 sm:h-6" />
+      </button>
+    </div>
+  );
 };
 
 export default DateNavigator;
