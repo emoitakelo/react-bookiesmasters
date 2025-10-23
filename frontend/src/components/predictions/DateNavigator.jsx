@@ -45,7 +45,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   };
 
   return (
-  <div className="max-w-3xl mx-auto flex items-center justify-between gap-4 my-6 px-2 sm:px-4">
+  <div className="max-w-3xl mx-auto flex items-center justify-between gap-1 my-2 px-4 sm:px-6">
     {/* ◀ Left arrow */}
     <button
       onClick={handlePrevious}
