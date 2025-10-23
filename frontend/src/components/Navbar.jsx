@@ -1,39 +1,27 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Menu, X } from "lucide-react"; // modern icons
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.png";
 
-
-
-
-function Navbar({ user, setUser }) {
+function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    setUser(null);
-    navigate("/login");
-  };
 
   const links = [
     { name: "Home", path: "/" },
     { name: "Predictions", path: "/predictions" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact-us" },
+    { name: "Live Scores", path: "/livescores" }, // you can add this new one if desired
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-900 text-white shadow-md z-50">
+    <nav className="w-full bg-gray-900 text-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 md:px-8 flex items-center justify-between h-16">
         {/* Logo / Brand */}
-        <Link
-          to="/">
-           <img
-    src={logo}
-    alt="BookiesMasters Logo"
-    className="h-10 w-auto object-contain"
-  />
+        <Link to="/">
+          <img
+            src={logo}
+            alt="BookiesMasters Logo"
+            className="h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Desktop Menu */}
@@ -47,39 +35,6 @@ function Navbar({ user, setUser }) {
               {link.name}
             </Link>
           ))}
-
-          {/* Auth Links */}
-          {user ? (
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/profile"
-                className="text-gray-300 hover:text-white transition"
-              >
-                {user.name || user.email || "Profile"}
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-lg text-sm"
-              >
-                Logout
-              </button>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-4">
-              <Link
-                to="/login"
-                className="text-gray-300 hover:text-white transition"
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-1 rounded-lg text-sm"
-              >
-                Register
-              </Link>
-            </div>
-          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -105,44 +60,6 @@ function Navbar({ user, setUser }) {
                 {link.name}
               </Link>
             ))}
-
-            {user ? (
-              <>
-                <Link
-                  to="/profile"
-                  onClick={() => setMenuOpen(false)}
-                  className="text-gray-300 hover:text-white transition"
-                >
-                  {user.name || user.email || "Profile"}
-                </Link>
-                <button
-                  onClick={() => {
-                    handleLogout();
-                    setMenuOpen(false);
-                  }}
-                  className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 rounded-lg text-sm"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  onClick={() => setMenuOpen(false)}
-                  className="text-gray-300 hover:text-white transition"
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  onClick={() => setMenuOpen(false)}
-                  className="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 rounded-lg text-sm text-center"
-                >
-                  Register
-                </Link>
-              </>
-            )}
           </div>
         </div>
       )}
