@@ -45,12 +45,12 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   };
 
   return (
-  <div className="max-w-md mx-auto flex items-center justify-between gap-4 my-6 px-2 sm:px-4">
+  <div className="max-w-3xl mx-auto flex items-center justify-between gap-4 my-6 px-2 sm:px-4">
     {/* ◀ Left arrow */}
     <button
       onClick={handlePrevious}
       disabled={loading || reachedPrevLimit}
-      className={`text-teal-600 text-5xl sm:text-6xl font-semibold transition-transform duration-200 
+      className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
         hover:scale-110 active:scale-95 
         ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
     >
@@ -66,7 +66,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     <button
       onClick={handleNext}
       disabled={loading || reachedNextLimit}
-      className={`text-teal-600 text-5xl sm:text-6xl font-semibold transition-transform duration-200 
+      className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
         hover:scale-110 active:scale-95 
         ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
     >
