@@ -50,7 +50,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     <button
       onClick={handlePrevious}
       disabled={loading || reachedPrevLimit}
-      className={`text-teal-600 text-3xl sm:text-4xl font-bold transition-transform duration-200 
+      className={`text-teal-600 text-5xl sm:text-6xl font-semibold transition-transform duration-200 
         hover:scale-110 active:scale-95 
         ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
     >
@@ -58,7 +58,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     </button>
 
     {/* Date display */}
-    <span className="text-lg sm:text-xl font-semibold text-gray-800 text-center flex-grow">
+    <span className="text-medium sm:text-lg font-semibold text-gray-800 text-center flex-grow">
       {formattedDate}
     </span>
 
@@ -66,7 +66,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     <button
       onClick={handleNext}
       disabled={loading || reachedNextLimit}
-      className={`text-teal-600 text-3xl sm:text-4xl font-bold transition-transform duration-200 
+      className={`text-teal-600 text-5xl sm:text-6xl font-semibold transition-transform duration-200 
         hover:scale-110 active:scale-95 
         ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
     >

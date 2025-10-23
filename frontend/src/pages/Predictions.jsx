@@ -49,7 +49,7 @@ const Predictions = () => {
   };
 
   return (
-    <main className="max-w-5xl mx-auto px-3 sm:px-6 py-6">
+    <main className="max-w-3xl mx-auto px-1 sm:px-3 py-3">
      
 
       <DateNavigator
