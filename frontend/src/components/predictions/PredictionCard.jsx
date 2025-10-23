@@ -107,11 +107,11 @@ const PredictionCard = ({ fixture }) => {
      <Link to={`/predictions/${fixtureId}`} className="block">
     <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-2 sm:p-3 overflow-hidden">
       {/* 🕒 Date & Time */}
-      <div className="flex-shrink-0 text-center sm:text-left text-[9px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
-        <p className="font-small text-gray-700">
+      <div className="flex-shrink-0 text-center sm:text-left text-[7px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
+        <p className=" text-gray-700">
           {status === "FT" ? "FT" : localTime}
         </p>
-        <p className="text-gray-400 font-small">{localDate}</p>
+        <p className="text-gray-400 ">{localDate}</p>
       </div>
 
       {/* 🏟️ Teams */}
