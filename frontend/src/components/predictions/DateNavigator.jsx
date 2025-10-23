@@ -38,7 +38,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     <div className="max-w-3xl mx-auto flex items-center justify-between gap-3 my-3 px-4 sm:px-6">
       {/* 🔴 Live Button */}
       <button
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 text-white font-semibold flex items-center justify-center text-sm sm:text-base hover:bg-teal-700 transition-colors focus:outline-none active:outline-none"
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 text-white font-semibold flex items-center justify-center text-sm sm:text-base hover:bg-teal-700 transition-colors 
+        outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0"
       >
         Live
       </button>
@@ -48,14 +49,15 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         onClick={handlePrevious}
         disabled={loading || reachedPrevLimit}
         className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
-          hover:scale-110 active:scale-95 focus:outline-none active:outline-none
+          hover:scale-110 active:scale-95 
+          outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
           ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
       >
         &lt;
       </button>
 
       {/* Date display */}
-      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow">
+      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow select-none">
         {formattedDate}
       </span>
 
@@ -64,7 +66,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         onClick={handleNext}
         disabled={loading || reachedNextLimit}
         className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
-          hover:scale-110 active:scale-95 focus:outline-none active:outline-none
+          hover:scale-110 active:scale-95 
+          outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
           ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
       >
         &gt;
@@ -72,7 +75,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
 
       {/* 📅 Calendar button */}
       <button
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-teal-600 text-teal-600 flex items-center justify-center hover:bg-teal-50 transition-colors focus:outline-none active:outline-none"
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border-2 border-teal-600 text-teal-600 flex items-center justify-center hover:bg-teal-50 transition-colors 
+        outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0"
       >
         <CalendarDays size={22} className="sm:w-6 sm:h-6" />
       </button>
