@@ -1,47 +1,4 @@
-// import React from "react";
 
-// const DateNavigator = ({ currentDate, onChangeDate }) => {
-//   const handlePrevious = () => {
-//     const prev = new Date(currentDate);
-//     prev.setDate(prev.getDate() - 1);
-//     onChangeDate(prev.toISOString().split("T")[0]);
-//   };
-
-//   const handleNext = () => {
-//     const next = new Date(currentDate);
-//     next.setDate(next.getDate() + 1);
-//     onChangeDate(next.toISOString().split("T")[0]);
-//   };
-
-//   return (
-//     <div className="flex items-center justify-center sm:justify-between my-6">
-//       <button
-//         onClick={handlePrevious}
-//         className="bg-teal-500 px-4 py-2 rounded-lg font-medium"
-//       >
-//         ◀ Previous
-//       </button>
-
-//       <span className="text-lg sm:text-xl font-semibold text-gray-800">
-//         {new Date(currentDate).toLocaleDateString("en-US", {
-//           weekday: "long",
-//           year: "numeric",
-//           month: "short",
-//           day: "numeric",
-//         })}
-//       </span>
-
-//       <button
-//         onClick={handleNext}
-//         className="bg-teal-500 px-4 py-2 rounded-lg font-medium"
-//       >
-//         Next ▶
-//       </button>
-//     </div>
-//   );
-// };
-
-// export default DateNavigator;
 
 
 // src/components/predictions/DateNavigator.jsx
@@ -88,32 +45,36 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   };
 
   return (
-    <div className="max-w-md mx-auto flex items-center justify-between gap-2 my-6 px-2 sm:px-4 whitespace-nowrap">
-      <button
-        onClick={handlePrevious}
-        disabled={loading || reachedPrevLimit}
-        className={`w-20 sm:w-24 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
-          reachedPrevLimit
-        )}`}
-      >
-        ◀ Prev
-      </button>
+  <div className="max-w-md mx-auto flex items-center justify-between gap-4 my-6 px-2 sm:px-4">
+    {/* ◀ Left arrow */}
+    <button
+      onClick={handlePrevious}
+      disabled={loading || reachedPrevLimit}
+      className={`text-teal-600 text-3xl sm:text-4xl font-bold transition-transform duration-200 
+        hover:scale-110 active:scale-95 
+        ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
+    >
+      &lt;
+    </button>
 
-      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow">
-        {formattedDate}
-      </span>
+    {/* Date display */}
+    <span className="text-lg sm:text-xl font-semibold text-gray-800 text-center flex-grow">
+      {formattedDate}
+    </span>
 
-      <button
-        onClick={handleNext}
-        disabled={loading || reachedNextLimit}
-        className={`w-20 sm:w-24 px-1 sm:px-2 py-2 rounded-lg text-sm sm:text-base font-medium flex-shrink-0 ${getButtonClass(
-          reachedNextLimit
-        )}`}
-      >
-        Next ▶
-      </button>
-    </div>
-  );
+    {/* ▶ Right arrow */}
+    <button
+      onClick={handleNext}
+      disabled={loading || reachedNextLimit}
+      className={`text-teal-600 text-3xl sm:text-4xl font-bold transition-transform duration-200 
+        hover:scale-110 active:scale-95 
+        ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
+    >
+      &gt;
+    </button>
+  </div>
+);
+
 };
 
 export default DateNavigator;

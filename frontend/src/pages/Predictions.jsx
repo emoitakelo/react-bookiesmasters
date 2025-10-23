@@ -50,9 +50,7 @@ const Predictions = () => {
 
   return (
     <main className="max-w-5xl mx-auto px-3 sm:px-6 py-6">
-      <h1 className="text-xl sm:text-2xl font-bold text-gray-800 mb-4 text-center sm:text-left">
-        Football Predictions
-      </h1>
+     
 
       <DateNavigator
         currentDate={currentDate}
