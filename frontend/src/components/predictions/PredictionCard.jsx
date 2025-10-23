@@ -105,13 +105,13 @@ const PredictionCard = ({ fixture }) => {
 
   return (
      <Link to={`/predictions/${fixtureId}`} className="block">
-    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-3 sm:p-4 overflow-hidden">
+    <div className="max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-2 sm:p-3 overflow-hidden">
       {/* 🕒 Date & Time */}
       <div className="flex-shrink-0 text-center sm:text-left text-[11px] sm:text-sm text-gray-600 w-[65px] sm:w-[80px]">
-        <p className="font-medium text-gray-700">
+        <p className="font-small text-gray-700">
           {status === "FT" ? "FT" : localTime}
         </p>
-        <p className="text-gray-400">{localDate}</p>
+        <p className="text-gray-400 font-small">{localDate}</p>
       </div>
 
       {/* 🏟️ Teams */}
@@ -120,9 +120,9 @@ const PredictionCard = ({ fixture }) => {
           <img
             src={homeTeam.logo}
             alt={homeTeam.name}
-            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+            className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
           />
-          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[150px]">
+          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[70px] sm:max-w-[130px]">
             {homeTeam.name}
           </span>
         </div>
@@ -130,18 +130,18 @@ const PredictionCard = ({ fixture }) => {
           <img
             src={awayTeam.logo}
             alt={awayTeam.name}
-            className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+            className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
           />
-          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[150px]">
+          <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[70px] sm:max-w-[130px]">
             {awayTeam.name}
           </span>
         </div>
       </div>
 
       {/* 📊 Tip */}
-      <div className="flex-shrink-0 text-center px-2 sm:px-4">
+      <div className="flex-shrink-0 text-center px-1 sm:px-3">
         <p
-          className={`text-sm sm:text-base font-bold ${getTipColor(
+          className={`text-sm sm:text-base font-semibold ${getTipColor(
             tip,
             homeTeam.score,
             awayTeam.score,
