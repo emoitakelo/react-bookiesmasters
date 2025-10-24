@@ -111,7 +111,6 @@ const PredictionCard = ({ fixture }) => {
         <p className=" text-gray-700">
           {status === "FT" ? "FT" : localTime}
         </p>
-        <p className="text-gray-400 ">{localDate}</p>
       </div>
 
       {/* 🏟️ Teams */}
