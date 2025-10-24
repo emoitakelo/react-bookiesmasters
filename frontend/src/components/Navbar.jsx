@@ -20,7 +20,7 @@ function Navbar() {
           <img
             src={logo}
             alt="BookiesMasters Logo"
-            className="h-10 w-auto object-contain"
+            className="h-12 sm:h-14 w-auto object-contain"
           />
         </Link>
 
