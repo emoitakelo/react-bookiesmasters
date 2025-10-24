@@ -6,13 +6,13 @@ function Footer() {
   return (
     <footer className="bg-gray-900 font-semibold text-gray-400 px-4 mt-5">
       {/* Main footer section */}
-      <div className="max-w-7xl mx-auto px-2 md:px-4 py-1 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-700">
+      <div className="max-w-3xl mx-auto px-2 md:px-4 py-1 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-700">
         
         {/* Brand / About */}
         <div>
-          <h6 className="text-sm text-white mb-1">
+          <h5 className="text-sm text-white mb-1">
             Bookiesmasters
-          </h6>
+          </h5>
           <p className="text-sm   leading-relaxed">
             Get guided football predictions, fixtures,livescores and insights powered by
             data.All in one place.
@@ -23,9 +23,9 @@ function Footer() {
 
         {/* Contact / Socials */}
         <div>
-          <h6 className="text-sm text-white mb-1">
+          <h5 className="text-sm text-white mb-1">
             Stay connected
-          </h6>
+          </h5>
           <p className="text-sm text-gray-400 mb-1">
             Have questions? Reach us anytime.
           </p>
@@ -52,9 +52,9 @@ function Footer() {
 
  {/* Quick Links */}
         <div>
-          <h6 className="text-sm text-white mb-1">
+          <h5 className="text-sm text-white mb-1">
             Quick links
-          </h6>
+          </h5>
           <ul className=" text-sm">
 <li>
               <Link
