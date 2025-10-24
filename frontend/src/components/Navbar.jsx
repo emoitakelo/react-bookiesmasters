@@ -42,7 +42,7 @@ function Navbar() {
   className="md:hidden text-[#5eead4] hover:text-[#99f6e4] focus:outline-none focus:ring-0"
   onClick={() => setMenuOpen(!menuOpen)}
 >
-  {menuOpen ? <X size={23} /> : <Menu size={23} />}
+  {menuOpen ? <X size={25} /> : <Menu size={25} />}
 </button>
 
       </div>
