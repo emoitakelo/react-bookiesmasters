@@ -39,11 +39,12 @@ function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-teal-300 focus:outline-none focus:ring-0"
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
-          {menuOpen ? <X size={26} /> : <Menu size={26} />}
-        </button>
+  className="md:hidden text-[#5eead4] hover:text-[#99f6e4] focus:outline-none focus:ring-0"
+  onClick={() => setMenuOpen(!menuOpen)}
+>
+  {menuOpen ? <X size={26} /> : <Menu size={26} />}
+</button>
+
       </div>
 
       {/* Mobile Dropdown Menu */}
