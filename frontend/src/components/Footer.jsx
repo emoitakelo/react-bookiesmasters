@@ -31,9 +31,9 @@ function Footer() {
           </p>
           <a
             href="mailto:support@bookiesmasters.com"
-            className="inline-flex items-center text-teal-300 hover:text-teal-300 text-sm mb-1"
+            className="inline-flex items-center text-[#5eead4] hover:text-teal-300 text-sm mb-1"
           >
-            <Mail size={18} className="mr-2" /> support@bookiesmasters.com
+            <Mail size={18} className="mr-2 " /> support@bookiesmasters.com
           </a>
 
           {/* Socials (optional) */}
