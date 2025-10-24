@@ -67,7 +67,7 @@ const PredictionCard = ({ fixture }) => {
   const localDate = new Date(date).toLocaleDateString("en-US", {
     month: "2-digit",
     day: "2-digit",
-    year: false,
+    
   });
 
   // 🎨 Tip color logic
