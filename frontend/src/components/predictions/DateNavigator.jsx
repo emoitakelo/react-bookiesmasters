@@ -48,7 +48,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         onClick={handlePrevious}
         disabled={loading || reachedPrevLimit}
-        className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
+        className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
           hover:scale-110 active:scale-95 
           outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
           ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
@@ -65,7 +65,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         onClick={handleNext}
         disabled={loading || reachedNextLimit}
-        className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
+        className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
           hover:scale-110 active:scale-95 
           outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
           ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
@@ -79,7 +79,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         text-white hover:bg-teal-700 transition-colors 
         outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0"
       >
-        <CalendarDays size={22} className="sm:w-6 sm:h-6 text-white" />
+        <CalendarDays size={21} className="sm:w-6 sm:h-6 text-white" />
       </button>
     </div>
   );
