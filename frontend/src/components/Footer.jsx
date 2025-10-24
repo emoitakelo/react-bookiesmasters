@@ -4,7 +4,7 @@ import { Facebook, Twitter, Instagram, Mail } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="bg-gray-900 text-gray-400 px-4 mt-5">
+    <footer className="bg-gray-900 font-semibold text-gray-400 px-4 mt-5">
       {/* Main footer section */}
       <div className="max-w-7xl mx-auto px-2 md:px-4 py-1 grid grid-cols-1 md:grid-cols-3 gap-4 border-b border-gray-700">
         
@@ -13,7 +13,7 @@ function Footer() {
           <h6 className="text-sm text-white mb-1">
             Bookiesmasters
           </h6>
-          <p className="text-sm  leading-relaxed">
+          <p className="text-sm   leading-relaxed">
             Get guided football predictions, fixtures,livescores and insights powered by
             data.All in one place.
           </p>
