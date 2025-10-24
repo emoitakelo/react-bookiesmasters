@@ -9,7 +9,6 @@ function Navbar() {
   const links = [
     { name: "Home", path: "/" },
     { name: "Predictions", path: "/predictions" },
-    { name: "Live Scores", path: "/livescores" }, // you can add this new one if desired
   ];
 
   return (
