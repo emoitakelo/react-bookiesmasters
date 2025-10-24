@@ -38,7 +38,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     <div className="max-w-3xl mx-auto flex items-center justify-between gap-3 my-3 px-4 sm:px-6">
       {/* 🔴 Live Button */}
       <button
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#5eead4] text-white font-semibold flex items-center justify-center text-sm sm:text-base hover:bg-teal-700 transition-colors 
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 text-white font-semibold flex items-center justify-center text-sm sm:text-base hover:bg-teal-700 transition-colors 
         outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0"
       >
         Live
@@ -48,7 +48,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         onClick={handlePrevious}
         disabled={loading || reachedPrevLimit}
-        className={`text-[#5eead4] text-5xl sm:text-6xl transition-transform duration-200 
+        className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
           hover:scale-110 active:scale-95 
           outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
           ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
@@ -65,7 +65,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         onClick={handleNext}
         disabled={loading || reachedNextLimit}
-        className={`text-[#5eead4] text-5xl sm:text-6xl transition-transform duration-200 
+        className={`text-teal-600 text-5xl sm:text-6xl transition-transform duration-200 
           hover:scale-110 active:scale-95 
           outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
           ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
@@ -75,7 +75,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
 
       {/* 📅 Calendar button (now teal background + white icon) */}
       <button
-        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#5eead4] flex items-center justify-center 
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-teal-600 flex items-center justify-center 
         text-white hover:bg-teal-700 transition-colors 
         outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0"
       >
