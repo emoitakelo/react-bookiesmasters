@@ -62,6 +62,8 @@ export const mergeFixturesPredictions = (fixtures, predictions) => {
       fixtureId: fixture.id,
       league: league.name,
       leagueLogo: league.logo,
+      country: league.country || "",
+      countryLogo: league.flag || "",
       date: fixture.date,
       displayDate, // ← formatted for frontend
       status: fixture.status.short, // NS, FT, etc.

@@ -65,7 +65,6 @@ const updateFixturesCurrentSeason = async () => {
         console.error(`❌ Error fetching leagueId=${leagueId}, season=${season}:`, err.message);
       }
 
-      await delay(2000); // Wait 2 seconds between each league call
     }
 
     console.log("🎯 All current season fixtures updated successfully!");
