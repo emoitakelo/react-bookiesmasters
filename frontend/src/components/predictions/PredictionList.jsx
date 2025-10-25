@@ -14,6 +14,7 @@ const PredictionList = ({ predictions }) => {
           key={index}
           league={leagueData.league}
           leagueLogo={leagueData.leagueLogo}
+          country={leagueData.country} 
         >
           {leagueData.fixtures.map((fixture) => (
             <PredictionCard key={fixture.fixtureId} fixture={fixture} />
