@@ -103,9 +103,13 @@ const PredictionSchema = new mongoose.Schema(
   }
 );
 
+// ✅ Indexes
 PredictionSchema.index({ fixtureId: 1 });
 PredictionSchema.index({ "teams.home.name": 1 });
 PredictionSchema.index({ "teams.away.name": 1 });
 
-const Prediction = mongoose.model("Prediction", PredictionSchema);
+// ✅ Safe model registration to prevent OverwriteModelError
+const Prediction =
+  mongoose.models.Prediction || mongoose.model("Prediction", PredictionSchema);
+
 export default Prediction;

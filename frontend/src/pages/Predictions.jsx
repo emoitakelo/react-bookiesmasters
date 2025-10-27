@@ -12,7 +12,6 @@ const Predictions = () => {
     return today.toISOString().split("T")[0];
   });
 
-  // 🧭 Limit navigation to ±7 days
   const today = new Date();
   const startLimit = new Date(today);
   const endLimit = new Date(today);
@@ -25,14 +24,71 @@ const Predictions = () => {
   const fetchPredictions = useCallback(async (date) => {
     try {
       setLoading(true);
-      const res = await axiosInstance.get(`/predictions?date=${date}`);
-      if (res.data.success && res.data.data) {
-        setPredictions(res.data.data);
-      } else {
-        setPredictions([]);
-      }
+
+      const [predRes, liveRes] = await Promise.all([
+        axiosInstance.get(`/predictions?date=${date}`),
+        axiosInstance.get(`/livescores?date=${date}`),
+      ]);
+
+      const predData = predRes.data?.data || [];
+      const liveData = liveRes.data?.data || [];
+
+      // build lookup map for quick access
+      const liveMap = {};
+      liveData.forEach((live) => {
+        if (live && live.fixtureId) liveMap[live.fixtureId] = live;
+      });
+
+      // Merge live.goals -> fixture.homeTeam.score / awayTeam.score
+      const merged = predData.map((league) => ({
+        ...league,
+        fixtures: league.fixtures.map((fixture) => {
+          const live = liveMap[fixture.fixtureId];
+          if (!live) {
+            // clone fixture to preserve reference safety
+            return { ...fixture };
+          }
+
+          // Use goals from live object explicitly (don't default to 0)
+          const liveHome = live.homeTeam?.score;
+const liveAway = live.awayTeam?.score;
+
+          return {
+            ...fixture,
+            // status should be a string (your card expects status or status.short)
+            // Some of your code expects `status` to be a string (statusShort) so set it to short directly
+            status: live.status?.short ?? (typeof fixture.status === "object" ? fixture.status.short : fixture.status),
+            // minute used by the card
+            minute: live.status?.elapsed ?? fixture.minute,
+            homeTeam: {
+              // keep existing metadata but override name/logo/score if live provides it
+              ...fixture.homeTeam,
+              name: live.teams?.home?.name ?? fixture.homeTeam?.name,
+              logo: live.teams?.home?.logo ?? fixture.homeTeam?.logo,
+              score:
+                liveHome !== null && liveHome !== undefined
+                  ? liveHome
+                  : fixture.homeTeam?.score ?? null,
+            },
+            awayTeam: {
+              ...fixture.awayTeam,
+              name: live.teams?.away?.name ?? fixture.awayTeam?.name,
+              logo: live.teams?.away?.logo ?? fixture.awayTeam?.logo,
+              score:
+                liveAway !== null && liveAway !== undefined
+                  ? liveAway
+                  : fixture.awayTeam?.score ?? null,
+            },
+          };
+        }),
+      }));
+
+      // Optional debug: uncomment while testing
+      // console.log("✅ merged (sample):", merged.slice(0,2));
+
+      setPredictions(merged);
     } catch (err) {
-      console.error("❌ Error fetching predictions:", err);
+      console.error("❌ Error fetching predictions/livescores:", err);
       setPredictions([]);
     } finally {
       setLoading(false);
@@ -43,15 +99,21 @@ const Predictions = () => {
     fetchPredictions(currentDate);
   }, [currentDate, fetchPredictions]);
 
+  // Auto-refresh for today (you can change interval)
+  useEffect(() => {
+    if (currentDate === today.toISOString().split("T")[0]) {
+      const interval = setInterval(() => fetchPredictions(currentDate), 30000); // 30s for snappier updates
+      return () => clearInterval(interval);
+    }
+  }, [currentDate, fetchPredictions]);
+
   const handleChangeDate = (newDate) => {
-    if (loading) return; // ⛔ Prevent navigation while loading
+    if (loading) return;
     setCurrentDate(newDate);
   };
 
   return (
-    <main className="max-w-3xl mx-auto px-1 sm:px-3 ">
-     
-
+    <main className="max-w-3xl mx-auto px-1 sm:px-3">
       <DateNavigator
         currentDate={currentDate}
         onChangeDate={handleChangeDate}

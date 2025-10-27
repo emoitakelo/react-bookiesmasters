@@ -1,20 +1,20 @@
+// server.js
 import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
+import { fetchAndUpdateLiveScores } from "./services/liveScoreService.js";
 
-// Import routes
 import predictionRoutes from "./routes/predictionRoutes.js";
 import healthRoute from "./routes/health.js";
-
+import liveScoreRoutes from "./routes/liveScoreRoutes.js"; 
 dotenv.config();
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(cors());
 
-// Connect MongoDB
+// MongoDB connection
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
@@ -23,12 +23,14 @@ mongoose
 // Routes
 app.use("/api/predictions", predictionRoutes);
 app.use("/api", healthRoute);
-
-// Default route (optional)
+app.use("/api/livescores", liveScoreRoutes);
+// Default route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
-// Start server
+// 🔁 Start 15-second polling loop
+setInterval(fetchAndUpdateLiveScores, 15000);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
