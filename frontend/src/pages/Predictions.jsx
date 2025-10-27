@@ -21,6 +21,7 @@ const Predictions = () => {
   const canGoPrev = new Date(currentDate) > startLimit;
   const canGoNext = new Date(currentDate) < endLimit;
 
+  // Fetch merged predictions + live scores
   const fetchPredictions = useCallback(async (date) => {
     try {
       setLoading(true);
@@ -33,58 +34,40 @@ const Predictions = () => {
       const predData = predRes.data?.data || [];
       const liveData = liveRes.data?.data || [];
 
-      // build lookup map for quick access
+      // Build lookup map for live scores
       const liveMap = {};
       liveData.forEach((live) => {
         if (live && live.fixtureId) liveMap[live.fixtureId] = live;
       });
 
-      // Merge live.goals -> fixture.homeTeam.score / awayTeam.score
+      // Merge live scores into predictions
       const merged = predData.map((league) => ({
         ...league,
         fixtures: league.fixtures.map((fixture) => {
           const live = liveMap[fixture.fixtureId];
-          if (!live) {
-            // clone fixture to preserve reference safety
-            return { ...fixture };
-          }
-
-          // Use goals from live object explicitly (don't default to 0)
-          const liveHome = live.homeTeam?.score;
-const liveAway = live.awayTeam?.score;
+          if (!live) return { ...fixture };
 
           return {
             ...fixture,
-            // status should be a string (your card expects status or status.short)
-            // Some of your code expects `status` to be a string (statusShort) so set it to short directly
-            status: live.status?.short ?? (typeof fixture.status === "object" ? fixture.status.short : fixture.status),
-            // minute used by the card
+            status:
+              live.status?.short ??
+              (typeof fixture.status === "object" ? fixture.status.short : fixture.status),
             minute: live.status?.elapsed ?? fixture.minute,
             homeTeam: {
-              // keep existing metadata but override name/logo/score if live provides it
               ...fixture.homeTeam,
-              name: live.teams?.home?.name ?? fixture.homeTeam?.name,
-              logo: live.teams?.home?.logo ?? fixture.homeTeam?.logo,
-              score:
-                liveHome !== null && liveHome !== undefined
-                  ? liveHome
-                  : fixture.homeTeam?.score ?? null,
+              name: live.homeTeam?.name ?? fixture.homeTeam?.name,
+              logo: live.homeTeam?.logo ?? fixture.homeTeam?.logo,
+              score: live.homeTeam?.score ?? fixture.homeTeam?.score ?? null,
             },
             awayTeam: {
               ...fixture.awayTeam,
-              name: live.teams?.away?.name ?? fixture.awayTeam?.name,
-              logo: live.teams?.away?.logo ?? fixture.awayTeam?.logo,
-              score:
-                liveAway !== null && liveAway !== undefined
-                  ? liveAway
-                  : fixture.awayTeam?.score ?? null,
+              name: live.awayTeam?.name ?? fixture.awayTeam?.name,
+              logo: live.awayTeam?.logo ?? fixture.awayTeam?.logo,
+              score: live.awayTeam?.score ?? fixture.awayTeam?.score ?? null,
             },
           };
         }),
       }));
-
-      // Optional debug: uncomment while testing
-      // console.log("✅ merged (sample):", merged.slice(0,2));
 
       setPredictions(merged);
     } catch (err) {
@@ -99,13 +82,46 @@ const liveAway = live.awayTeam?.score;
     fetchPredictions(currentDate);
   }, [currentDate, fetchPredictions]);
 
-  // Auto-refresh for today (you can change interval)
+  // Smooth live update: only update scores and minutes for today
   useEffect(() => {
-    if (currentDate === today.toISOString().split("T")[0]) {
-      const interval = setInterval(() => fetchPredictions(currentDate), 30000); // 30s for snappier updates
-      return () => clearInterval(interval);
-    }
-  }, [currentDate, fetchPredictions]);
+    if (currentDate !== today.toISOString().split("T")[0]) return;
+
+    const interval = setInterval(async () => {
+      try {
+        const liveRes = await axiosInstance.get(`/livescores?date=${currentDate}`);
+        const liveData = liveRes.data?.data || [];
+
+        if (!liveData.length) return;
+
+        setPredictions((prevPredictions) =>
+          prevPredictions.map((league) => ({
+            ...league,
+            fixtures: league.fixtures.map((fixture) => {
+              const live = liveData.find((l) => l.fixtureId === fixture.fixtureId);
+              if (!live) return fixture;
+
+              return {
+                ...fixture,
+                minute: live.status?.elapsed ?? fixture.minute,
+                homeTeam: {
+                  ...fixture.homeTeam,
+                  score: live.homeTeam?.score ?? fixture.homeTeam.score,
+                },
+                awayTeam: {
+                  ...fixture.awayTeam,
+                  score: live.awayTeam?.score ?? fixture.awayTeam.score,
+                },
+              };
+            }),
+          }))
+        );
+      } catch (err) {
+        console.error("❌ Error updating live scores:", err);
+      }
+    }, 30000); // 30s
+
+    return () => clearInterval(interval);
+  }, [currentDate, today]);
 
   const handleChangeDate = (newDate) => {
     if (loading) return;
