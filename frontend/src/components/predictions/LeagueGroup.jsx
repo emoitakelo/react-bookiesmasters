@@ -25,7 +25,7 @@ const LeagueGroup = ({ league, leagueLogo, country, children }) => {
       </div>
 
       {/* ⚽ Fixtures under this league */}
-      <div className="max-w-xl mx-auto space-y-1 px-2">{children}</div>
+<div className="max-w-2xl mx-auto space-y-2 px-4">{children}</div>
     </section>
   );
 };
