@@ -13,13 +13,6 @@ const Predictions = () => {
   });
 
   const today = new Date();
-  const startLimit = new Date(today);
-  const endLimit = new Date(today);
-  startLimit.setDate(today.getDate() - 7);
-  endLimit.setDate(today.getDate() + 7);
-
-  const canGoPrev = new Date(currentDate) > startLimit;
-  const canGoNext = new Date(currentDate) < endLimit;
 
   // Fetch merged predictions + live scores
   const fetchPredictions = useCallback(async (date) => {
@@ -118,7 +111,7 @@ const Predictions = () => {
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
-    }, 30000); // 30s
+    }, 30000); // 30s refresh
 
     return () => clearInterval(interval);
   }, [currentDate, today]);
@@ -134,8 +127,6 @@ const Predictions = () => {
         currentDate={currentDate}
         onChangeDate={handleChangeDate}
         loading={loading}
-        canGoPrev={canGoPrev}
-        canGoNext={canGoNext}
       />
 
       {loading ? (

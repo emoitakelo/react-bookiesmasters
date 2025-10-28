@@ -1,31 +1,9 @@
-import React from "react";
+// src/components/predictions/DateNavigator.jsx
+import React, { useRef } from "react";
 import { CalendarDays } from "lucide-react";
 
 const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
-  const today = new Date();
-  const selected = new Date(currentDate);
-
-  const diffDays = Math.floor(
-    (selected.setHours(0, 0, 0, 0) - today.setHours(0, 0, 0, 0)) /
-      (1000 * 60 * 60 * 24)
-  );
-
-  const reachedPrevLimit = diffDays <= -7;
-  const reachedNextLimit = diffDays >= 7;
-
-  const handlePrevious = () => {
-    if (loading || reachedPrevLimit) return;
-    const prev = new Date(currentDate);
-    prev.setDate(prev.getDate() - 1);
-    onChangeDate(prev.toISOString().split("T")[0]);
-  };
-
-  const handleNext = () => {
-    if (loading || reachedNextLimit) return;
-    const next = new Date(currentDate);
-    next.setDate(next.getDate() + 1);
-    onChangeDate(next.toISOString().split("T")[0]);
-  };
+  const dateInputRef = useRef(null);
 
   const formattedDate = new Date(currentDate).toLocaleDateString("en-US", {
     weekday: "long",
@@ -33,9 +11,22 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     month: "short",
   });
 
+  const handleCalendarClick = () => {
+    if (dateInputRef.current) {
+      dateInputRef.current.showPicker?.(); // modern browsers
+      dateInputRef.current.focus();
+    }
+  };
+
+  const handleDateChange = (e) => {
+    const newDate = e.target.value;
+    if (!newDate || loading) return;
+    onChangeDate(newDate);
+  };
+
   return (
     <div className="relative max-w-3xl mx-auto flex items-center justify-center my-3 px-8 sm:px-12">
-      {/* 🔴 Live Button (moved inward) */}
+      {/* 🔴 Live Button (inward aligned) */}
       <button
         className="absolute left-8 sm:left-12 w-8 h-8 sm:w-10 sm:h-10 
         rounded-full bg-teal-600 text-white flex items-center justify-center 
@@ -45,13 +36,14 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         Live
       </button>
 
-      {/* 📅 Date Display */}
+      {/* 🗓️ Date Display */}
       <span className="text-base sm:text-lg font-semibold text-gray-800 text-center select-none">
         {formattedDate}
       </span>
 
-      {/* 📆 Calendar Button (moved inward) */}
+      {/* 📅 Calendar Button */}
       <button
+        onClick={handleCalendarClick}
         className="absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 
         rounded-full bg-teal-600 flex items-center justify-center text-white 
         hover:bg-teal-700 transition-colors
@@ -59,6 +51,16 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       >
         <CalendarDays size={20} className="sm:w-6 sm:h-6 text-white" />
       </button>
+
+      {/* Hidden native date input */}
+      <input
+        ref={dateInputRef}
+        type="date"
+        value={currentDate}
+        onChange={handleDateChange}
+        max={new Date().toISOString().split("T")[0]} // optional limit: up to today
+        className="absolute right-0 opacity-0 pointer-events-none"
+      />
     </div>
   );
 };
