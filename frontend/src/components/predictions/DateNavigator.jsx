@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
-import { CalendarDays, X } from "lucide-react";
+import React, { useState } from "react";
+import { CalendarDays, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
-  const dateInputRef = useRef(null);
-  const [calendarOpen, setCalendarOpen] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [viewDate, setViewDate] = useState(new Date());
 
   const formattedDate = new Date(currentDate).toLocaleDateString("en-US", {
     weekday: "long",
@@ -11,22 +11,37 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     month: "short",
   });
 
-  // 📅 Open native date picker
-  const handleCalendarClick = () => {
-    setCalendarOpen(true);
-    dateInputRef.current?.showPicker?.(); // trigger native picker
+  // 🔄 Toggle calendar visibility
+  const handleCalendarToggle = () => setShowCalendar(!showCalendar);
+
+  // 📅 Handle selecting a date
+  const handleDateClick = (date) => {
+    const isoDate = date.toISOString().split("T")[0];
+    if (loading) return;
+    onChangeDate(isoDate);
+    setShowCalendar(false);
   };
 
-  // ✅ On picking a date → auto-fetch predictions
-  const handleDateChange = (e) => {
-    const newDate = e.target.value;
-    if (!newDate || loading) return;
-    onChangeDate(newDate);
-    setCalendarOpen(false);
+  // ⏪ Previous / Next month
+  const handlePrevMonth = () => {
+    const prev = new Date(viewDate);
+    prev.setMonth(prev.getMonth() - 1);
+    setViewDate(prev);
+  };
+  const handleNextMonth = () => {
+    const next = new Date(viewDate);
+    next.setMonth(next.getMonth() + 1);
+    setViewDate(next);
   };
 
-  // ❌ Close the picker manually
-  const handleClose = () => setCalendarOpen(false);
+  // 🗓️ Build calendar grid
+  const year = viewDate.getFullYear();
+  const month = viewDate.getMonth();
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const days = [...Array(daysInMonth).keys()].map((i) => i + 1);
+
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <div className="relative max-w-3xl mx-auto flex items-center justify-center my-3 px-8 sm:px-12">
@@ -44,36 +59,78 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         {formattedDate}
       </span>
 
-      {/* 📅 Calendar / ❌ Toggle Button */}
-      {!calendarOpen ? (
-        <button
-          onClick={handleCalendarClick}
-          className="absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 
-          rounded-full bg-teal-600 flex items-center justify-center text-white 
-          hover:bg-teal-700 transition-colors"
-        >
-          <CalendarDays size={20} />
-        </button>
-      ) : (
-        <button
-          onClick={handleClose}
-          className="absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 
-          rounded-full bg-red-500 flex items-center justify-center text-white 
-          hover:bg-red-600 transition-colors"
-        >
-          <X size={18} />
-        </button>
-      )}
+      {/* 📅 Calendar Toggle / ❌ Close */}
+      <button
+        onClick={handleCalendarToggle}
+        className={`absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white transition-colors ${
+          showCalendar ? "bg-red-500 hover:bg-red-600" : "bg-teal-600 hover:bg-teal-700"
+        }`}
+      >
+        {showCalendar ? <X size={18} /> : <CalendarDays size={20} />}
+      </button>
 
-      {/* 🧭 Hidden native date input */}
-      <input
-        ref={dateInputRef}
-        type="date"
-        value={currentDate}
-        onChange={handleDateChange}
-        className="absolute opacity-0 pointer-events-none"
-        onBlur={() => setCalendarOpen(false)} // auto close after picking/canceling
-      />
+      {/* 🧭 Custom Calendar */}
+      {showCalendar && (
+        <div className="absolute right-4 sm:right-12 top-12 bg-white border border-gray-200 rounded-lg shadow-lg p-3 z-50 w-64">
+          {/* Month Navigation */}
+          <div className="flex items-center justify-between mb-2">
+            <button
+              onClick={handlePrevMonth}
+              className="p-1 rounded hover:bg-gray-100 transition"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <span className="font-semibold text-gray-800 text-sm">
+              {viewDate.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
+            </span>
+            <button
+              onClick={handleNextMonth}
+              className="p-1 rounded hover:bg-gray-100 transition"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+
+          {/* Day Names */}
+          <div className="grid grid-cols-7 gap-1 text-center text-gray-600 text-xs font-semibold mb-1">
+            {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
+              <div key={d}>{d}</div>
+            ))}
+          </div>
+
+          {/* Days Grid */}
+          <div className="grid grid-cols-7 gap-1 text-center">
+            {[...Array(firstDay).keys()].map((i) => (
+              <div key={`e-${i}`} />
+            ))}
+            {days.map((day) => {
+              const dateObj = new Date(year, month, day);
+              const iso = dateObj.toISOString().split("T")[0];
+              const isToday = iso === today;
+              const isSelected = iso === currentDate;
+
+              return (
+                <button
+                  key={day}
+                  onClick={() => handleDateClick(dateObj)}
+                  className={`text-sm w-8 h-8 rounded-md transition-colors ${
+                    isSelected
+                      ? "bg-teal-600 text-white"
+                      : isToday
+                      ? "border border-teal-500 text-teal-700"
+                      : "hover:bg-teal-500 hover:text-white text-gray-800"
+                  }`}
+                >
+                  {day}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
