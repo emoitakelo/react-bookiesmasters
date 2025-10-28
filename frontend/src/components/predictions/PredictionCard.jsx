@@ -78,7 +78,7 @@ const PredictionCard = ({ fixture }) => {
     <div className="w-[45px] sm:w-[55px] flex-shrink-0 text-left">
   <p
     className={`text-xs sm:text-xs leading-none ${
-      isLive ? "text-red-600 font-semibold" : "text-gray-700 font-semibold"
+      isLive ? "text-red-600 font-medium" : "text-gray-700 font-semibold"
     }`}
   >
     {renderStatus()}
@@ -93,7 +93,7 @@ const PredictionCard = ({ fixture }) => {
       alt={fixture.homeTeam?.name}
       className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
     />
-    <span className="font-semibold text-gray-800 text-xs sm:text-sm truncate max-w-[97px] sm:max-w-[130px]">
+    <span className="font-medium text-gray-800 text-xs sm:text-sm truncate max-w-[97px] sm:max-w-[130px]">
       {fixture.homeTeam?.name}
     </span>
   </div>
@@ -113,7 +113,7 @@ const PredictionCard = ({ fixture }) => {
     {/* 💡 Tip */}
     <div className="text-center w-[35px] sm:w-[45px] flex-shrink-0">
       <p
-        className={`text-xs sm:text-sm font-semibold ${getTipColor(
+        className={`text-xs sm:text-sm font-medium ${getTipColor(
           tip,
           fixture.homeTeam?.score,
           fixture.awayTeam?.score,
@@ -126,7 +126,7 @@ const PredictionCard = ({ fixture }) => {
 
     {/* ⚽ Scores */}
     <div
-      className={`text-right font-semibold text-xs sm:text-sm flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
+      className={`text-right font-medium text-xs sm:text-sm flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
         flash ? "scale-125" : "scale-100"
       } ${isLive ? "text-red-600" : "text-gray-800"}`}
     >
