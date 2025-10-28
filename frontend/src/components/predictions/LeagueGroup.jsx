@@ -13,7 +13,7 @@ const LeagueGroup = ({ league, leagueLogo, country, children }) => {
               className="w-5 h-6 sm:w-7 sm:h-8 flex-shrink-0"
             />
             <div>
-              <h2 className="text-[13px] sm:text-medium font-semibold text-teal-800 truncate">
+              <h2 className="text-[13px] sm:text-medium font-semibold text-teal-600 truncate">
                 {league}
               </h2>
               {country && (
