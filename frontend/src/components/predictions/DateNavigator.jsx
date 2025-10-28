@@ -48,7 +48,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         type="button"
         onMouseDown={(e) => e.preventDefault()}
         className="absolute left-6 sm:left-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full
-          bg-teal-600 text-white flex items-center justify-center text-sm sm:text-base
+          bg-teal-600 text-white flex items-center justify-center text-xs sm:text-sm
           hover:bg-teal-700 transition-colors
           focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none active:ring-0"
       >
@@ -56,7 +56,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       </button>
 
       {/* Current date display */}
-      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center select-none">
+      <span className="text-sm sm:text-medium font-semibold text-gray-800 text-center select-none">
         {formattedDate}
       </span>
 
@@ -66,7 +66,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         onClick={handleCalendarToggle}
         onMouseDown={(e) => e.preventDefault()}
         className={`absolute right-6 sm:right-10 w-8 h-8 sm:w-10 sm:h-10 rounded-full
-          flex items-center justify-center text-white transition-colors
+          flex items-center justify-center text-white text-xs sm:text-sm transition-colors
           ${showCalendar ? "bg-teal-600 hover:bg-teal-700" : "bg-teal-600 hover:bg-teal-700"}
           focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none active:ring-0`}
         aria-expanded={showCalendar}
