@@ -68,68 +68,69 @@ const PredictionCard = ({ fixture }) => {
   }, [fixture.homeTeam?.score, fixture.awayTeam?.score]);
 
   return (
-    <Link to={`/predictions/${fixtureId}`} className="block">
-      <div
-        className={`max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-between flex-nowrap p-1 sm:p-2 overflow-hidden border-l-4 ${
-          isLive ? "border-red-500 animate-pulse" : "border-transparent"
-        }`}
-      >
-        {/* 🕒 Status / Time */}
-        <div className="flex-shrink-0 text-center text-[7px] sm:text-xs text-gray-700 w-[55px] sm:w-[70px]">
-          <p className={`${isLive ? "text-red-600 font-semibold" : ""}`}>
-            {renderStatus()}
-          </p>
-        </div>
+   <Link to={`/predictions/${fixtureId}`} className="block">
+  <div
+    className={`max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-evenly flex-nowrap p-1 sm:p-2 overflow-hidden border-l-4 ${
+      isLive ? "border-red-500 animate-pulse" : "border-transparent"
+    }`}
+  >
+    {/* 🕒 Status / Time */}
+    <div className="text-center text-[7px] sm:text-xs text-gray-700 w-[45px] sm:w-[55px] flex-shrink-0">
+      <p className={`${isLive ? "text-red-600 font-semibold" : ""}`}>
+        {renderStatus()}
+      </p>
+    </div>
 
-        {/* 🏟️ Teams */}
-        <div className="flex flex-col justify-center flex-grow px-2 sm:px-4">
-          <div className="flex items-center gap-2">
-            <img
-              src={fixture.homeTeam?.logo}
-              alt={fixture.homeTeam?.name}
-              className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-            />
-            <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[130px]">
-              {fixture.homeTeam?.name}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <img
-              src={fixture.awayTeam?.logo}
-              alt={fixture.awayTeam?.name}
-              className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-            />
-            <span className="font-semibold text-gray-800 text-[13px] sm:text-base truncate max-w-[80px] sm:max-w-[130px]">
-              {fixture.awayTeam?.name}
-            </span>
-          </div>
-        </div>
-
-        {/* 💡 Tip */}
-        <div className="flex-shrink-0 text-center px-1 sm:px-3">
-          <p
-            className={`text-sm sm:text-base font-semibold ${getTipColor(
-              tip,
-              fixture.homeTeam?.score,
-              fixture.awayTeam?.score,
-              statusShort
-            )}`}
-          >
-            {tip}
-          </p>
-        </div>
-
-        {/* ⚽ Scores */}
-        <div
-          className={`flex-shrink-0 text-center font-semibold text-sm sm:text-base flex flex-col justify-center items-center w-[40px] sm:w-[50px] transition-all duration-300 ${
-            flash ? "scale-125" : "scale-100"
-          } ${isLive ? "text-red-600" : "text-gray-800"}`}
-        >
-          <span>{fixture.homeTeam?.score ?? "-"}</span>
-          <span>{fixture.awayTeam?.score ?? "-"}</span>
-        </div>
+    {/* 🏟️ Teams */}
+    <div className="flex flex-col items-center text-center mx-1 sm:mx-2 w-[140px] sm:w-[200px]">
+      <div className="flex items-center justify-center gap-1 sm:gap-2">
+        <img
+          src={fixture.homeTeam?.logo}
+          alt={fixture.homeTeam?.name}
+          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+        />
+        <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
+          {fixture.homeTeam?.name}
+        </span>
       </div>
-    </Link>
+      <div className="flex items-center justify-center gap-1 sm:gap-2">
+        <img
+          src={fixture.awayTeam?.logo}
+          alt={fixture.awayTeam?.name}
+          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+        />
+        <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
+          {fixture.awayTeam?.name}
+        </span>
+      </div>
+    </div>
+
+    {/* 💡 Tip */}
+    <div className="text-center w-[35px] sm:w-[45px] flex-shrink-0">
+      <p
+        className={`text-sm sm:text-base ${getTipColor(
+          tip,
+          fixture.homeTeam?.score,
+          fixture.awayTeam?.score,
+          statusShort
+        )}`}
+      >
+        {tip}
+      </p>
+    </div>
+
+    {/* ⚽ Scores */}
+    <div
+      className={`text-center font-semibold text-sm sm:text-base flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
+        flash ? "scale-125" : "scale-100"
+      } ${isLive ? "text-red-600" : "text-gray-800"}`}
+    >
+      <span>{fixture.homeTeam?.score ?? " "}</span>
+      <span>{fixture.awayTeam?.score ?? " "}</span>
+    </div>
+  </div>
+</Link>
+
   );
 };
 
