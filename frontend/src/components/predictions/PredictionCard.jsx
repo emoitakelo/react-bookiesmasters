@@ -77,7 +77,7 @@ const PredictionCard = ({ fixture }) => {
     {/* 🕒 Status / Time */}
     <div className="w-[45px] sm:w-[55px] flex-shrink-0 text-center">
   <p
-    className={`text-[10px] sm:text-xs leading-none ${
+    className={`text-xs sm:text-xs leading-none ${
       isLive ? "text-red-600 font-semibold" : "text-gray-700 font-semibold"
     }`}
   >
