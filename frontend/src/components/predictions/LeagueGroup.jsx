@@ -4,7 +4,7 @@ const LeagueGroup = ({ league, leagueLogo, country, children }) => {
   return (
     <section >
       {/* 🏆 League Header */}
-      <div className="max-w-xl mx-auto mb-2 border-b border-teal-500 pb-1 px-2">
+      <div className="max-w-2xl mx-auto mb-2 border-b border-teal-500 pb-1 px-4">
         <div className="flex items-center gap-3">
           <img
             src={leagueLogo}
