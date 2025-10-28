@@ -91,7 +91,7 @@ const PredictionCard = ({ fixture }) => {
     <img
       src={fixture.homeTeam?.logo}
       alt={fixture.homeTeam?.name}
-      className="w-2 h-2 sm:w-3 sm:h-3 flex-shrink-0"
+      className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
     />
     <span className="font-semibold text-gray-800 text-xs sm:text-sm truncate max-w-[97px] sm:max-w-[130px]">
       {fixture.homeTeam?.name}
@@ -101,7 +101,7 @@ const PredictionCard = ({ fixture }) => {
     <img
       src={fixture.awayTeam?.logo}
       alt={fixture.awayTeam?.name}
-      className="w-2 h-2 sm:w-3 sm:h-3 flex-shrink-0"
+      className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
     />
     <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[97px] sm:max-w-[130px]">
       {fixture.awayTeam?.name}
