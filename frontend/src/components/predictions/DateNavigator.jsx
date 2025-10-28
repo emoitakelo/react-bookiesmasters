@@ -3,7 +3,7 @@ import { CalendarDays, X } from "lucide-react";
 
 const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   const dateInputRef = useRef(null);
-  const [showCalendar, setShowCalendar] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const formattedDate = new Date(currentDate).toLocaleDateString("en-US", {
     weekday: "long",
@@ -11,21 +11,22 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     month: "short",
   });
 
+  // 📅 Open native date picker
   const handleCalendarClick = () => {
-    setShowCalendar(true);
-    setTimeout(() => dateInputRef.current?.showPicker?.(), 0); // trigger native calendar
+    setCalendarOpen(true);
+    dateInputRef.current?.showPicker?.(); // trigger native picker
   };
 
+  // ✅ On picking a date → auto-fetch predictions
   const handleDateChange = (e) => {
     const newDate = e.target.value;
     if (!newDate || loading) return;
     onChangeDate(newDate);
-    setShowCalendar(false);
+    setCalendarOpen(false);
   };
 
-  const handleCloseCalendar = () => {
-    setShowCalendar(false);
-  };
+  // ❌ Close the picker manually
+  const handleClose = () => setCalendarOpen(false);
 
   return (
     <div className="relative max-w-3xl mx-auto flex items-center justify-center my-3 px-8 sm:px-12">
@@ -33,8 +34,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         className="absolute left-8 sm:left-12 w-8 h-8 sm:w-10 sm:h-10 
         rounded-full bg-teal-600 text-white flex items-center justify-center 
-        text-sm sm:text-base hover:bg-teal-700 transition-colors
-        outline-none border-none focus:outline-none active:outline-none ring-0"
+        text-sm sm:text-base hover:bg-teal-700 transition-colors"
       >
         Live
       </button>
@@ -44,37 +44,36 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         {formattedDate}
       </span>
 
-      {/* 📅 Calendar Button */}
-      {!showCalendar ? (
+      {/* 📅 Calendar / ❌ Toggle Button */}
+      {!calendarOpen ? (
         <button
           onClick={handleCalendarClick}
           className="absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 
           rounded-full bg-teal-600 flex items-center justify-center text-white 
-          hover:bg-teal-700 transition-colors outline-none border-none focus:outline-none"
+          hover:bg-teal-700 transition-colors"
         >
-          <CalendarDays size={20} className="sm:w-6 sm:h-6 text-white" />
+          <CalendarDays size={20} />
         </button>
       ) : (
         <button
-          onClick={handleCloseCalendar}
+          onClick={handleClose}
           className="absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 
           rounded-full bg-red-500 flex items-center justify-center text-white 
-          hover:bg-red-600 transition-colors outline-none border-none focus:outline-none"
+          hover:bg-red-600 transition-colors"
         >
-          <X size={18} className="text-white" />
+          <X size={18} />
         </button>
       )}
 
-      {/* Hidden native date input */}
-      {showCalendar && (
-        <input
-          ref={dateInputRef}
-          type="date"
-          value={currentDate}
-          onChange={handleDateChange}
-          className="absolute right-4 sm:right-12 top-12 opacity-100 bg-white border border-gray-300 rounded-md shadow-md p-2 text-sm cursor-pointer z-50"
-        />
-      )}
+      {/* 🧭 Hidden native date input */}
+      <input
+        ref={dateInputRef}
+        type="date"
+        value={currentDate}
+        onChange={handleDateChange}
+        className="absolute opacity-0 pointer-events-none"
+        onBlur={() => setCalendarOpen(false)} // auto close after picking/canceling
+      />
     </div>
   );
 };
