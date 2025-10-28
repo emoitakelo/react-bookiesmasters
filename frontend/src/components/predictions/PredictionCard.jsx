@@ -82,33 +82,34 @@ const PredictionCard = ({ fixture }) => {
     </div>
 
     {/* 🏟️ Teams */}
-    <div className="flex flex-col items-center text-center mx-1 sm:mx-2 w-[140px] sm:w-[200px]">
-      <div className="flex items-center justify-center gap-1 sm:gap-2">
-        <img
-          src={fixture.homeTeam?.logo}
-          alt={fixture.homeTeam?.name}
-          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-        />
-        <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
-          {fixture.homeTeam?.name}
-        </span>
-      </div>
-      <div className="flex items-center justify-center gap-1 sm:gap-2">
-        <img
-          src={fixture.awayTeam?.logo}
-          alt={fixture.awayTeam?.name}
-          className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
-        />
-        <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
-          {fixture.awayTeam?.name}
-        </span>
-      </div>
-    </div>
+    <div className="flex flex-col items-start text-left mx-1 sm:mx-2 w-[140px] sm:w-[200px]">
+  <div className="flex items-center justify-start gap-1 sm:gap-2">
+    <img
+      src={fixture.homeTeam?.logo}
+      alt={fixture.homeTeam?.name}
+      className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+    />
+    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
+      {fixture.homeTeam?.name}
+    </span>
+  </div>
+  <div className="flex items-center justify-start gap-1 sm:gap-2">
+    <img
+      src={fixture.awayTeam?.logo}
+      alt={fixture.awayTeam?.name}
+      className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+    />
+    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
+      {fixture.awayTeam?.name}
+    </span>
+  </div>
+</div>
+
 
     {/* 💡 Tip */}
     <div className="text-center w-[35px] sm:w-[45px] flex-shrink-0">
       <p
-        className={`text-sm sm:text-base ${getTipColor(
+        className={`text-xs sm:text-base font-semibold ${getTipColor(
           tip,
           fixture.homeTeam?.score,
           fixture.awayTeam?.score,
