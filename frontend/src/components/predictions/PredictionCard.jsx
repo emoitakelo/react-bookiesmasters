@@ -103,7 +103,7 @@ const PredictionCard = ({ fixture }) => {
       alt={fixture.awayTeam?.name}
       className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
     />
-    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[97px] sm:max-w-[130px]">
+    <span className="font-medium text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[97px] sm:max-w-[130px]">
       {fixture.awayTeam?.name}
     </span>
   </div>
