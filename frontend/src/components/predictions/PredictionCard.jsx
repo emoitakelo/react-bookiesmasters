@@ -75,7 +75,7 @@ const PredictionCard = ({ fixture }) => {
     }`}
   >
     {/* 🕒 Status / Time */}
-    <div className="text-center text-[7px] sm:text-xs text-gray-700 w-[45px] sm:w-[55px] flex-shrink-0">
+    <div className="text-center text-xs sm:text-sm text-gray-700 w-[45px] sm:w-[55px] flex-shrink-0">
       <p className={`${isLive ? "text-red-600 font-semibold" : ""}`}>
         {renderStatus()}
       </p>
@@ -87,9 +87,9 @@ const PredictionCard = ({ fixture }) => {
     <img
       src={fixture.homeTeam?.logo}
       alt={fixture.homeTeam?.name}
-      className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+      className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
     />
-    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
+    <span className="font-semibold text-gray-800 text-xs sm:text-sm truncate max-w-[90px] sm:max-w-[130px]">
       {fixture.homeTeam?.name}
     </span>
   </div>
@@ -97,9 +97,9 @@ const PredictionCard = ({ fixture }) => {
     <img
       src={fixture.awayTeam?.logo}
       alt={fixture.awayTeam?.name}
-      className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0"
+      className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
     />
-    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[80px] sm:max-w-[130px]">
+    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[90px] sm:max-w-[130px]">
       {fixture.awayTeam?.name}
     </span>
   </div>
@@ -122,7 +122,7 @@ const PredictionCard = ({ fixture }) => {
 
     {/* ⚽ Scores */}
     <div
-      className={`text-center font-semibold text-sm sm:text-base flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
+      className={`text-center font-semibold text-xs sm:text-base flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
         flash ? "scale-125" : "scale-100"
       } ${isLive ? "text-red-600" : "text-gray-800"}`}
     >
