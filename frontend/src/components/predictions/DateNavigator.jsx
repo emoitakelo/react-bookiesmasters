@@ -5,6 +5,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [viewDate, setViewDate] = useState(new Date());
 
+  // 🗓️ Format date nicely
   const formattedDate = new Date(currentDate).toLocaleDateString("en-US", {
     weekday: "long",
     day: "numeric",
@@ -14,15 +15,15 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   // 🔄 Toggle calendar visibility
   const handleCalendarToggle = () => setShowCalendar(!showCalendar);
 
-  // 📅 Handle selecting a date
+  // ✅ Handle date selection (no UTC shift)
   const handleDateClick = (date) => {
-    const isoDate = date.toISOString().split("T")[0];
+    const isoDate = date.toLocaleDateString("en-CA"); // keeps local YYYY-MM-DD
     if (loading) return;
     onChangeDate(isoDate);
     setShowCalendar(false);
   };
 
-  // ⏪ Previous / Next month
+  // ⏪ Previous / Next month navigation
   const handlePrevMonth = () => {
     const prev = new Date(viewDate);
     prev.setMonth(prev.getMonth() - 1);
@@ -34,14 +35,14 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
     setViewDate(next);
   };
 
-  // 🗓️ Build calendar grid
+  // 🧮 Build calendar grid
   const year = viewDate.getFullYear();
   const month = viewDate.getMonth();
   const firstDay = new Date(year, month, 1).getDay();
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const days = [...Array(daysInMonth).keys()].map((i) => i + 1);
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("en-CA");
 
   return (
     <div className="relative max-w-3xl mx-auto flex items-center justify-center my-3 px-8 sm:px-12">
@@ -49,7 +50,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       <button
         className="absolute left-8 sm:left-12 w-8 h-8 sm:w-10 sm:h-10 
         rounded-full bg-teal-600 text-white flex items-center justify-center 
-        text-sm sm:text-base hover:bg-teal-700 transition-colors"
+        text-sm sm:text-base hover:bg-teal-700 transition-colors 
+        outline-none border-none focus:outline-none active:outline-none ring-0"
       >
         Live
       </button>
@@ -62,9 +64,10 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       {/* 📅 Calendar Toggle / ❌ Close */}
       <button
         onClick={handleCalendarToggle}
-        className={`absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-white transition-colors ${
-          showCalendar ? "bg-red-500 hover:bg-red-600" : "bg-teal-600 hover:bg-teal-700"
-        }`}
+        className="absolute right-8 sm:right-12 w-8 h-8 sm:w-10 sm:h-10 
+        rounded-full bg-teal-600 flex items-center justify-center text-white 
+        hover:bg-teal-700 transition-colors outline-none border-none 
+        focus:outline-none active:outline-none ring-0"
       >
         {showCalendar ? <X size={18} /> : <CalendarDays size={20} />}
       </button>
@@ -76,11 +79,12 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
           <div className="flex items-center justify-between mb-2">
             <button
               onClick={handlePrevMonth}
-              className="p-1 rounded hover:bg-gray-100 transition"
+              className="p-1 rounded hover:bg-gray-100 transition 
+              outline-none border-none focus:outline-none active:outline-none ring-0"
             >
               <ChevronLeft size={18} />
             </button>
-            <span className="font-semibold text-gray-800 text-sm">
+            <span className="font-semibold text-gray-800 text-sm select-none">
               {viewDate.toLocaleString("default", {
                 month: "long",
                 year: "numeric",
@@ -88,7 +92,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
             </span>
             <button
               onClick={handleNextMonth}
-              className="p-1 rounded hover:bg-gray-100 transition"
+              className="p-1 rounded hover:bg-gray-100 transition 
+              outline-none border-none focus:outline-none active:outline-none ring-0"
             >
               <ChevronRight size={18} />
             </button>
@@ -108,7 +113,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
             ))}
             {days.map((day) => {
               const dateObj = new Date(year, month, day);
-              const iso = dateObj.toISOString().split("T")[0];
+              const iso = dateObj.toLocaleDateString("en-CA");
               const isToday = iso === today;
               const isSelected = iso === currentDate;
 
@@ -116,7 +121,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
                 <button
                   key={day}
                   onClick={() => handleDateClick(dateObj)}
-                  className={`text-sm w-8 h-8 rounded-md transition-colors ${
+                  className={`text-sm w-8 h-8 rounded-md transition-colors 
+                  outline-none border-none focus:outline-none active:outline-none ring-0 ${
                     isSelected
                       ? "bg-teal-600 text-white"
                       : isToday
