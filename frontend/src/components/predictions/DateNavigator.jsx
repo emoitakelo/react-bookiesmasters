@@ -56,7 +56,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       </button>
 
       {/* Current date display */}
-      <span className="text-medium sm:text-medium font-semibold text-teal-870 text-center select-none">
+      <span className="text-medium sm:text-medium font-semibold text-teal-900 text-center select-none">
         {formattedDate}
       </span>
 
