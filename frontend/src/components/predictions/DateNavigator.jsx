@@ -50,29 +50,11 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       {/* Date display */}
       <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow select-none">
 
-<button
-        onClick={handlePrevious}
-        disabled={loading || reachedPrevLimit}
-        className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
-          hover:scale-110 active:scale-95 
-          outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
-          ${reachedPrevLimit ? "opacity-40 cursor-not-allowed" : ""}`}
-      >
-        &lt;
-      </button>
+
 
         {formattedDate}
 
-<button
-        onClick={handleNext}
-        disabled={loading || reachedNextLimit}
-        className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
-          hover:scale-110 active:scale-95 
-          outline-none border-none focus:outline-none active:outline-none ring-0 focus:ring-0 active:ring-0
-          ${reachedNextLimit ? "opacity-40 cursor-not-allowed" : ""}`}
-      >
-        &gt;
-      </button>
+
 
       </span>
 
