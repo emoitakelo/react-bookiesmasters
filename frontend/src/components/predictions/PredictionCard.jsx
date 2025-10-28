@@ -78,7 +78,7 @@ const PredictionCard = ({ fixture }) => {
     <div className="w-[45px] sm:w-[55px] flex-shrink-0 text-left">
   <p
     className={`text-xs sm:text-xs leading-none ${
-      isLive ? "text-red-600 font-medium" : "text-gray-700 font-medium"
+      isLive ? "text-red-600 font-medium" : "text-gray-600 font-medium"
     }`}
   >
     {renderStatus()}
