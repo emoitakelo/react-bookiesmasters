@@ -6,14 +6,14 @@ const LeagueGroup = ({ league, leagueLogo, country, children }) => {
       {/* 🏆 League Header */}
      <div className="max-w-2xl mx-auto mb-2 pb-1">
   <div className="px-4">
-    <div className="flex items-center gap-3 border-b border-teal-500 pb-1">
+    <div className="flex items-center gap-2 border-b border-teal-500 pb-1">
       <img
         src={leagueLogo}
         alt={league}
-        className="w-6 h-6 sm:w-8 sm:h-8 flex-shrink-0"
+        className="w-5 h-5 sm:w-7 sm:h-7 flex-shrink-0"
       />
       <div>
-        <h2 className="text-base sm:text-lg font-semibold text-gray-800 truncate">
+        <h2 className="text-sm sm:text-medium font-semibold text-gray-800 truncate">
           {league}
         </h2>
         {country && (
