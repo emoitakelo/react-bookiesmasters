@@ -122,7 +122,7 @@ const Predictions = () => {
   };
 
   return (
-    <main className="max-w-3xl mx-auto px-1 sm:px-3">
+    <main className="max-w-xl mx-auto px-1 sm:px-3">
       <DateNavigator
         currentDate={currentDate}
         onChangeDate={handleChangeDate}

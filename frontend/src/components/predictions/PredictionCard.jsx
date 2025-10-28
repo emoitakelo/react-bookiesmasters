@@ -70,7 +70,7 @@ const PredictionCard = ({ fixture }) => {
   return (
    <Link to={`/predictions/${fixtureId}`} className="block">
   <div
-    className={`max-w-3xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-evenly flex-nowrap p-1 sm:p-2 overflow-hidden border-l-4 ${
+    className={`max-w-xl mx-auto bg-white rounded-xl shadow-sm hover:shadow-md transition flex items-center justify-evenly flex-nowrap p-1 sm:p-2 overflow-hidden border-l-4 ${
       isLive ? "border-red-500 animate-pulse" : "border-transparent"
     }`}
   >

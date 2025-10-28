@@ -8,7 +8,7 @@ const PredictionList = ({ predictions }) => {
     return <p className="text-center text-gray-500">No predictions available.</p>;
 
   return (
-    <div className="space-y-10">
+    <div className="space-y-3">
       {predictions.map((leagueData, index) => (
         <LeagueGroup
           key={index}

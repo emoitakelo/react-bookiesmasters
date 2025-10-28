@@ -42,7 +42,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
   const today = new Date().toLocaleDateString("en-CA");
 
   return (
-    <div className="relative max-w-3xl mx-auto flex items-center justify-center my-3 px-8 sm:px-12">
+    <div className="relative max-w-xl mx-auto flex items-center justify-center my-3 px-8 sm:px-12">
       {/* Live button (no outline on mouse click; keyboard focus still possible) */}
       <button
         type="button"
