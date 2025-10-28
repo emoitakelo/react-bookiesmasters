@@ -75,7 +75,7 @@ const PredictionCard = ({ fixture }) => {
     }`}
   >
     {/* 🕒 Status / Time */}
-    <div className="w-[45px] sm:w-[55px] flex-shrink-0 text-center">
+    <div className="w-[45px] sm:w-[55px] flex-shrink-0 text-left">
   <p
     className={`text-xs sm:text-xs leading-none ${
       isLive ? "text-red-600 font-semibold" : "text-gray-700 font-semibold"
@@ -91,9 +91,9 @@ const PredictionCard = ({ fixture }) => {
     <img
       src={fixture.homeTeam?.logo}
       alt={fixture.homeTeam?.name}
-      className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
+      className="w-2 h-2 sm:w-3 sm:h-3 flex-shrink-0"
     />
-    <span className="font-semibold text-gray-800 text-xs sm:text-sm truncate max-w-[90px] sm:max-w-[130px]">
+    <span className="font-semibold text-gray-800 text-xs sm:text-sm truncate max-w-[97px] sm:max-w-[130px]">
       {fixture.homeTeam?.name}
     </span>
   </div>
@@ -101,9 +101,9 @@ const PredictionCard = ({ fixture }) => {
     <img
       src={fixture.awayTeam?.logo}
       alt={fixture.awayTeam?.name}
-      className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
+      className="w-2 h-2 sm:w-3 sm:h-3 flex-shrink-0"
     />
-    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[90px] sm:max-w-[130px]">
+    <span className="font-semibold text-gray-800 text-[12px] sm:text-[14px] truncate max-w-[97px] sm:max-w-[130px]">
       {fixture.awayTeam?.name}
     </span>
   </div>
@@ -113,7 +113,7 @@ const PredictionCard = ({ fixture }) => {
     {/* 💡 Tip */}
     <div className="text-center w-[35px] sm:w-[45px] flex-shrink-0">
       <p
-        className={`text-xs sm:text-base font-semibold ${getTipColor(
+        className={`text-xs sm:text-sm font-semibold ${getTipColor(
           tip,
           fixture.homeTeam?.score,
           fixture.awayTeam?.score,
@@ -126,7 +126,7 @@ const PredictionCard = ({ fixture }) => {
 
     {/* ⚽ Scores */}
     <div
-      className={`text-center font-semibold text-xs sm:text-base flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
+      className={`text-right font-semibold text-xs sm:text-sm flex flex-col justify-center items-center w-[35px] sm:w-[45px] transition-all duration-300 ${
         flash ? "scale-125" : "scale-100"
       } ${isLive ? "text-red-600" : "text-gray-800"}`}
     >
