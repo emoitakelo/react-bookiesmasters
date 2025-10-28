@@ -10,7 +10,7 @@ const LeagueGroup = ({ league, leagueLogo, country, children }) => {
             <img
               src={leagueLogo}
               alt={league}
-              className="w-5 h-5 sm:w-7 sm:h-7 flex-shrink-0"
+              className="w-5 h-6 sm:w-7 sm:h-8 flex-shrink-0"
             />
             <div>
               <h2 className="text-sm sm:text-medium font-semibold text-gray-800 truncate">
