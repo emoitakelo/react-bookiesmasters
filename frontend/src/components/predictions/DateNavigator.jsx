@@ -45,7 +45,12 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       </button>
 
       {/* ◀ Left arrow */}
-      <button
+      
+
+      {/* Date display */}
+      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow select-none">
+
+<button
         onClick={handlePrevious}
         disabled={loading || reachedPrevLimit}
         className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
@@ -56,13 +61,9 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         &lt;
       </button>
 
-      {/* Date display */}
-      <span className="text-base sm:text-lg font-semibold text-gray-800 text-center flex-grow select-none">
         {formattedDate}
-      </span>
 
-      {/* ▶ Right arrow */}
-      <button
+<button
         onClick={handleNext}
         disabled={loading || reachedNextLimit}
         className={`text-teal-600 text-4xl sm:text-5xl transition-transform duration-200 
@@ -72,6 +73,11 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
       >
         &gt;
       </button>
+
+      </span>
+
+      {/* ▶ Right arrow */}
+      
 
       {/* 📅 Calendar button (now teal background + white icon) */}
       <button
