@@ -75,11 +75,15 @@ const PredictionCard = ({ fixture }) => {
     }`}
   >
     {/* 🕒 Status / Time */}
-    <div className="text-center text-[5px] sm:text-xs font-semibold text-gray-700 w-[45px] sm:w-[55px] flex-shrink-0">
-      <p className={`${isLive ? "text-red-600 font-semibold" : ""}`}>
-        {renderStatus()}
-      </p>
-    </div>
+    <div className="w-[45px] sm:w-[55px] flex-shrink-0 text-center">
+  <p
+    className={`text-[10px] sm:text-xs leading-none ${
+      isLive ? "text-red-600 font-semibold" : "text-gray-700 font-semibold"
+    }`}
+  >
+    {renderStatus()}
+  </p>
+</div>
 
     {/* 🏟️ Teams */}
     <div className="flex flex-col items-start text-left mx-1 sm:mx-2 w-[140px] sm:w-[200px]">
