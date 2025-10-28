@@ -2,7 +2,7 @@ import React from "react";
 
 const LeagueGroup = ({ league, leagueLogo, country, children }) => {
   return (
-    <section className="mb-10">
+    <section >
       {/* 🏆 League Header */}
       <div className="max-w-xl mx-auto mb-2 border-b border-teal-500 pb-1 px-2">
         <div className="flex items-center gap-3">
