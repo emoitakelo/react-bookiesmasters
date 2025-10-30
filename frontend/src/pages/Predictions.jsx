@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PredictionList from "../components/predictions/PredictionList";
 import DateNavigator from "../components/predictions/DateNavigator";
+import Loader from "../components/common/Loader";
 import axiosInstance from "../utils/axiosInstance";
 
 const Predictions = () => {
@@ -110,7 +111,7 @@ const Predictions = () => {
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
-    }, 15000); // refresh every 15s
+    }, 30000); // 30s refresh
 
     return () => clearInterval(interval);
   }, [currentDate, today]);
@@ -128,7 +129,9 @@ const Predictions = () => {
         loading={loading}
       />
 
-      {predictions.length > 0 ? (
+      {loading ? (
+        <Loader size={10} color="teal-500" height="h-40" />
+      ) : predictions.length > 0 ? (
         <PredictionList predictions={predictions} />
       ) : (
         <p className="text-center text-gray-500">
