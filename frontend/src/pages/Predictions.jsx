@@ -1,10 +1,9 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PredictionList from "../components/predictions/PredictionList";
 import DateNavigator from "../components/predictions/DateNavigator";
-import Loader from "../components/common/Loader";
 import axiosInstance from "../utils/axiosInstance";
 
-const Predictions = () => {
+const Predictions = ({ onFixturesLoaded }) => {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(() => {
@@ -75,7 +74,7 @@ const Predictions = () => {
     fetchPredictions(currentDate);
   }, [currentDate, fetchPredictions]);
 
-  // Smooth live update: only update scores and minutes for today
+  // Smooth live updates for today's fixtures
   useEffect(() => {
     if (currentDate !== today.toISOString().split("T")[0]) return;
 
@@ -111,7 +110,7 @@ const Predictions = () => {
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
-    }, 30000); // 30s refresh
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [currentDate, today]);
@@ -121,6 +120,13 @@ const Predictions = () => {
     setCurrentDate(newDate);
   };
 
+  // ✅ Notify App.jsx when all fixtures have loaded
+  useEffect(() => {
+    if (!loading && predictions.length > 0 && onFixturesLoaded) {
+      onFixturesLoaded();
+    }
+  }, [loading, predictions, onFixturesLoaded]);
+
   return (
     <main className="max-w-xl mx-auto px-1 sm:px-3">
       <DateNavigator
@@ -129,9 +135,7 @@ const Predictions = () => {
         loading={loading}
       />
 
-      {loading ? (
-        <Loader size={10} color="teal-500" height="h-40" />
-      ) : predictions.length > 0 ? (
+      {predictions.length > 0 ? (
         <PredictionList predictions={predictions} />
       ) : (
         <p className="text-center text-gray-500">

@@ -48,8 +48,8 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         type="button"
         onMouseDown={(e) => e.preventDefault()}
         className="absolute left-5 sm:left-10 w-8 h-7 sm:w-10 sm:h-19 rounded-full
-          bg-teal-600 text-white flex items-center justify-center text-xs sm:text-sm
-          hover:bg-teal-700 transition-colors
+          bg-teal-700 text-white flex items-center justify-center text-xs sm:text-sm
+           transition-colors
           focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none active:ring-0"
       >
         Live
@@ -67,7 +67,7 @@ const DateNavigator = ({ currentDate, onChangeDate, loading }) => {
         onMouseDown={(e) => e.preventDefault()}
         className={`absolute right-5 sm:right-10 w-8 h-7 sm:w-10 sm:h-9 rounded-full
           flex items-center justify-center text-white text-xs sm:text-sm transition-colors
-          ${showCalendar ? "bg-teal-600 hover:bg-teal-700" : "bg-teal-600 hover:bg-teal-700"}
+          ${showCalendar ? "bg-teal-700 hover:bg-teal-700" : "bg-teal-700 "}
           focus:outline-none focus:ring-0 focus-visible:outline-none active:outline-none active:ring-0`}
         aria-expanded={showCalendar}
         aria-label={showCalendar ? "Close calendar" : "Open calendar"}

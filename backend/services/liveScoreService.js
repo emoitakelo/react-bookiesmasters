@@ -1,17 +1,16 @@
-// services/liveScoreService.js
 import axios from "axios";
 import LiveScore from "../models/LiveScore.js";
 import Prediction from "../models/Prediction.js";
 
 export const fetchAndUpdateLiveScores = async () => {
   try {
-    console.log("♻️ Refreshing live scores...");
+    console.log("♻️ Refreshing full live scores...");
 
-    // 1️⃣ Clear out old live data (so only current live games remain)
+    // 1️⃣ Remove old live data
     await LiveScore.deleteMany({});
     console.log("🗑️ Cleared old live score documents");
 
-    // 2️⃣ Fetch all live fixtures from API-Football
+    // 2️⃣ Fetch ALL live fixtures from API-Football
     const { data } = await axios.get("https://v3.football.api-sports.io/fixtures?live=all", {
       headers: { "x-apisports-key": process.env.API_KEY },
     });
@@ -21,14 +20,14 @@ export const fetchAndUpdateLiveScores = async () => {
       return;
     }
 
-    // 3️⃣ Get all fixture IDs already in predictions (we’ll only keep these)
+    // 3️⃣ Get all fixture IDs already present in predictions
     const existingIds = await Prediction.distinct("fixtureId");
     if (!existingIds.length) {
       console.log("⚠️ No fixture IDs found in predictions collection");
       return;
     }
 
-    // 4️⃣ Keep only live fixtures whose fixtureId is in our predictions
+    // 4️⃣ Keep only live fixtures that match your predictions
     const filteredLives = data.response.filter(fix =>
       existingIds.includes(fix.fixture.id)
     );
@@ -38,28 +37,14 @@ export const fetchAndUpdateLiveScores = async () => {
       return;
     }
 
-    // 5️⃣ Prepare and upsert filtered live matches
+    // 5️⃣ Prepare the full fixture objects — save everything from API
     const lives = filteredLives.map(fix => ({
-  fixtureId: fix.fixture.id,
-  league: fix.league.name,
-  status: fix.fixture.status,
-  homeTeam: {
-    id: fix.teams.home.id,
-    name: fix.teams.home.name,
-    logo: fix.teams.home.logo,
-    score: fix.goals?.home ?? 0,   // ← map goals.home to score
-  },
-  awayTeam: {
-    id: fix.teams.away.id,
-    name: fix.teams.away.name,
-    logo: fix.teams.away.logo,
-    score: fix.goals?.away ?? 0,   // ← map goals.away to score
-  },
-  createdAt: new Date(),
-}));
+      fixtureId: fix.fixture.id,
+      fullData: fix, // 🧩 store entire fixture response as-is
+      updatedAt: new Date(),
+    }));
 
-
-    // Use bulkWrite for faster performance than looping
+    // 6️⃣ Bulk upsert for performance
     const operations = lives.map(live => ({
       updateOne: {
         filter: { fixtureId: live.fixtureId },
@@ -70,8 +55,7 @@ export const fetchAndUpdateLiveScores = async () => {
 
     await LiveScore.bulkWrite(operations);
 
-    console.log(`✅ Updated ${lives.length} live fixtures (matched with predictions)`);
-
+    console.log(`✅ Updated ${lives.length} full live fixtures`);
   } catch (error) {
     console.error("❌ Live score update failed:", error.message);
   }

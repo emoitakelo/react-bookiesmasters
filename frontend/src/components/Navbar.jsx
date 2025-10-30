@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Menu, X } from "lucide-react"; // modern icons
+import { Menu, X } from "lucide-react";
 import logo from "../assets/logo.png";
 
-function Navbar() {
+function Navbar({ onLogoLoaded }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const links = [
@@ -19,6 +19,7 @@ function Navbar() {
           <img
             src={logo}
             alt="BookiesMasters Logo"
+            onLoad={onLogoLoaded} // ✅ notify App when logo loads
             className="h-16 sm:h-18 w-auto object-contain"
           />
         </Link>
@@ -38,12 +39,11 @@ function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-  className="md:hidden text-teal-500 hover:text-[#99f6e4] focus:outline-none focus:ring-0"
-  onClick={() => setMenuOpen(!menuOpen)}
->
-  {menuOpen ? <X size={25} /> : <Menu size={25} />}
-</button>
-
+          className="md:hidden text-teal-500 hover:text-[#99f6e4] focus:outline-none focus:ring-0"
+          onClick={() => setMenuOpen(!menuOpen)}
+        >
+          {menuOpen ? <X size={25} /> : <Menu size={25} />}
+        </button>
       </div>
 
       {/* Mobile Dropdown Menu */}
