@@ -3,7 +3,7 @@ import PredictionList from "../components/predictions/PredictionList";
 import DateNavigator from "../components/predictions/DateNavigator";
 import axiosInstance from "../utils/axiosInstance";
 
-const Predictions = ({ onFixturesLoaded }) => {
+const Predictions = () => {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(() => {
@@ -74,7 +74,7 @@ const Predictions = ({ onFixturesLoaded }) => {
     fetchPredictions(currentDate);
   }, [currentDate, fetchPredictions]);
 
-  // Smooth live updates for today's fixtures
+  // Smooth live update: only update scores and minutes for today
   useEffect(() => {
     if (currentDate !== today.toISOString().split("T")[0]) return;
 
@@ -110,7 +110,7 @@ const Predictions = ({ onFixturesLoaded }) => {
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
-    }, 15000);
+    }, 15000); // refresh every 15s
 
     return () => clearInterval(interval);
   }, [currentDate, today]);
@@ -119,13 +119,6 @@ const Predictions = ({ onFixturesLoaded }) => {
     if (loading) return;
     setCurrentDate(newDate);
   };
-
-  // ✅ Notify App.jsx when all fixtures have loaded
-  useEffect(() => {
-    if (!loading && predictions.length > 0 && onFixturesLoaded) {
-      onFixturesLoaded();
-    }
-  }, [loading, predictions, onFixturesLoaded]);
 
   return (
     <main className="max-w-xl mx-auto px-1 sm:px-3">
