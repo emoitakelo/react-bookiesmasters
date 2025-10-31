@@ -48,8 +48,7 @@ export default function App() {
         </Routes>
       </main>
 
-      {/* ✅ Show footer only after fixtures are fully loaded */}
-      {fixturesLoaded && <Footer />}
+      <Footer />
     </div>
   );
 }

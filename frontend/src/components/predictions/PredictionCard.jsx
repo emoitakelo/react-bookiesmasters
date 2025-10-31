@@ -19,7 +19,7 @@ const PredictionCard = ({ fixture }) => {
   const statusShort = typeof status === "object" ? status.short : status;
   const elapsed = typeof status === "object" ? status.elapsed : minute;
 
-  const isLive = ["1H", "2H", "LIVE"].includes(statusShort);
+  const isLive = ["1H", "2H","HT", "LIVE"].includes(statusShort);
 
   const renderStatus = () => {
     if (statusShort === "FT") return "FT";

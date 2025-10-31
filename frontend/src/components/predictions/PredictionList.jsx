@@ -17,6 +17,7 @@ const PredictionList = ({ predictions, isLoading }) => {
 
   return (
     <div className="space-y-3">
+      
       {predictions.map((leagueData, index) => (
         <LeagueGroup
           key={index}

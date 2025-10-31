@@ -14,7 +14,54 @@ const Predictions = () => {
 
   const today = new Date();
 
-  // Fetch merged predictions + live scores
+  // 🔹 Helper: merge live scores into predictions
+  const mergeLiveScores = (predData, liveData) => {
+    const liveMap = {};
+    liveData.forEach((live) => {
+      if (live && live.fixtureId) liveMap[live.fixtureId] = live;
+    });
+
+    return predData.map((league) => ({
+      ...league,
+      fixtures: league.fixtures.map((fixture) => {
+        const live = liveMap[fixture.fixtureId];
+
+        if (!live) return { ...fixture };
+
+const isLive = !["FT", "AET", "PEN"].includes(live.fullData.fixture.status.short);
+
+
+
+
+        return {
+  ...fixture,
+  status: isLive
+    ? live.fullData.fixture.status.short
+    : fixture.status,
+    minute: isLive
+  ? live.fullData.fixture.status.elapsed ?? 0
+  : fixture.minute,
+  displayDate: isLive
+    ? `${live.fullData.fixture.status.elapsed ?? ""}'`
+    : fixture.displayDate,
+  homeTeam: {
+    ...fixture.homeTeam,
+    score: isLive
+      ? live.fullData.goals.home
+      : fixture.homeTeam.score,
+  },
+  awayTeam: {
+    ...fixture.awayTeam,
+    score: isLive
+      ? live.fullData.goals.away
+      : fixture.awayTeam.score,
+  },
+};
+      }),
+    }));
+  };
+
+  // 🔹 Fetch predictions + live scores
   const fetchPredictions = useCallback(async (date) => {
     try {
       setLoading(true);
@@ -27,42 +74,7 @@ const Predictions = () => {
       const predData = predRes.data?.data || [];
       const liveData = liveRes.data?.data || [];
 
-      // Build lookup map for live scores
-      const liveMap = {};
-      liveData.forEach((live) => {
-        if (live && live.fixtureId) liveMap[live.fixtureId] = live;
-      });
-
-      // Merge live scores into predictions
-      const merged = predData.map((league) => ({
-        ...league,
-        fixtures: league.fixtures.map((fixture) => {
-          const live = liveMap[fixture.fixtureId];
-          if (!live) return { ...fixture };
-
-          return {
-            ...fixture,
-            status:
-              live.status?.short ??
-              (typeof fixture.status === "object" ? fixture.status.short : fixture.status),
-            minute: live.status?.elapsed ?? fixture.minute,
-            homeTeam: {
-              ...fixture.homeTeam,
-              name: live.homeTeam?.name ?? fixture.homeTeam?.name,
-              logo: live.homeTeam?.logo ?? fixture.homeTeam?.logo,
-              score: live.homeTeam?.score ?? fixture.homeTeam?.score ?? null,
-            },
-            awayTeam: {
-              ...fixture.awayTeam,
-              name: live.awayTeam?.name ?? fixture.awayTeam?.name,
-              logo: live.awayTeam?.logo ?? fixture.awayTeam?.logo,
-              score: live.awayTeam?.score ?? fixture.awayTeam?.score ?? null,
-            },
-          };
-        }),
-      }));
-
-      setPredictions(merged);
+      setPredictions(mergeLiveScores(predData, liveData));
     } catch (err) {
       console.error("❌ Error fetching predictions/livescores:", err);
       setPredictions([]);
@@ -75,7 +87,7 @@ const Predictions = () => {
     fetchPredictions(currentDate);
   }, [currentDate, fetchPredictions]);
 
-  // Smooth live update: only update scores and minutes for today
+  // 🔹 Smooth live update: only update scores and minutes for today
   useEffect(() => {
     if (currentDate !== today.toISOString().split("T")[0]) return;
 
@@ -83,35 +95,15 @@ const Predictions = () => {
       try {
         const liveRes = await axiosInstance.get(`/livescores?date=${currentDate}`);
         const liveData = liveRes.data?.data || [];
-
         if (!liveData.length) return;
 
         setPredictions((prevPredictions) =>
-          prevPredictions.map((league) => ({
-            ...league,
-            fixtures: league.fixtures.map((fixture) => {
-              const live = liveData.find((l) => l.fixtureId === fixture.fixtureId);
-              if (!live) return fixture;
-
-              return {
-                ...fixture,
-                minute: live.status?.elapsed ?? fixture.minute,
-                homeTeam: {
-                  ...fixture.homeTeam,
-                  score: live.homeTeam?.score ?? fixture.homeTeam.score,
-                },
-                awayTeam: {
-                  ...fixture.awayTeam,
-                  score: live.awayTeam?.score ?? fixture.awayTeam.score,
-                },
-              };
-            }),
-          }))
+          mergeLiveScores(prevPredictions, liveData)
         );
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
-    }, 30000); // 30s refresh
+    }, 15000); // 30s refresh
 
     return () => clearInterval(interval);
   }, [currentDate, today]);
@@ -130,7 +122,7 @@ const Predictions = () => {
       />
 
       {loading ? (
-        <Loader size={10} color="teal-500" height="h-40" />
+        <Loader size={30} color="teal-500" height="h-40" />
       ) : predictions.length > 0 ? (
         <PredictionList predictions={predictions} />
       ) : (
