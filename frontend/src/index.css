@@ -5,7 +5,7 @@
 /* 🌍 Global Custom Styles */
 html,
 body {
-  @apply bg-dark text-gray-100 font-sans;
+  @apply  text-gray-100 font-sans;
   scroll-behavior: smooth;
 }
 
