@@ -90,8 +90,10 @@ async function bootstrap() {
     const initialData = await preloadAppData();
 
     // 🌟 Reveal the app only when everything is ready
-    document.body.style.visibility = "visible";
-    document.body.style.overflow = "auto";
+document.documentElement.style.visibility = "visible"; // html
+document.body.style.visibility = "visible";             // body
+document.documentElement.style.overflow = "auto";
+document.body.style.overflow = "auto";
 
     ReactDOM.createRoot(document.getElementById("root")).render(
       <BrowserRouter>
