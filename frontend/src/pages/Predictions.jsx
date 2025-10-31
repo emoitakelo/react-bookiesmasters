@@ -4,9 +4,9 @@ import DateNavigator from "../components/predictions/DateNavigator";
 import Loader from "../components/common/Loader";
 import axiosInstance from "../utils/axiosInstance";
 
-const Predictions = () => {
-  const [predictions, setPredictions] = useState([]);
-  const [loading, setLoading] = useState(true);
+const Predictions = ({ initialData = [] }) => {
+  const [predictions, setPredictions] = useState(initialData);
+  const [loading, setLoading] = useState(initialData.length === 0);
   const [currentDate, setCurrentDate] = useState(() => {
     const today = new Date();
     return today.toISOString().split("T")[0];
@@ -25,47 +25,44 @@ const Predictions = () => {
       ...league,
       fixtures: league.fixtures.map((fixture) => {
         const live = liveMap[fixture.fixtureId];
-
         if (!live) return { ...fixture };
 
-const isLive = !["FT", "AET", "PEN"].includes(live.fullData.fixture.status.short);
-
-
-
+        const isLive = !["FT", "AET", "PEN"].includes(
+          live.fullData.fixture.status.short
+        );
 
         return {
-  ...fixture,
-  status: isLive
-    ? live.fullData.fixture.status.short
-    : fixture.status,
-    minute: isLive
-  ? live.fullData.fixture.status.elapsed ?? 0
-  : fixture.minute,
-  displayDate: isLive
-    ? `${live.fullData.fixture.status.elapsed ?? ""}'`
-    : fixture.displayDate,
-  homeTeam: {
-    ...fixture.homeTeam,
-    score: isLive
-      ? live.fullData.goals.home
-      : fixture.homeTeam.score,
-  },
-  awayTeam: {
-    ...fixture.awayTeam,
-    score: isLive
-      ? live.fullData.goals.away
-      : fixture.awayTeam.score,
-  },
-};
+          ...fixture,
+          status: isLive
+            ? live.fullData.fixture.status.short
+            : fixture.status,
+          minute: isLive
+            ? live.fullData.fixture.status.elapsed ?? 0
+            : fixture.minute,
+          displayDate: isLive
+            ? `${live.fullData.fixture.status.elapsed ?? ""}'`
+            : fixture.displayDate,
+          homeTeam: {
+            ...fixture.homeTeam,
+            score: isLive
+              ? live.fullData.goals.home
+              : fixture.homeTeam.score,
+          },
+          awayTeam: {
+            ...fixture.awayTeam,
+            score: isLive
+              ? live.fullData.goals.away
+              : fixture.awayTeam.score,
+          },
+        };
       }),
     }));
   };
 
-  // 🔹 Fetch predictions + live scores
+  // 🔹 Fetch predictions + live scores manually when date changes
   const fetchPredictions = useCallback(async (date) => {
     try {
       setLoading(true);
-
       const [predRes, liveRes] = await Promise.all([
         axiosInstance.get(`/predictions?date=${date}`),
         axiosInstance.get(`/livescores?date=${date}`),
@@ -73,7 +70,6 @@ const isLive = !["FT", "AET", "PEN"].includes(live.fullData.fixture.status.short
 
       const predData = predRes.data?.data || [];
       const liveData = liveRes.data?.data || [];
-
       setPredictions(mergeLiveScores(predData, liveData));
     } catch (err) {
       console.error("❌ Error fetching predictions/livescores:", err);
@@ -83,27 +79,28 @@ const isLive = !["FT", "AET", "PEN"].includes(live.fullData.fixture.status.short
     }
   }, []);
 
+  // ✅ Only fetch if user changes the date manually (not at first mount)
   useEffect(() => {
+    if (initialData.length && currentDate === today.toISOString().split("T")[0])
+      return; // already preloaded
     fetchPredictions(currentDate);
-  }, [currentDate, fetchPredictions]);
+  }, [currentDate, fetchPredictions, today, initialData]);
 
-  // 🔹 Smooth live update: only update scores and minutes for today
+  // 🔹 Smooth live update for today's fixtures
   useEffect(() => {
     if (currentDate !== today.toISOString().split("T")[0]) return;
-
     const interval = setInterval(async () => {
       try {
         const liveRes = await axiosInstance.get(`/livescores?date=${currentDate}`);
         const liveData = liveRes.data?.data || [];
         if (!liveData.length) return;
-
         setPredictions((prevPredictions) =>
           mergeLiveScores(prevPredictions, liveData)
         );
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
-    }, 15000); // 30s refresh
+    }, 15000);
 
     return () => clearInterval(interval);
   }, [currentDate, today]);
@@ -120,7 +117,6 @@ const isLive = !["FT", "AET", "PEN"].includes(live.fullData.fixture.status.short
         onChangeDate={handleChangeDate}
         loading={loading}
       />
-
       {loading ? (
         <Loader size={30} color="teal-500" height="h-40" />
       ) : predictions.length > 0 ? (
