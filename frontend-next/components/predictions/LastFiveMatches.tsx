@@ -1,9 +1,28 @@
 import React from "react";
 
-const LastFiveMatches = ({ teamLogo, teamName, matches }) => {
+// 🧩 Shape of a single match
+interface Match {
+  homeTeam: { name: string };
+  awayTeam: { name: string };
+  score: { home: number | string; away: number | string };
+  date: string;
+}
+
+// 🧩 Props for LastFiveMatches component
+interface LastFiveMatchesProps {
+  teamLogo?: string;
+  teamName: string;
+  matches: Match[];
+}
+
+const LastFiveMatches: React.FC<LastFiveMatchesProps> = ({
+  teamLogo,
+  teamName,
+  matches,
+}) => {
   if (!matches || matches.length === 0) return null;
 
-  const getScoreBadgeColor = (isHome, homeScore, awayScore) => {
+  const getScoreBadgeColor = (isHome: boolean, homeScore: number, awayScore: number) => {
     const our = isHome ? homeScore : awayScore;
     const opp = isHome ? awayScore : homeScore;
 
