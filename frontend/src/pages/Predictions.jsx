@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PredictionList from "../components/predictions/PredictionList";
 import DateNavigator from "../components/predictions/DateNavigator";
-import Loader from "../components/common/Loader";
+import Loader from "../../../frontend-next/components/common/Loader";
 import axiosInstance from "../utils/axiosInstance";
 
 const Predictions = ({ initialData = [] }) => {

@@ -7,7 +7,7 @@ import TeamDisplay from "../components/predictions/TeamDisplay";
 import PredictionAdvice from "../components/predictions/PredictionAdvice";
 import H2HSection from "../components/predictions/H2HSection";
 import LastFiveMatches from "../components/predictions/LastFiveMatches";
-import Loader from "../components/common/Loader"; // ✅ Import Loader
+import Loader from "../../../frontend-next/components/common/Loader"; // ✅ Import Loader
 
 const PredictionDetails = () => {
   const { fixtureId } = useParams();
