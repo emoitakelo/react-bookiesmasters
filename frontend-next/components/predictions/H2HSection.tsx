@@ -1,10 +1,39 @@
-const H2HSection = ({ h2h }) => {
+import React from "react";
+
+// 🧩 Define the shape of one H2H match
+interface H2HMatch {
+  fixture: {
+    id: number;
+    date: string;
+  };
+  teams: {
+    home: { name: string };
+    away: { name: string };
+  };
+  goals: {
+    home: number;
+    away: number;
+  };
+}
+
+// 🧩 Define props for the component
+interface H2HSectionProps {
+  h2h: H2HMatch[];
+}
+
+const H2HSection: React.FC<H2HSectionProps> = ({ h2h }) => {
   if (!h2h || h2h.length === 0)
-    return <p className="text-center text-gray-400 mb-6">No H2H data available</p>;
+    return (
+      <p className="text-center text-gray-400 mb-6">
+        No H2H data available
+      </p>
+    );
 
   return (
     <div className="mb-6 max-w-3xl mx-auto">
-      <h3 className="text-lg font-semibold text-center text-gray-800 mb-2">Head to Head</h3>
+      <h3 className="text-lg font-semibold text-center text-gray-800 mb-2">
+        Head to Head
+      </h3>
       <div className="flex flex-col gap-2">
         {h2h.slice(0, 5).map((match) => {
           const matchDate = new Date(match.fixture.date).toLocaleDateString("en-US", {
