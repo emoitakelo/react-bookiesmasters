@@ -78,7 +78,7 @@ if (res.data.success) {
       <LeagueHeader league={data.league} />
       <TeamDisplay fixture={data} />
       <PredictionAdvice tip={data.tip} />
-      <H2HSection h2h={data.h2h} />
+<H2HSection h2h={data.h2h || []} />
 
       <LastFiveMatches
         teamName={data.homeTeam.name}
