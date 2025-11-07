@@ -1,21 +1,12 @@
-"use client";
-
 import React from "react";
 import LeagueGroup from "./LeagueGroup";
 import PredictionCard from "./PredictionCard";
-import { LeagueData, Fixture } from "@/types"; // ✅ import shared types
 
-interface PredictionListProps {
-  predictions: LeagueData[];
-  isLoading?: boolean;
-}
-
-const PredictionList: React.FC<PredictionListProps> = ({
-  predictions,
-  isLoading = false,
-}) => {
+const PredictionList = ({ predictions, isLoading }) => {
+  // If still loading, render nothing (so "No predictions" can't flash)
   if (isLoading) return null;
 
+  // After loading finished, show "No predictions" only when empty
   if (!predictions || predictions.length === 0) {
     return (
       <p className="text-center text-gray-500 mt-4">
@@ -26,6 +17,7 @@ const PredictionList: React.FC<PredictionListProps> = ({
 
   return (
     <div className="space-y-3">
+      
       {predictions.map((leagueData, index) => (
         <LeagueGroup
           key={index}
@@ -33,7 +25,7 @@ const PredictionList: React.FC<PredictionListProps> = ({
           leagueLogo={leagueData.leagueLogo}
           country={leagueData.country}
         >
-          {leagueData.fixtures.map((fixture: Fixture) => (
+          {leagueData.fixtures.map((fixture) => (
             <PredictionCard key={fixture.fixtureId} fixture={fixture} />
           ))}
         </LeagueGroup>

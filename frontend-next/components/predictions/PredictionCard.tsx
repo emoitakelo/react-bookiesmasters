@@ -10,7 +10,7 @@ interface Props {
 }
 
 const PredictionCard: React.FC<Props> = ({ fixture }) => {
-  const { fixtureId, date, tip, minute, status } = fixture;
+  const { fixtureId, date, tip = "", minute, status } = fixture;
 
   const [flash, setFlash] = useState(false);
   const prevScores = useRef({
@@ -24,7 +24,8 @@ const PredictionCard: React.FC<Props> = ({ fixture }) => {
     hour12: false,
   });
 
-const statusShort = typeof status === "object" ? status?.short ?? "" : status ?? "";
+  const statusShort =
+    typeof status === "object" ? status?.short ?? "" : status ?? "";
   const elapsed = typeof status === "object" ? status.elapsed : minute;
   const isLive = ["1H", "2H", "HT", "LIVE"].includes(statusShort);
 
@@ -142,7 +143,7 @@ const statusShort = typeof status === "object" ? status?.short ?? "" : status ??
               statusShort
             )}`}
           >
-            {tip}
+            {tip || "-"}
           </p>
         </div>
 

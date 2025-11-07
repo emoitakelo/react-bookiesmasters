@@ -1,17 +1,13 @@
-"use client";
-
 import React from "react";
-import { Fixture } from "@/types"; // ✅ import shared Fixture type
 
-interface TeamDisplayProps {
-  fixture?: Fixture | null;
-}
-
-const TeamDisplay: React.FC<TeamDisplayProps> = ({ fixture }) => {
+const TeamDisplay = ({ fixture }) => {
   if (!fixture) return null;
+
+  console.log("Fixture data in TeamDisplay:", fixture);
 
   const { homeTeam, awayTeam, date, displayDate, status, venue } = fixture;
 
+  // 🕒 Show "FT" or local time/date
   const matchDateTime =
     status === "FT"
       ? displayDate
@@ -21,8 +17,9 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ fixture }) => {
           minute: "2-digit",
         });
 
-  const renderFormBars = (forms?: Fixture["homeTeam"]["last5Matches"]) => {
-    if (!forms || forms.length === 0) return null;
+  // 🟩 Render form badges
+  const renderFormBars = (forms) => {
+    if (!forms || !Array.isArray(forms) || forms.length === 0) return null;
 
     return (
       <div className="flex justify-center gap-1 mt-1">
@@ -39,6 +36,7 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ fixture }) => {
     );
   };
 
+  // ✅ Safely access actual match scores (only if FT)
   const homeScore =
     status === "FT" ? homeTeam?.last5Matches?.[0]?.score?.home ?? "-" : null;
   const awayScore =
@@ -69,6 +67,7 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ fixture }) => {
             {status === "FT" ? "FT" : matchDateTime}
           </div>
 
+          {/* ✅ Show scores only if match is finished */}
           {status === "FT" && (
             <div className="text-lg text-black sm:text-xl font-bold mt-1">
               <span>{homeScore}</span> - <span>{awayScore}</span>
@@ -89,7 +88,9 @@ const TeamDisplay: React.FC<TeamDisplayProps> = ({ fixture }) => {
 
       {/* Venue */}
       {venue && (
-        <p className="mt-4 text-gray-500 text-sm text-center italic">{venue}</p>
+        <p className="mt-4 text-gray-500 text-sm text-center italic">
+          {venue}
+        </p>
       )}
     </div>
   );

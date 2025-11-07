@@ -9,49 +9,24 @@ import PredictionAdvice from "@/components/predictions/PredictionAdvice";
 import H2HSection from "@/components/predictions/H2HSection";
 import LastFiveMatches from "@/components/predictions/LastFiveMatches";
 import Loader from "@/components/common/Loader";
-
-// ✅ Optional: define type for prediction details (you can expand it later)
-interface MatchInfo {
-  name: string;
-  logo: string;
-  last5Matches: any[];
-}
-
-interface LeagueInfo {
-  name: string;
-  logo: string;
-  country: string;
-}
-
-interface PredictionDetailsData {
-  league: LeagueInfo;
-  fixtureId: number;
-  venue?: string;
-  tip?: string;
-  h2h?: any[];
-  homeTeam: MatchInfo;
-  awayTeam: MatchInfo;
-}
+import { Fixture } from "@/types"; // ✅ Import Fixture type
 
 const PredictionDetails = () => {
   const { fixtureId } = useParams() as { fixtureId?: string };
-  const [data, setData] = useState<PredictionDetailsData | null>(null);
+  const [data, setData] = useState<Fixture | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDetails = async () => {
       if (!fixtureId) return;
       try {
-        // ✅ Axios is flattened — returns data directly
-        const res = await axiosInstance.get<{ success: boolean; data: PredictionDetailsData }>(
-  `/predictions/details/${fixtureId}`
-);
+        const res = await axiosInstance.get<{ success: boolean; data: Fixture }>(
+          `/predictions/details/${fixtureId}`
+        );
 
-if (res.data.success) {
-  setData(res.data.data);
-}
-
-        else {
+        if (res.data.success) {
+          setData(res.data.data); // ✅ now matches Fixture type
+        } else {
           console.error("❌ API did not return success flag");
         }
       } catch (err) {
@@ -64,7 +39,8 @@ if (res.data.success) {
     fetchDetails();
   }, [fixtureId]);
 
-  if (loading) return <Loader size={10} color="teal-500" height="h-60" />;
+  if (loading)
+    return <Loader size={10} color="teal-500" height="h-60" />;
 
   if (!data)
     return (
@@ -75,22 +51,34 @@ if (res.data.success) {
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 text-gray-900">
-      <LeagueHeader league={data.league} />
+      {/* League Header */}
+      {data.league && <LeagueHeader league={data.league} />}
+
+      {/* Teams Display */}
       <TeamDisplay fixture={data} />
-      <PredictionAdvice tip={data.tip} />
-      <H2HSection h2h={data.h2h} />
 
-      <LastFiveMatches
-        teamName={data.homeTeam.name}
-        teamLogo={data.homeTeam.logo}
-        matches={data.homeTeam.last5Matches}
-      />
+      {/* Tip / Prediction Advice */}
+      {data.tip && <PredictionAdvice tip={data.tip} />}
 
-      <LastFiveMatches
-        teamName={data.awayTeam.name}
-        teamLogo={data.awayTeam.logo}
-        matches={data.awayTeam.last5Matches}
-      />
+      {/* Head-to-Head */}
+      {data.h2h && <H2HSection h2h={data.h2h} />}
+
+      {/* Last 5 Matches */}
+      {data.homeTeam.last5Matches && (
+        <LastFiveMatches
+          teamName={data.homeTeam.name}
+          teamLogo={data.homeTeam.logo}
+          matches={data.homeTeam.last5Matches}
+        />
+      )}
+
+      {data.awayTeam.last5Matches && (
+        <LastFiveMatches
+          teamName={data.awayTeam.name}
+          teamLogo={data.awayTeam.logo}
+          matches={data.awayTeam.last5Matches}
+        />
+      )}
     </div>
   );
 };

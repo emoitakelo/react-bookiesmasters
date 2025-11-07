@@ -1,24 +1,9 @@
 import React from "react";
-import { Match as MatchType } from "@/types"; // ✅ import Match from types
 
-interface LastFiveMatchesProps {
-  teamLogo?: string;
-  teamName: string;
-  matches: MatchType[];
-}
-
-const LastFiveMatches: React.FC<LastFiveMatchesProps> = ({
-  teamLogo,
-  teamName,
-  matches,
-}) => {
+const LastFiveMatches = ({ teamLogo, teamName, matches }) => {
   if (!matches || matches.length === 0) return null;
 
-  const getScoreBadgeColor = (
-    isHome: boolean,
-    homeScore: number,
-    awayScore: number
-  ) => {
+  const getScoreBadgeColor = (isHome, homeScore, awayScore) => {
     const our = isHome ? homeScore : awayScore;
     const opp = isHome ? awayScore : homeScore;
 
@@ -29,7 +14,7 @@ const LastFiveMatches: React.FC<LastFiveMatchesProps> = ({
 
   return (
     <div className="mb-8 max-w-3xl mx-auto">
-      {/* Title + Team Logo */}
+      {/* 🏆 Title + Team Logo centered */}
       <div className="flex flex-col items-center mb-4">
         <div className="flex items-center justify-center gap-2">
           {teamLogo && (
@@ -45,28 +30,31 @@ const LastFiveMatches: React.FC<LastFiveMatchesProps> = ({
         </div>
       </div>
 
-      {/* Matches List */}
+      {/* 🏟️ Matches List */}
       <div className="flex flex-col gap-2">
         {matches.map((m, i) => {
-          const isHome = m.homeTeam === teamName;
+          const isHome = m.homeTeam.name === teamName;
           const homeScore = Number(m.score.home);
           const awayScore = Number(m.score.away);
 
-          const matchDate = m.date
-            ? new Date(m.date).toLocaleDateString("en-US", {
-                month: "2-digit",
-                day: "2-digit",
-                year: "2-digit",
-              })
-            : "";
+          const matchDate = new Date(m.date).toLocaleDateString("en-US", {
+            month: "2-digit",
+            day: "2-digit",
+            year: "2-digit",
+          });
 
           return (
             <div
               key={i}
               className="grid grid-cols-4 items-center bg-gray-50 border p-2 rounded text-sm"
             >
+              {/* 1️⃣ Date */}
               <div className="truncate text-gray-500">{matchDate}</div>
-              <div className="truncate font-medium">{m.homeTeam}</div>
+
+              {/* 2️⃣ Home Team */}
+              <div className="truncate font-medium">{m.homeTeam.name}</div>
+
+              {/* 3️⃣ Score with perspective-based badge */}
               <div className="flex justify-center">
                 <span
                   className={`w-16 text-center px-2 py-1 rounded font-semibold ${getScoreBadgeColor(
@@ -78,7 +66,9 @@ const LastFiveMatches: React.FC<LastFiveMatchesProps> = ({
                   {homeScore} - {awayScore}
                 </span>
               </div>
-              <div className="truncate font-medium text-right">{m.awayTeam}</div>
+
+              {/* 4️⃣ Away Team */}
+              <div className="truncate font-medium text-right">{m.awayTeam.name}</div>
             </div>
           );
         })}
