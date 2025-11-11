@@ -9,9 +9,7 @@ import axiosInstance from "@/utils/axiosInstance";
 interface LiveScore {
   fixtureId: number;
   fullData: {
-    fixture: {
-      status: { short?: string; elapsed?: number };
-    };
+    fixture: { status: { short?: string; elapsed?: number } };
     goals: { home: number | null; away: number | null };
   };
 }
@@ -41,60 +39,6 @@ const Predictions: React.FC<PredictionsProps> = ({
   const todayISO = new Date().toISOString().split("T")[0];
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  /** 🔁 Merge live scores with fixtures */
-  const mergeLiveScores = useCallback(
-    (predData: LeagueData[], liveData: LiveScore[]): LeagueData[] => {
-      const liveMap: Record<number, LiveScore> = {};
-      liveData.forEach((live) => {
-        if (live?.fixtureId) liveMap[live.fixtureId] = live;
-      });
-
-      return predData.map((league) => ({
-        ...league,
-        fixtures: league.fixtures.map((fixture): Fixture => {
-          const live = liveMap[fixture.fixtureId];
-          if (!live) return fixture;
-
-          const liveFixture = live.fullData.fixture;
-          const isLive = !["FT", "AET", "PEN"].includes(
-            liveFixture?.status?.short ?? ""
-          );
-
-          const home = fixture.homeTeam ?? defaultTeam;
-          const away = fixture.awayTeam ?? defaultTeam;
-
-          return {
-            ...fixture,
-            status: isLive
-              ? liveFixture?.status?.short ?? fixture.status
-              : fixture.status,
-            minute: isLive
-              ? liveFixture?.status?.elapsed ?? fixture.minute
-              : fixture.minute,
-            displayDate: isLive
-              ? `${liveFixture?.status?.elapsed ?? ""}'`
-              : fixture.displayDate,
-            homeTeam: {
-              ...home,
-              id: home.id ?? 0,
-              score: isLive
-                ? live.fullData?.goals?.home ?? home.score
-                : home.score,
-            },
-            awayTeam: {
-              ...away,
-              id: away.id ?? 0,
-              score: isLive
-                ? live.fullData?.goals?.away ?? away.score
-                : away.score,
-            },
-          };
-        }),
-      }));
-    },
-    []
-  );
-
   /** ⚡ Live updates every 15s (only for today’s matches) */
   useEffect(() => {
     if (currentDate !== todayISO) return;
@@ -105,15 +49,56 @@ const Predictions: React.FC<PredictionsProps> = ({
           `/livescores?date=${currentDate}`
         );
         const liveData: LiveScore[] = liveRes.data?.data || [];
-        if (liveData.length)
-          setPredictions((prev) => mergeLiveScores(prev, liveData));
+        if (liveData.length) {
+          // Merge only live updates into existing predictions
+          setPredictions((prev) =>
+            prev.map((league) => ({
+              ...league,
+              fixtures: league.fixtures.map((fixture) => {
+                const live = liveData.find((l) => l.fixtureId === fixture.fixtureId);
+                if (!live) return fixture;
+
+                const liveFixture = live.fullData.fixture;
+                const isLive = !["FT", "AET", "PEN"].includes(liveFixture?.status?.short ?? "");
+
+                const home = fixture.homeTeam ?? defaultTeam;
+                const away = fixture.awayTeam ?? defaultTeam;
+
+                return {
+                  ...fixture,
+                  status: isLive
+                    ? liveFixture?.status?.short ?? fixture.status
+                    : fixture.status,
+                  minute: isLive
+                    ? liveFixture?.status?.elapsed ?? fixture.minute
+                    : fixture.minute,
+                  displayDate: isLive
+                    ? `${liveFixture?.status?.elapsed ?? ""}'`
+                    : fixture.displayDate,
+                  homeTeam: {
+                    ...home,
+                    score: isLive
+                      ? live.fullData?.goals?.home ?? home.score
+                      : home.score,
+                  },
+                  awayTeam: {
+                    ...away,
+                    score: isLive
+                      ? live.fullData?.goals?.away ?? away.score
+                      : away.score,
+                  },
+                } as Fixture;
+              }),
+            }))
+          );
+        }
       } catch (err) {
         console.error("❌ Error updating live scores:", err);
       }
     }, 15000);
 
     return () => clearInterval(interval);
-  }, [currentDate, todayISO, mergeLiveScores]);
+  }, [currentDate, todayISO]);
 
   /** 📅 Handle date change */
   const handleChangeDate = async (newDate: string) => {
@@ -181,7 +166,6 @@ const Predictions: React.FC<PredictionsProps> = ({
       ) : predictions.length > 0 ? (
         <>
           <PredictionList predictions={predictions} />
-          {/* 👇 Hidden observer trigger (no loader visible) */}
           <div ref={loaderRef} className="h-10" />
         </>
       ) : (
