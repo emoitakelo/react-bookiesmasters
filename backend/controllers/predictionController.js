@@ -25,7 +25,9 @@ export const getPredictionsByDate = async (req, res) => {
     }
 
     // 3️⃣ Merge live data into predictions
-    const mergedWithLive = mergeLiveScores(merged, liveScores);
+console.log("Merged predictions before live scores:", merged);
+const mergedWithLive = mergeLiveScores(merged, liveScores);
+console.log("Merged predictions after live scores:", mergedWithLive);
 
     // 4️⃣ Send updated result to frontend
     return res.status(200).json({

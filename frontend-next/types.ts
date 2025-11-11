@@ -7,7 +7,18 @@ export interface Team {
   score?: number | null;
   last5Matches?: Match[]; // ✅ Use Match[]
 }
-
+export interface LiveScore {
+  fixtureId: number;
+  fullData: {
+    fixture: {
+      status?: { short?: string; elapsed?: number };
+    };
+    goals?: {
+      home?: number;
+      away?: number;
+    };
+  };
+}
 export interface Match {
   homeTeam: string; // team name
   awayTeam: string; // team name
