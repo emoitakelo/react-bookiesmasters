@@ -7,39 +7,51 @@ export const getPredictionsByDate = async (req, res) => {
   try {
     const { date } = req.query;
     if (!date) {
-      return res.status(400).json({ success: false, message: "Date query required (YYYY-MM-DD)" });
+      return res.status(400).json({
+        success: false,
+        message: "Date query required (YYYY-MM-DD)",
+      });
     }
 
     console.log("🔍 Fetching predictions for:", date);
 
-    // 1️⃣ Get fixtures + predictions (your original logic)
+    // 1️⃣ Get fixtures + predictions
     const merged = await getPredictionsByDateService(date);
+    console.log(`📊 Predictions fetched: ${merged?.length || 0}`);
+
     if (!merged || merged.length === 0) {
-      return res.status(404).json({ success: false, message: "No fixtures found for this date" });
+      console.warn("⚠️ No fixtures found for this date");
+      return res.status(404).json({
+        success: false,
+        message: "No fixtures found for this date",
+      });
     }
 
-    // 2️⃣ Fetch live scores stored in MongoDB
+    // 2️⃣ Fetch live scores from MongoDB
     const liveScores = await LiveScore.find({});
-    if (liveScores.length > 0) {
-      console.log(`⚡ Merging ${liveScores.length} live fixtures`);
-    }
+    console.log(`⚡ Found ${liveScores.length} live score entries`);
 
-    // 3️⃣ Merge live data into predictions
-console.log("Merged predictions before live scores:", merged);
-const mergedWithLive = mergeLiveScores(merged, liveScores);
-console.log("Merged predictions after live scores:", mergedWithLive);
+    // 3️⃣ Merge live data
+    const mergedWithLive = mergeLiveScores(merged, liveScores);
+    console.log("✅ Successfully merged predictions with live scores");
 
-    // 4️⃣ Send updated result to frontend
+    // 4️⃣ Send to frontend
     return res.status(200).json({
       success: true,
       count: mergedWithLive.length,
       data: mergedWithLive,
     });
   } catch (err) {
-    console.error("❌ Error in getPredictionsByDate controller:", err);
-    res.status(500).json({
+    console.error("❌ Error in getPredictionsByDate controller:");
+    console.error(err.message);
+    console.error(err.stack);
+
+    // include actual error in response temporarily (for testing)
+    return res.status(500).json({
       success: false,
       message: "Failed to fetch predictions by date",
+      error: err.message,
     });
   }
 };
+
