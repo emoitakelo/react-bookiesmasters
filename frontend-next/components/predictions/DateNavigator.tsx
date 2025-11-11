@@ -1,10 +1,12 @@
 "use client";
+
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CalendarDays, X, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface DateNavigatorProps {
   currentDate: string;
-  onChangeDate: (date: string) => void;
+  onChangeDate?: (date: string) => void; // made optional for flexibility
   loading: boolean;
 }
 
@@ -13,6 +15,7 @@ const DateNavigator: React.FC<DateNavigatorProps> = ({
   onChangeDate,
   loading,
 }) => {
+  const router = useRouter();
   const [showCalendar, setShowCalendar] = useState(false);
   const [viewDate, setViewDate] = useState<Date>(new Date());
 
@@ -27,8 +30,14 @@ const DateNavigator: React.FC<DateNavigatorProps> = ({
   const handleDateClick = (date: Date) => {
     if (loading) return;
     const isoDate = date.toLocaleDateString("en-CA"); // YYYY-MM-DD
-    onChangeDate(isoDate);
     setShowCalendar(false);
+
+    // 🔁 Navigate to the ISR route instead of calling onChangeDate
+    if (onChangeDate) {
+      onChangeDate(isoDate); // still works if passed from client component
+    } else {
+      router.push(`/predictions/${isoDate}`);
+    }
   };
 
   const handlePrevMonth = () => {
@@ -103,7 +112,10 @@ const DateNavigator: React.FC<DateNavigatorProps> = ({
             </button>
 
             <span className="font-semibold text-gray-800 text-sm select-none">
-              {viewDate.toLocaleString("default", { month: "long", year: "numeric" })}
+              {viewDate.toLocaleString("default", {
+                month: "long",
+                year: "numeric",
+              })}
             </span>
 
             <button
