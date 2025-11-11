@@ -1,40 +1,78 @@
 // services/updateTodayFinishedFixtures.js
 import axios from "axios";
-import Fixture from "./models/Fixture.js"; // make sure the path is correct
+import https from "https";
+import Fixture from "./models/Fixture.js"; // ✅ ensure this path is correct
+
+// Create a secure HTTPS agent to avoid Render TLS issues
+const httpsAgent = new https.Agent({
+  keepAlive: true,
+  rejectUnauthorized: true,
+  secureProtocol: "TLSv1_2_method", // force TLS 1.2
+});
 
 export const fetchAndUpdateTodayFinishedFixtures = async () => {
   try {
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
     console.log(`🔍 Fetching all today's finished fixtures...`);
 
-    // Fetch all fixtures for today that are finished
-    const { data } = await axios.get("https://v3.football.api-sports.io/fixtures", {
-      headers: { "x-apisports-key": process.env.API_KEY },
-      params: { date: today, status: "FT" },
-    });
+    let data;
 
-    const fixtures = data.response;
-    if (!fixtures?.length) return console.log("⚠️ No finished fixtures today.");
+    // ⚡ Robust fetch with retry and timeout
+    try {
+      const res = await axios.get("https://v3.football.api-sports.io/fixtures", {
+        httpsAgent,
+        headers: { "x-apisports-key": process.env.API_KEY },
+        params: { date: today, status: "FT" },
+        timeout: 10000, // 10 seconds
+      });
+      data = res.data;
+    } catch (err) {
+      console.error("🌐 Initial fetch failed:", err.message);
+      console.log("⏳ Retrying once after 3s...");
+      await new Promise((r) => setTimeout(r, 3000));
 
-    // Get existing fixture IDs and status from DB
+      const retryRes = await axios.get("https://v3.football.api-sports.io/fixtures", {
+        httpsAgent,
+        headers: { "x-apisports-key": process.env.API_KEY },
+        params: { date: today, status: "FT" },
+        timeout: 10000,
+      });
+      data = retryRes.data;
+    }
+
+    const fixtures = data?.response || [];
+    if (!fixtures.length) return console.log("⚠️ No finished fixtures today.");
+
+    // 🧩 Get existing fixture IDs and status from DB
     const existingFixtures = await Fixture.find(
-      { "fixture.id": { $in: fixtures.map(f => f.fixture.id) } },
+      { "fixture.id": { $in: fixtures.map((f) => f.fixture.id) } },
       { "fixture.id": 1, "fixture.status.short": 1 }
     );
 
-    const existingStatusMap = new Map(existingFixtures.map(f => [f.fixture.id, f.fixture.status.short]));
-
-    // Filter fixtures that exist in DB and just became finished
-    const fixturesToUpdate = fixtures.filter(
-      f => existingStatusMap.has(f.fixture.id) && existingStatusMap.get(f.fixture.id) !== "FT"
+    const existingStatusMap = new Map(
+      existingFixtures.map((f) => [f.fixture.id, f.fixture.status.short])
     );
 
-    if (!fixturesToUpdate.length) return console.log("⚠️ No newly finished fixtures to update.");
+    // 🔎 Filter fixtures that exist in DB and just became finished
+    const fixturesToUpdate = fixtures.filter(
+      (f) =>
+        existingStatusMap.has(f.fixture.id) &&
+        existingStatusMap.get(f.fixture.id) !== "FT"
+    );
 
-    // Update DB
+    if (!fixturesToUpdate.length)
+      return console.log("⚠️ No newly finished fixtures to update.");
+
+    // 💾 Update DB
     for (const f of fixturesToUpdate) {
-      await Fixture.updateOne({ "fixture.id": f.fixture.id }, { $set: f }, { upsert: true });
-      console.log(`✅ Updated finished fixture: ${f.teams.home.name} vs ${f.teams.away.name}`);
+      await Fixture.updateOne(
+        { "fixture.id": f.fixture.id },
+        { $set: f },
+        { upsert: true }
+      );
+      console.log(
+        `✅ Updated finished fixture: ${f.teams.home.name} vs ${f.teams.away.name}`
+      );
     }
 
     console.log(`🎯 Updated ${fixturesToUpdate.length} newly finished fixtures.`);
