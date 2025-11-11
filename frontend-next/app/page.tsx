@@ -8,7 +8,8 @@ import { LeagueData, LiveScore, Fixture } from "@/types";
  * ISR: Regenerate this page every 15 seconds
  * You can adjust the interval as needed
  */
-export const revalidate = 15;
+export const dynamic = "force-dynamic";
+export const revalidate = 15; // optional, if you still want ISR
 
 /** 
  * Helper to merge predictions + live scores on the server
