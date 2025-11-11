@@ -2,6 +2,8 @@ import React from "react";
 import Predictions from "@/app/predictions/predictions";
 import { LeagueData } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 export const revalidate = 900; // revalidate every 15 minutes
 
 interface Params {
